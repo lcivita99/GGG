@@ -12,14 +12,7 @@ public class LightAttackState : CombatBaseState
         combat.circleSprite.color = Color.green;
         attackTimer = 0;
 
-        // set move direction
-        if (combat.leftStick.ReadValue().magnitude >= 0.1f)
-        {
-            combat.lightAttackHitbox.transform.up = combat.leftStick.ReadValue().normalized;
-        } else
-        {
-            combat.lightAttackHitbox.transform.up = combat.playerSpriteTargetTransform.up;
-        }
+        
 
 
         // reset bools
@@ -36,6 +29,16 @@ public class LightAttackState : CombatBaseState
         {
             turnedHitboxOn = true;
             combat.lightAttackHitbox.SetActive(true);
+
+            // set move direction
+            if (combat.leftStick.ReadValue().magnitude >= 0.1f)
+            {
+                combat.lightAttackHitbox.transform.up = combat.leftStick.ReadValue().normalized;
+            }
+            else
+            {
+                combat.lightAttackHitbox.transform.up = combat.playerSpriteTargetTransform.up;
+            }
         }
 
         // active move
