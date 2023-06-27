@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class HeavyAttackState : CombatBaseState
 {
-    private float attackTimer;
-    private bool turnedHitboxOn;
-    private bool turnedHitboxOff;
+    public float attackTimer;
+    public bool turnedHitboxOn;
+    public bool turnedHitboxOff;
     public override void EnterState(CombatStateManager combat)
     {
         combat.circleSprite.color = Color.yellow;
@@ -51,6 +51,25 @@ public class HeavyAttackState : CombatBaseState
         if (attackTimer > combat.heavyAttackDuration)
         {
             combat.SwitchState(combat.IdleState);
+        }
+
+        if (attackTimer > combat.heavyAttackDuration - combat.bufferSize)
+        {
+            combat.UpdateBufferInput();
+        }
+    }
+
+    public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
+    {
+        // light attack - take damage
+        if (collider.gameObject.layer.Equals(6))
+        {
+            combat.health -= 10;
+        }
+        // heavy attack - take damage
+        if (collider.gameObject.layer.Equals(7))
+        {
+            combat.health -= 20;
         }
     }
 }

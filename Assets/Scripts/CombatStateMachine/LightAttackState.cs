@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class LightAttackState : CombatBaseState
 {
-    private float attackTimer;
-    private bool turnedHitboxOn;
-    private bool turnedHitboxOff;
+    public float attackTimer;
+    public bool turnedHitboxOn;
+    public bool turnedHitboxOff;
     public override void EnterState(CombatStateManager combat)
     {
         combat.circleSprite.color = Color.green;
         attackTimer = 0;
-
-        
-
 
         // reset bools
         turnedHitboxOn = false;
@@ -41,7 +38,7 @@ public class LightAttackState : CombatBaseState
             }
         }
 
-        // active move
+        // deactivate move
         if (attackTimer >= combat.lightAttackStartup + combat.lightAttackActiveHitboxDuration && !turnedHitboxOff)
         {
             turnedHitboxOff = true;
@@ -52,6 +49,25 @@ public class LightAttackState : CombatBaseState
         if (attackTimer > combat.lightAttackDuration)
         {
             combat.SwitchState(combat.IdleState);
+        }
+
+        if (attackTimer > combat.lightAttackDuration - combat.bufferSize)
+        {
+            combat.UpdateBufferInput();
+        }
+    }
+
+    public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
+    {
+        // light attack - take damage
+        if (collider.gameObject.layer.Equals(6))
+        {
+            combat.health -= 10;
+        }
+        // heavy attack - take damage
+        if (collider.gameObject.layer.Equals(7))
+        {
+            combat.health -= 20;
         }
     }
 }

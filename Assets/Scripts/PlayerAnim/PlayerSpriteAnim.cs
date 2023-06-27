@@ -19,10 +19,10 @@ public class PlayerSpriteAnim : MonoBehaviour
 
     // ! state checker -- Pass in class type
     // ! example: InState<IdleState>()
-    private bool InState<State>()
-    {
-        return combatStateManager.currentState.GetType() == typeof(State);
-    }
+    //private bool InState<State>()
+    //{
+    //    return combatStateManager.currentState.GetType() == typeof(State);
+    //}
 
 
     // limb bases
@@ -59,7 +59,7 @@ public class PlayerSpriteAnim : MonoBehaviour
     {
         MatchPlayerMovement();
             
-        if (InState<IdleState>())
+        if (combatStateManager.currentState == combatStateManager.IdleState)
         {
             WalkUpdateTarget();
 
@@ -68,15 +68,23 @@ public class PlayerSpriteAnim : MonoBehaviour
             WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
             WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
         }
-        else if (InState<LightAttackState>())
+        else if (combatStateManager.currentState == combatStateManager.LightAttackState)
         {
+            WalkUpdateTarget();
 
+            // animate punching arm
+            RightPunch();
+
+            // update walk except for attacking hands
+            WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
+            WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
         }
-        else if (InState<HeavyAttackState>())
+        else if (combatStateManager.currentState == combatStateManager.HeavyAttackState)
         {
-
+            WalkUpdateTarget();
+            FullBodyPunch();
         }
-        else if (InState<DashState>())
+        else if (combatStateManager.currentState == combatStateManager.DashState)
         {
             DashUpdateTarget();
         }
@@ -126,9 +134,114 @@ public class PlayerSpriteAnim : MonoBehaviour
     void DashUpdateTarget()
     {
         rightLegTargetIK.position = rightLegBase.position + (-transform.up) / 2;
-        rightArmTargetIK.position = rightArmBase.position + (-transform.up + transform.right) / 2;
+        rightArmTargetIK.position = rightArmBase.position + (-transform.up + transform.right/2) / 2;
 
         leftLegTargetIK.position = leftLegBase.position + (-transform.up) / 2;
-        leftArmTargetIK.position = rightArmBase.position + (-transform.up + -transform.right) / 2;
+        leftArmTargetIK.position = leftArmBase.position + (-transform.up + -transform.right/2) / 2;
     }
+
+    void RightPunch()
+    {
+        if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackStartup / 2)
+        {
+            // charge animation
+            // right arm
+            IKToTarget(rightArmTargetIK,
+                rightArmBase.position + transform.right - transform.up / 2,
+                //combatStateManager.lightAttackStartup);
+                10);
+
+            //left arm
+            IKToTarget(leftArmTargetIK,
+                leftArmBase.position - transform.right - transform.up / 2,
+                //combatStateManager.lightAttackStartup);
+                10);
+
+        } else
+        {
+            // punch animation
+            // right arm
+            IKToTarget(rightArmTargetIK,
+                leftArmBase.position + transform.up/2 + transform.right/4,
+                //combatStateManager.lightAttackActiveHitboxDuration);
+                15);
+
+            // left arm
+            IKToTarget(leftArmTargetIK,
+                rightArmBase.position + transform.up/2 - transform.right/4,
+                //combatStateManager.lightAttackActiveHitboxDuration);
+                15);
+        }
+    }
+
+    void FullBodyPunch()
+    {
+        if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup/2)
+        {
+            // charge animation
+            // right arm
+            IKToTarget(rightArmTargetIK,
+                rightArmBase.position + (-transform.up + transform.right / 2) / 2,
+                //combatStateManager.heavyAttackStartup);
+                10);
+
+            // left arm
+            IKToTarget(leftArmTargetIK,
+                leftArmBase.position + (-transform.up + -transform.right / 2) / 2,
+                //combatStateManager.heavyAttackStartup);
+                10);
+
+            // right leg
+            IKToTarget(rightLegTargetIK,
+                rightLegBase.position + (-transform.up) / 2,
+                //combatStateManager.heavyAttackStartup);
+                10);
+
+            // left leg
+            IKToTarget(leftLegTargetIK,
+                leftLegBase.position + (-transform.up) / 2,
+                //combatStateManager.heavyAttackStartup);
+                10);
+        }
+        else
+        {
+            // attack animation
+            // right arm
+            IKToTarget(rightArmTargetIK,
+                rightArmBase.position + (transform.up + transform.right / 2) / 2,
+                //combatStateManager.heavyAttackActiveHitboxDuration/2);
+                10);
+
+            // left arm
+            IKToTarget(leftArmTargetIK,
+                leftArmBase.position + (transform.up + -transform.right / 2) / 2,
+                //combatStateManager.heavyAttackActiveHitboxDuration/2);
+                10);
+
+            // right leg
+            IKToTarget(rightLegTargetIK,
+                rightLegBase.position + (transform.up) / 4,
+                //combatStateManager.heavyAttackActiveHitboxDuration/2);
+                10);
+
+            // left leg
+            IKToTarget(leftLegTargetIK,
+                leftLegBase.position + (transform.up) / 4,
+                //combatStateManager.heavyAttackActiveHitboxDuration/2);
+                10);
+        }
+    }
+
+    private void IKToTarget(Transform IKTrans, Vector3 target, float speed)
+    {
+        IKTrans.position += new Vector3(combatStateManager.rb.velocity.x, combatStateManager.rb.velocity.y) * Time.deltaTime;
+
+        //float distanceToTarget = Vector3.Distance(IKTrans.position, target);
+        //float speed = distanceToTarget / transitionLength;
+
+        IKTrans.position = Vector3.MoveTowards(IKTrans.position, target,
+            speed * Time.deltaTime);
+    }
+
+
 }
