@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class CombatStateManager : MonoBehaviour
 {
 
-    CombatBaseState currentState;
+    public CombatBaseState currentState;
     public IdleState IdleState = new IdleState();
     public LightAttackState LightAttackState = new LightAttackState();
     public HeavyAttackState HeavyAttackState = new HeavyAttackState();
@@ -22,10 +22,21 @@ public class CombatStateManager : MonoBehaviour
 
     public SpriteRenderer circleSprite;
     public Rigidbody2D rb;
+    public Transform playerSpriteTargetTransform;
 
-    // attack variables
-    public float lightAttackDuration = 0.3f;
-    public float heavyAttackDuration = 0.5f;
+    // attack hitboxes & variables
+    // light attack
+    [SerializeField] public GameObject lightAttackHitbox;
+    public float lightAttackStartup;
+    public float lightAttackActiveHitboxDuration;
+    public float lightAttackEndLag;
+    public float lightAttackDuration;
+
+    [SerializeField] public GameObject heavyAttackHitbox;
+    public float heavyAttackStartup;
+    public float heavyAttackActiveHitboxDuration;
+    public float heavyAttackEndLag;
+    public float heavyAttackDuration;
 
     // dash variables
     public float dashStrength = 200;
@@ -59,6 +70,18 @@ public class CombatStateManager : MonoBehaviour
         rightBumper = gamepad.rightShoulder;
         leftBumper = gamepad.leftShoulder;
         leftStick = gamepad.leftStick;
+
+        // light attack variables
+        lightAttackStartup = 0.1f;
+        lightAttackActiveHitboxDuration = 0.1f;
+        lightAttackEndLag = 0.2f;
+        lightAttackDuration = lightAttackStartup + lightAttackActiveHitboxDuration + lightAttackEndLag;
+
+        // heavy attack variables
+        heavyAttackStartup = 0.3f;
+        heavyAttackActiveHitboxDuration = 0.3f;
+        heavyAttackEndLag = 0.35f;
+        heavyAttackDuration = heavyAttackStartup + heavyAttackActiveHitboxDuration + heavyAttackEndLag;
 
 
         currentState = IdleState;
