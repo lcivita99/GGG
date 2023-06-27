@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     public int playerNumber;
 
-    private Gamepad gamepad;
+    public Gamepad gamepad;
 
     private Vector2 moveDir;
     [SerializeField] private float moveSpeed;
@@ -22,13 +22,9 @@ public class PlayerMovement : MonoBehaviour
         SetMoveDir();
     }
 
-    // Update is called once per frame
     void Update()
     {
         SetMoveDir();
-
-
-
     }
 
     private void FixedUpdate()
