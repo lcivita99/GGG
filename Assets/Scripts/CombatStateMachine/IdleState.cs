@@ -39,6 +39,11 @@ public class IdleState : CombatBaseState
             combat.SwitchState(combat.DashState);
         }
 
+        if (combat.rightTrigger.isPressed)
+        {
+            combat.SwitchState(combat.ShieldState);
+        }
+
         //if (takeLightDamageTimer >= combat.attackTriggerTime)
         //{
         //    takeLightDamageTimer = 0;
@@ -76,4 +81,8 @@ public class IdleState : CombatBaseState
         //}
     }
 
+    public override void HitOutOfState(CombatStateManager combat)
+    {
+        
+    }
 }

@@ -97,7 +97,10 @@ public class PlayerSpriteAnim : MonoBehaviour
     private void SetTransform()
     {
         transform.position = targetTransform.transform.position;
-        transform.rotation = targetTransform.transform.rotation;
+        if (!combatStateManager.isStuck)
+        {
+            transform.rotation = targetTransform.transform.rotation;
+        }
     }
 
     void MatchPlayerMovement()

@@ -7,6 +7,8 @@ public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D rb;
 
+    private CombatStateManager combatStateManager;
+
     public int playerNumber;
 
     public Gamepad gamepad;
@@ -19,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         gamepad = Gamepad.all[playerNumber - 1];
 
+        combatStateManager = GetComponent<CombatStateManager>();
+
         SetMoveDir();
     }
 
@@ -29,7 +33,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        MovePlayer();
+        if (combatStateManager.canMove) MovePlayer();
+
+        if (combatStateManager.isStuck) rb.velocity = Vector2.zero;
     }
 
     private void SetMoveDir()

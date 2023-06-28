@@ -18,6 +18,9 @@ public class HitstunState : CombatBaseState
         combat.health -= moveID;
         hitstunTimer = 0;
 
+        combat.canMove = false;
+        combat.isStuck = true;
+
         hitDirection = (combat.transform.position - combat.otherPlayer.transform.position).normalized;
 
         wasKnockedBack = false;
@@ -36,11 +39,13 @@ public class HitstunState : CombatBaseState
             if (hitstunTimer >= combat.lightAttackInitialHitstunLength && !wasKnockedBack)
             {
                 wasKnockedBack = true;
+                combat.isStuck = false;
                 AddKnockback(combat, combat.lightAttackKnockbackStrength);
             }
 
             if (hitstunTimer >= combat.lightAttackTotalHitstunLength)
             {
+                combat.canMove = true;
                 combat.SwitchState(combat.IdleState);
             }
         }
@@ -50,11 +55,13 @@ public class HitstunState : CombatBaseState
             if (hitstunTimer >= combat.heavyAttackInitialHitstunLength && !wasKnockedBack)
             {
                 wasKnockedBack = true;
+                combat.isStuck = false;
                 AddKnockback(combat, combat.heavyAttackKnockbackStrength);
             }
 
             if (hitstunTimer >= combat.heavyAttackTotalHitstunLength)
             {
+                combat.canMove = true;
                 combat.SwitchState(combat.IdleState);
             }
         }
@@ -64,8 +71,10 @@ public class HitstunState : CombatBaseState
             if (hitstunTimer >= combat.clankHitstunDuration && !wasKnockedBack)
             {
                 wasKnockedBack = true;
+                combat.isStuck = false;
                 AddKnockback(combat, combat.clankKnockbackStrength);
 
+                combat.canMove = true;
                 combat.SwitchState(combat.IdleState);
 
                 // add knockback
@@ -81,6 +90,10 @@ public class HitstunState : CombatBaseState
     public override void OnTriggerExit(CombatStateManager combat, Collider2D collider)
     {
         throw new System.NotImplementedException();
+    }
+    public override void HitOutOfState(CombatStateManager combat)
+    {
+        combat.isStuck = false;
     }
 
     private void AddKnockback(CombatStateManager combat, float hitStrength)

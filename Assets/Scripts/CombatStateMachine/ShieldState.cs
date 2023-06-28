@@ -6,28 +6,29 @@ public class ShieldState : CombatBaseState
 {
     public override void EnterState(CombatStateManager combat, float number)
     {
-
+        combat.canMove = false;
+        combat.shield.SetActive(true);
     }
 
     public override void UpdateState(CombatStateManager combat)
     {
-
+        if (!combat.rightTrigger.isPressed)
+        {
+            combat.canMove = true;
+            combat.shield.SetActive(false);
+            combat.SwitchState(combat.IdleState);
+        }
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
     {
-        // light attack - take damage
-        if (collider.gameObject.layer.Equals(6))
-        {
-            combat.health -= 10;
-        }
-        // heavy attack - take damage
-        if (collider.gameObject.layer.Equals(7))
-        {
-            combat.health -= 20;
-        }
+        
     }
     public override void OnTriggerExit(CombatStateManager combat, Collider2D collider)
+    {
+        throw new System.NotImplementedException();
+    }
+    public override void HitOutOfState(CombatStateManager combat)
     {
         throw new System.NotImplementedException();
     }

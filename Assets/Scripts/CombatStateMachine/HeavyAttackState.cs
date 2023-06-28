@@ -12,7 +12,7 @@ public class HeavyAttackState : CombatBaseState
         combat.circleSprite.color = Color.yellow;
         attackTimer = 0;
 
-        
+        combat.canMove = false;
 
 
         // reset bools
@@ -44,12 +44,14 @@ public class HeavyAttackState : CombatBaseState
         if (attackTimer >= combat.heavyAttackStartup + combat.heavyAttackActiveHitboxDuration && !turnedHitboxOff)
         {
             turnedHitboxOff = true;
+            
             combat.heavyAttackHitbox.SetActive(false);
         }
 
         // endlag + return to Idle
         if (attackTimer > combat.heavyAttackDuration)
         {
+            combat.canMove = true;
             combat.SwitchState(combat.IdleState);
         }
 
@@ -61,20 +63,16 @@ public class HeavyAttackState : CombatBaseState
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
     {
-        // light attack - take damage
-        if (collider.gameObject.layer.Equals(6))
-        {
-            combat.health -= 10;
-        }
-        // heavy attack - take damage
-        if (collider.gameObject.layer.Equals(7))
-        {
-            combat.health -= 20;
-        }
+        
     }
 
     public override void OnTriggerExit(CombatStateManager combat, Collider2D collider)
     {
         throw new System.NotImplementedException();
+    }
+    public override void HitOutOfState(CombatStateManager combat)
+    {
+        combat.canMove = true;
+        combat.heavyAttackHitbox.SetActive(false);
     }
 }

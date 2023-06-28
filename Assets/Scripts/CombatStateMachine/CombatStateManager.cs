@@ -9,7 +9,7 @@ public class CombatStateManager : MonoBehaviour
     
     public string bufferString = "";
     public Dictionary<string, CombatBaseState> bufferDictionary = new Dictionary<string, CombatBaseState>();
-    public float bufferSize = 0.17f;
+    public float bufferSize;
     //public Dictionary<UnityEngine.InputSystem.Controls.ButtonControl, string> bufferInputToString;
 
     public CombatBaseState currentState;
@@ -62,8 +62,15 @@ public class CombatStateManager : MonoBehaviour
     public float takeLightDamageTimer;
     public float takeHeavyDamageTimer;
 
+    // shield
+    public GameObject shield;
+
     // hitstun timers
     public float attackTriggerTime;
+
+    // movement
+    public bool canMove;
+    public bool isStuck;
 
     // dash variables
     public float dashStrength;
@@ -95,18 +102,23 @@ public class CombatStateManager : MonoBehaviour
         dashLength = 0.5f;
         lightAttackDamage = 10f;
         heavyAttackDamage = 20f;
+        bufferSize = 0.25f;
 
         // hitstun stuff
         heavyAttackInitialHitstunLength = 0.2f;
         heavyAttackTotalHitstunLength = 1f;
-        heavyAttackKnockbackStrength = 300;
+        heavyAttackKnockbackStrength = 400;
 
         lightAttackInitialHitstunLength = 0.1f;
         lightAttackTotalHitstunLength = 0.7f;
-        lightAttackKnockbackStrength = 150;
+        lightAttackKnockbackStrength = 250;
 
         clankHitstunDuration = 0.2f;
-        clankKnockbackStrength = 150;
+        clankKnockbackStrength = 250;
+
+        // movement
+        canMove = true;
+        isStuck = false;
 
         // TODO: Temporary gamepad assignment
         gamepad = Gamepad.all[GetComponent<PlayerMovement>().playerNumber - 1];
@@ -146,6 +158,7 @@ public class CombatStateManager : MonoBehaviour
         heavyAttackEndLag = 0.35f;
         heavyAttackDuration = heavyAttackStartup + heavyAttackActiveHitboxDuration + heavyAttackEndLag;
 
+        
 
         currentState = IdleState;
         currentState.EnterState(this);
@@ -154,45 +167,23 @@ public class CombatStateManager : MonoBehaviour
     void Update()
     {
         currentState.UpdateState(this);
-
-        if (takeLightDamageTimer >= attackTriggerTime)
+        if (!(currentState == SplatterState || currentState == ShieldState || currentState == ShieldStunState))
         {
-            takeLightDamageTimer = 0;
-            SwitchState(HitstunState, lightAttackDamage);
-        }
-        if (takeHeavyDamageTimer >= attackTriggerTime)
-        {
-            takeHeavyDamageTimer = 0;
-            SwitchState(HitstunState, heavyAttackDamage);
-        }
+            //Debug.Log(currentState.ToString());
+            GetHit();
+        } // else GetHitOnShield();
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
         currentState.OnTriggerStay(this, collision);
 
-        // light attack - take damage
-        if (collision.gameObject.layer.Equals(6))
-        {
-            takeLightDamageTimer += Time.deltaTime;
-        }
-
-
-        // heavy attack - take damage
-        if (collision.gameObject.layer.Equals(7))
-        {
-            takeHeavyDamageTimer += Time.deltaTime;
-        }
+        UpdateGettingHitTimers(collision);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer.Equals(6) || collision.gameObject.layer.Equals(7))
-        {
-            takeLightDamageTimer = 0f;
-            takeHeavyDamageTimer = 0f;
-        }
-
+        ResetGettingHitTimers(collision);
     }
 
 
@@ -211,25 +202,66 @@ public class CombatStateManager : MonoBehaviour
 
     public void UpdateBufferInput()
     {
-        if (lightAttackButton.isPressed)
+        if (lightAttackButton.wasPressedThisFrame)
         {
             bufferString = "lightAttack";
         }
-        else if (heavyAttackButton.isPressed)
+        else if (heavyAttackButton.wasPressedThisFrame)
         {
             bufferString = "heavyAttack";
         }
-        else if (dashButton.isPressed)
+        else if (dashButton.wasPressedThisFrame)
         {
             bufferString = "dash";
         }
-        else if (leftBumper.isPressed)
+        else if (leftBumper.wasPressedThisFrame)
         {
             bufferString = "grab";
         }
         else if (rightTrigger.isPressed)
         {
             bufferString = "shield";
+        }
+    }
+
+    private void UpdateGettingHitTimers(Collider2D collision)
+    {
+        // light attack - take damage
+        if (collision.gameObject.layer.Equals(6))
+        {
+            takeLightDamageTimer += Time.deltaTime;
+        }
+
+
+        // heavy attack - take damage
+        if (collision.gameObject.layer.Equals(7))
+        {
+            takeHeavyDamageTimer += Time.deltaTime;
+        }
+    }
+
+    private void GetHit()
+    {
+        if (takeLightDamageTimer >= attackTriggerTime)
+        {
+            takeLightDamageTimer = 0;
+            currentState.HitOutOfState(this);
+            SwitchState(HitstunState, lightAttackDamage);
+        }
+        if (takeHeavyDamageTimer >= attackTriggerTime)
+        {
+            takeHeavyDamageTimer = 0;
+            currentState.HitOutOfState(this);
+            SwitchState(HitstunState, heavyAttackDamage);
+        }
+    }
+
+    private void ResetGettingHitTimers(Collider2D collision)
+    {
+        if (collision.gameObject.layer.Equals(6) || collision.gameObject.layer.Equals(7))
+        {
+            takeLightDamageTimer = 0f;
+            takeHeavyDamageTimer = 0f;
         }
     }
 }
