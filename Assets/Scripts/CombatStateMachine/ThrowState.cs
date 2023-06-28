@@ -11,7 +11,7 @@ public class ThrowState : CombatBaseState
 
     public override void UpdateState(CombatStateManager combat)
     {
-        
+         
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
