@@ -7,7 +7,7 @@ public class HeavyAttackState : CombatBaseState
     public float attackTimer;
     public bool turnedHitboxOn;
     public bool turnedHitboxOff;
-    public override void EnterState(CombatStateManager combat)
+    public override void EnterState(CombatStateManager combat, float number)
     {
         combat.circleSprite.color = Color.yellow;
         attackTimer = 0;
@@ -71,5 +71,10 @@ public class HeavyAttackState : CombatBaseState
         {
             combat.health -= 20;
         }
+    }
+
+    public override void OnTriggerExit(CombatStateManager combat, Collider2D collider)
+    {
+        throw new System.NotImplementedException();
     }
 }

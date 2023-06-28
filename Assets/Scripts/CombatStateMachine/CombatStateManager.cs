@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class CombatStateManager : MonoBehaviour
 {
+    public GameObject otherPlayer;
+    
     public string bufferString = "";
     public Dictionary<string, CombatBaseState> bufferDictionary = new Dictionary<string, CombatBaseState>();
     public float bufferSize = 0.17f;
@@ -35,16 +37,37 @@ public class CombatStateManager : MonoBehaviour
     public float lightAttackActiveHitboxDuration;
     public float lightAttackEndLag;
     public float lightAttackDuration;
+    public float lightAttackDamage;
 
+    // heavy attack
     [SerializeField] public GameObject heavyAttackHitbox;
     public float heavyAttackStartup;
     public float heavyAttackActiveHitboxDuration;
     public float heavyAttackEndLag;
     public float heavyAttackDuration;
+    public float heavyAttackDamage;
+
+    // hitstun stuff
+    public float heavyAttackInitialHitstunLength;
+    public float heavyAttackTotalHitstunLength;
+    public float heavyAttackKnockbackStrength;
+
+    public float lightAttackInitialHitstunLength;
+    public float lightAttackTotalHitstunLength;
+    public float lightAttackKnockbackStrength;
+
+    public float clankHitstunDuration;
+    public float clankKnockbackStrength;
+
+    public float takeLightDamageTimer;
+    public float takeHeavyDamageTimer;
+
+    // hitstun timers
+    public float attackTriggerTime;
 
     // dash variables
-    public float dashStrength = 200;
-    public float dashLength = 0.5f;
+    public float dashStrength;
+    public float dashLength;
 
     // TODO: Temporary gamepad assignment
     public Gamepad gamepad;
@@ -58,13 +81,32 @@ public class CombatStateManager : MonoBehaviour
     public UnityEngine.InputSystem.Controls.ButtonControl leftBumper;
     public UnityEngine.InputSystem.Controls.StickControl leftStick;
 
-    public float health = 100f;
+    public float health;
 
     void Start()
     {
         circleSprite = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-        
+
+        // Setting Numbers
+        attackTriggerTime = 0.05f;
+        health = 100f;
+        dashStrength = 200;
+        dashLength = 0.5f;
+        lightAttackDamage = 10f;
+        heavyAttackDamage = 20f;
+
+        // hitstun stuff
+        heavyAttackInitialHitstunLength = 0.2f;
+        heavyAttackTotalHitstunLength = 1f;
+        heavyAttackKnockbackStrength = 300;
+
+        lightAttackInitialHitstunLength = 0.1f;
+        lightAttackTotalHitstunLength = 0.7f;
+        lightAttackKnockbackStrength = 150;
+
+        clankHitstunDuration = 0.2f;
+        clankKnockbackStrength = 150;
 
         // TODO: Temporary gamepad assignment
         gamepad = Gamepad.all[GetComponent<PlayerMovement>().playerNumber - 1];
@@ -112,11 +154,45 @@ public class CombatStateManager : MonoBehaviour
     void Update()
     {
         currentState.UpdateState(this);
+
+        if (takeLightDamageTimer >= attackTriggerTime)
+        {
+            takeLightDamageTimer = 0;
+            SwitchState(HitstunState, lightAttackDamage);
+        }
+        if (takeHeavyDamageTimer >= attackTriggerTime)
+        {
+            takeHeavyDamageTimer = 0;
+            SwitchState(HitstunState, heavyAttackDamage);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
         currentState.OnTriggerStay(this, collision);
+
+        // light attack - take damage
+        if (collision.gameObject.layer.Equals(6))
+        {
+            takeLightDamageTimer += Time.deltaTime;
+        }
+
+
+        // heavy attack - take damage
+        if (collision.gameObject.layer.Equals(7))
+        {
+            takeHeavyDamageTimer += Time.deltaTime;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer.Equals(6) || collision.gameObject.layer.Equals(7))
+        {
+            takeLightDamageTimer = 0f;
+            takeHeavyDamageTimer = 0f;
+        }
+
     }
 
 
@@ -125,6 +201,13 @@ public class CombatStateManager : MonoBehaviour
         currentState = state;
         currentState.EnterState(this);
     }
+
+    public void SwitchState(CombatBaseState state, float number)
+    {
+        currentState = state;
+        currentState.EnterState(this, number);
+    }
+
 
     public void UpdateBufferInput()
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GrabbedState : CombatBaseState
 {
-    public override void EnterState(CombatStateManager combat)
+    public override void EnterState(CombatStateManager combat, float number)
     {
 
     }
@@ -26,5 +26,10 @@ public class GrabbedState : CombatBaseState
         {
             combat.health -= 20;
         }
+    }
+
+    public override void OnTriggerExit(CombatStateManager combat, Collider2D collider)
+    {
+        throw new System.NotImplementedException();
     }
 }

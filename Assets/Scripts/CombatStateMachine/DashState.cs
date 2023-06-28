@@ -5,7 +5,7 @@ using UnityEngine;
 public class DashState : CombatBaseState
 {
     private float dashTimer;
-    public override void EnterState(CombatStateManager combat)
+    public override void EnterState(CombatStateManager combat, float number)
     {
         dashTimer = 0;
         combat.circleSprite.color = Color.blue;
@@ -45,5 +45,10 @@ public class DashState : CombatBaseState
         {
             combat.health -= 20;
         }
+    }
+
+    public override void OnTriggerExit(CombatStateManager combat, Collider2D collider)
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -4,27 +4,93 @@ using UnityEngine;
 
 public class HitstunState : CombatBaseState
 {
-    public override void EnterState(CombatStateManager combat)
+    private float hitstunTimer;
+    private Vector2 hitDirection;
+    private Vector2 DI;
+    private float DIStrength = 0.25f;
+
+    private float moveID;
+
+    private bool wasKnockedBack;
+    public override void EnterState(CombatStateManager combat, float number)
     {
+        moveID = number;
+        combat.health -= moveID;
+        hitstunTimer = 0;
+
+        hitDirection = (combat.transform.position - combat.otherPlayer.transform.position).normalized;
+
+        wasKnockedBack = false;
 
     }
 
     public override void UpdateState(CombatStateManager combat)
     {
+        hitstunTimer += Time.deltaTime;
 
+
+
+        // light
+        if (moveID == combat.lightAttackDamage)
+        {
+            if (hitstunTimer >= combat.lightAttackInitialHitstunLength && !wasKnockedBack)
+            {
+                wasKnockedBack = true;
+                AddKnockback(combat, combat.lightAttackKnockbackStrength);
+            }
+
+            if (hitstunTimer >= combat.lightAttackTotalHitstunLength)
+            {
+                combat.SwitchState(combat.IdleState);
+            }
+        }
+        // heavy
+        else if (moveID == combat.heavyAttackDamage)
+        {
+            if (hitstunTimer >= combat.heavyAttackInitialHitstunLength && !wasKnockedBack)
+            {
+                wasKnockedBack = true;
+                AddKnockback(combat, combat.heavyAttackKnockbackStrength);
+            }
+
+            if (hitstunTimer >= combat.heavyAttackTotalHitstunLength)
+            {
+                combat.SwitchState(combat.IdleState);
+            }
+        }
+        // clank
+        else if (moveID == 0)
+        {
+            if (hitstunTimer >= combat.clankHitstunDuration && !wasKnockedBack)
+            {
+                wasKnockedBack = true;
+                AddKnockback(combat, combat.clankKnockbackStrength);
+
+                combat.SwitchState(combat.IdleState);
+
+                // add knockback
+            }
+        }   
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
     {
-        // light attack - take damage
-        if (collider.gameObject.layer.Equals(6))
+      
+    }
+
+    public override void OnTriggerExit(CombatStateManager combat, Collider2D collider)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    private void AddKnockback(CombatStateManager combat, float hitStrength)
+    {
+        DI = combat.leftStick.ReadValue();
+        if (DI.magnitude > 1)
         {
-            combat.health -= 10;
+            DI = DI.normalized;
         }
-        // heavy attack - take damage
-        if (collider.gameObject.layer.Equals(7))
-        {
-            combat.health -= 20;
-        }
+
+        combat.rb.AddForce((hitDirection + DI*DIStrength) * hitStrength, ForceMode2D.Impulse);
     }
 }

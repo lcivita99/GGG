@@ -5,10 +5,13 @@ using UnityEngine;
 
 public class IdleState : CombatBaseState
 {
-    public float lightDamageTimer = 0f;
+    //public float takeLightDamageTimer;
+    //public float takeHeavyDamageTimer;
 
-    public override void EnterState(CombatStateManager combat)
+
+    public override void EnterState(CombatStateManager combat, float number)
     {
+        //lightDamageTimer = 0f;
         combat.circleSprite.color = Color.red;
         //Debug.Log(combat.bufferString);
         if (combat.bufferString != "")
@@ -20,9 +23,6 @@ public class IdleState : CombatBaseState
 
     public override void UpdateState(CombatStateManager combat)
     {
-        //
-        lightDamageTimer += Time.deltaTime;
-
 
         if (combat.lightAttackButton.wasPressedThisFrame)
         {
@@ -38,22 +38,42 @@ public class IdleState : CombatBaseState
         {
             combat.SwitchState(combat.DashState);
         }
+
+        //if (takeLightDamageTimer >= combat.attackTriggerTime)
+        //{
+        //    takeLightDamageTimer = 0;
+        //    combat.SwitchState(combat.HitstunState, combat.lightAttackDamage);
+        //} 
+        //if (takeHeavyDamageTimer >= combat.attackTriggerTime)
+        //{
+        //    takeHeavyDamageTimer = 0;
+        //    combat.SwitchState(combat.HitstunState, combat.heavyAttackDamage);
+        //}
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
     {
+        //// light attack - take damage
+        //if (collider.gameObject.layer.Equals(6))
+        //{
+        //    takeLightDamageTimer += Time.deltaTime;
+        //}
 
-        // light attack - take damage
-        if (collider.gameObject.layer.Equals(6) && lightDamageTimer > combat.lightAttackDuration)
-        {
-            combat.health -= 10;
-            lightDamageTimer = 0f;
-        }
-        // heavy attack - take damage
-        if (collider.gameObject.layer.Equals(7))
-        {
-            combat.health -= 20;
-        }
+
+        //// heavy attack - take damage
+        //if (collider.gameObject.layer.Equals(7))
+        //{
+        //    takeHeavyDamageTimer += Time.deltaTime;
+        //}
+    }
+
+    public override void OnTriggerExit(CombatStateManager combat, Collider2D collider)
+    {
+        //if (collider.gameObject.layer.Equals(6) || collider.gameObject.layer.Equals(7))
+        //{
+        //    takeLightDamageTimer = 0f;
+        //    takeHeavyDamageTimer = 0f;
+        //}
     }
 
 }
