@@ -21,6 +21,9 @@ public class ThrowState : CombatBaseState
             Physics2D.IgnoreCollision(combat.mainCollider, combat.otherPlayerCombatManager.mainCollider, false);
             combat.SwitchState(combat.IdleState);
         }
+
+        // buffer system
+        combat.UpdateBufferInput();
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)

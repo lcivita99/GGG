@@ -9,6 +9,8 @@ public class HitstunState : CombatBaseState
     private Vector2 DI;
     private float DIStrength = 0.25f;
 
+    private float currentHitstunDuration;
+
     private float moveID;
 
     private bool wasKnockedBack;
@@ -19,6 +21,17 @@ public class HitstunState : CombatBaseState
         combat.health -= moveID;
         combat.UpdateHealthUI();
         hitstunTimer = 0;
+
+        if (moveID == combat.lightAttackDamage)
+        {
+            currentHitstunDuration = combat.lightAttackTotalHitstunLength;
+        } else if (moveID == combat.heavyAttackDamage)
+        {
+            currentHitstunDuration = combat.heavyAttackTotalHitstunLength;
+        } else if (moveID == combat.throwDamage)
+        {
+            currentHitstunDuration = combat.throwTotalHitstunLength;
+        }
 
         //combat.takeHeavyDamageTimer = 0;
 
@@ -105,7 +118,13 @@ public class HitstunState : CombatBaseState
 
                 // add knockback
             }
-        }   
+        }
+
+        // buffer system
+        if (hitstunTimer > currentHitstunDuration - combat.bufferSize)
+        {
+            combat.UpdateBufferInput();
+        }
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)

@@ -31,14 +31,19 @@ public class DashState : CombatBaseState
             combat.SwitchState(combat.IdleState);
         }
 
-        if (combat.lightAttackButton.wasPressedThisFrame)
+        else if (combat.lightAttackButton.wasPressedThisFrame)
         {
             combat.SwitchState(combat.LightAttackState);
         }
 
-        if (combat.heavyAttackButton.wasPressedThisFrame)
+        else if (combat.heavyAttackButton.wasPressedThisFrame)
         {
             combat.SwitchState(combat.HeavyAttackState);
+        }
+
+        else if (combat.leftBumper.wasPressedThisFrame)
+        {
+            combat.SwitchState(combat.GrabState);
         }
     }
 
