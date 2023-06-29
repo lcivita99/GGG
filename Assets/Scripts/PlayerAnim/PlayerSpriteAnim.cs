@@ -17,13 +17,9 @@ public class PlayerSpriteAnim : MonoBehaviour
     private Rigidbody2D playerRb;
     private Vector3 moveDir;
 
-    // ! state checker -- Pass in class type
-    // ! example: InState<IdleState>()
-    //private bool InState<State>()
-    //{
-    //    return combatStateManager.currentState.GetType() == typeof(State);
-    //}
-
+    [SerializeField] private SpriteRenderer attackSpriteRenderer;
+    [SerializeField] private Sprite[] lightAttackSprites;
+    [SerializeField] private Sprite[] heavyAttackSprites;
 
     // limb bases
     [SerializeField] private Transform rightLegBase;
@@ -72,6 +68,8 @@ public class PlayerSpriteAnim : MonoBehaviour
         {
             WalkUpdateTarget();
 
+            UpdateLightAttackSprites();
+
             // animate punching arm
             RightPunch();
 
@@ -82,11 +80,20 @@ public class PlayerSpriteAnim : MonoBehaviour
         else if (combatStateManager.currentState == combatStateManager.HeavyAttackState)
         {
             WalkUpdateTarget();
+            UpdateHeavyAttackSprites();
             FullBodyPunch();
         }
         else if (combatStateManager.currentState == combatStateManager.DashState)
         {
             DashUpdateTarget();
+        } else if (combatStateManager.currentState == combatStateManager.ShieldState)
+        {
+            WalkUpdateTarget();
+
+            WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
+            WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
+            WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
+            WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
         }
         else
         {
@@ -246,5 +253,127 @@ public class PlayerSpriteAnim : MonoBehaviour
             speed * Time.deltaTime);
     }
 
+    private void UpdateLightAttackSprites()
+    {
+        if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackStartup/3)
+        {
+            if (attackSpriteRenderer.sprite != lightAttackSprites[0])
+            {
+                attackSpriteRenderer.sprite = lightAttackSprites[0];
+            }
+        }
+        else if (combatStateManager.LightAttackState.attackTimer < 2 * combatStateManager.lightAttackStartup / 3)
+        {
+            if (attackSpriteRenderer.sprite != lightAttackSprites[1])
+            {
+                attackSpriteRenderer.sprite = lightAttackSprites[1];
+            }
+        }
+        else if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackStartup)
+        {
+            if (attackSpriteRenderer.sprite != lightAttackSprites[2])
+            {
+                attackSpriteRenderer.sprite = lightAttackSprites[2];
+            }
+        }
+        else if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackStartup + 
+            combatStateManager.lightAttackActiveHitboxDuration / 1.5)
+        {
+            if (attackSpriteRenderer.sprite != lightAttackSprites[3])
+            {
+                attackSpriteRenderer.sprite = lightAttackSprites[3];
+            }
+        }
+        else if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackStartup +
+            combatStateManager.lightAttackActiveHitboxDuration)
+        {
+            if (attackSpriteRenderer.sprite != lightAttackSprites[4])
+            {
+                attackSpriteRenderer.sprite = lightAttackSprites[4];
+            }
+        }
+        else if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackDuration)
+        {
+            if (attackSpriteRenderer.sprite != lightAttackSprites[5])
+            {
+                attackSpriteRenderer.sprite = lightAttackSprites[5];
+            }
+        }
 
+        if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackStartup)
+        {
+            attackSpriteRenderer.gameObject.transform.position = targetTransform.transform.position;
+            attackSpriteRenderer.gameObject.transform.rotation = targetTransform.transform.rotation;
+        } else
+        {
+            attackSpriteRenderer.gameObject.transform.position = combatStateManager.lightAttackHitbox.transform.position;
+            attackSpriteRenderer.gameObject.transform.rotation = combatStateManager.lightAttackHitbox.transform.rotation;
+        }
+    }
+
+    private void UpdateHeavyAttackSprites()
+    {
+        if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup / 6)
+        {
+            if (attackSpriteRenderer.sprite != heavyAttackSprites[0])
+            {
+                attackSpriteRenderer.sprite = heavyAttackSprites[0];
+            }
+        }
+        else if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup / 3)
+        {
+            if (attackSpriteRenderer.sprite != heavyAttackSprites[1])
+            {
+                attackSpriteRenderer.sprite = heavyAttackSprites[1];
+            }
+        }
+        else if (combatStateManager.HeavyAttackState.attackTimer < 5 * combatStateManager.heavyAttackStartup / 6)
+        {
+            if (attackSpriteRenderer.sprite != heavyAttackSprites[2])
+            {
+                attackSpriteRenderer.sprite = heavyAttackSprites[2];
+            }
+        }
+        else if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup)
+        {
+            if (attackSpriteRenderer.sprite != heavyAttackSprites[3])
+            {
+                attackSpriteRenderer.sprite = heavyAttackSprites[3];
+            }
+        }
+        else if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup +
+            combatStateManager.heavyAttackActiveHitboxDuration / 1.5)
+        {
+            if (attackSpriteRenderer.sprite != heavyAttackSprites[4])
+            {
+                attackSpriteRenderer.sprite = heavyAttackSprites[4];
+            }
+        }
+        else if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup +
+           combatStateManager.heavyAttackActiveHitboxDuration)
+        {
+            if (attackSpriteRenderer.sprite != heavyAttackSprites[5])
+            {
+                attackSpriteRenderer.sprite = heavyAttackSprites[5];
+            }
+        }
+        else if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackDuration)
+        {
+            if (attackSpriteRenderer.sprite != heavyAttackSprites[6])
+            {
+                attackSpriteRenderer.sprite = heavyAttackSprites[6];
+            }
+        }
+
+        if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup)
+        {
+            attackSpriteRenderer.gameObject.transform.position = targetTransform.transform.position;
+            attackSpriteRenderer.gameObject.transform.rotation = targetTransform.transform.rotation;
+        }
+        else
+        {
+            attackSpriteRenderer.gameObject.transform.position = combatStateManager.heavyAttackHitbox.transform.position;
+            attackSpriteRenderer.gameObject.transform.rotation = combatStateManager.heavyAttackHitbox.transform.rotation;
+        }
+    }
 }
