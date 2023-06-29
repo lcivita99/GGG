@@ -8,8 +8,16 @@ public class DashState : CombatBaseState
     public override void EnterState(CombatStateManager combat, float number)
     {
         dashTimer = 0;
+        combat.canMove = false;
         combat.circleSprite.color = Color.blue;
-        combat.rb.AddForce(combat.dashStrength * combat.leftStick.ReadValue().normalized, ForceMode2D.Impulse);
+        if (combat.leftStick.ReadValue().magnitude > 0.1f)
+        {
+            combat.rb.AddForce(combat.dashStrength * combat.leftStick.ReadValue().normalized, ForceMode2D.Impulse);
+        } else
+        {
+            combat.rb.AddForce(combat.dashStrength * combat.playerSpriteTargetTransform.up, ForceMode2D.Impulse);
+        }
+        
         combat.bufferString = "";
         //Debug.Log(combat.dashStrength);
     }

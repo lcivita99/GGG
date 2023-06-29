@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public Gamepad gamepad;
 
     private Vector2 moveDir;
-    [SerializeField] private float moveSpeed;
+    private float moveSpeed = 500f;
 
     void Start()
     {

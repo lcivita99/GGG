@@ -14,9 +14,13 @@ public class HitstunState : CombatBaseState
     private bool wasKnockedBack;
     public override void EnterState(CombatStateManager combat, float number)
     {
+        //Debug.Log("entered hitstun" + Time.deltaTime);
         moveID = number;
         combat.health -= moveID;
+        combat.UpdateHealthUI();
         hitstunTimer = 0;
+
+        //combat.takeHeavyDamageTimer = 0;
 
         combat.canMove = false;
         combat.isStuck = true;
@@ -54,12 +58,34 @@ public class HitstunState : CombatBaseState
         {
             if (hitstunTimer >= combat.heavyAttackInitialHitstunLength && !wasKnockedBack)
             {
+                //combat.otherPlayerCombatManager.HeavyAttackState.canHit = false;
                 wasKnockedBack = true;
                 combat.isStuck = false;
                 AddKnockback(combat, combat.heavyAttackKnockbackStrength);
             }
 
             if (hitstunTimer >= combat.heavyAttackTotalHitstunLength)
+            {
+                combat.canMove = true;
+                combat.SwitchState(combat.IdleState);
+            }
+        }
+        // throw
+        else if (moveID == combat.throwDamage)
+        {
+            if (!wasKnockedBack)
+            {
+                wasKnockedBack = true;
+                combat.isStuck = false;
+                if (combat.otherPlayerCombatManager.leftStick.ReadValue().magnitude >= 0.169f)
+                {
+                    hitDirection = combat.otherPlayerCombatManager.leftStick.ReadValue().normalized;
+                }
+                AddKnockback(combat, combat.throwKnockbackStrength);
+            }
+            
+            
+            if (hitstunTimer >= combat.throwTotalHitstunLength)
             {
                 combat.canMove = true;
                 combat.SwitchState(combat.IdleState);
@@ -105,5 +131,16 @@ public class HitstunState : CombatBaseState
         }
 
         combat.rb.AddForce((hitDirection + DI*DIStrength) * hitStrength, ForceMode2D.Impulse);
+    }
+
+    private void AddThrowKnockback(CombatStateManager combat, float hitStrength)
+    {
+        DI = combat.leftStick.ReadValue();
+        if (DI.magnitude > 1)
+        {
+            DI = DI.normalized;
+        }
+
+        combat.rb.AddForce((hitDirection + DI * DIStrength) * hitStrength, ForceMode2D.Impulse);
     }
 }

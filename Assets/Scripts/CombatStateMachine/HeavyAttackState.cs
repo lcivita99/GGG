@@ -7,13 +7,17 @@ public class HeavyAttackState : CombatBaseState
     public float attackTimer;
     public bool turnedHitboxOn;
     public bool turnedHitboxOff;
+    public bool canHit;
     public override void EnterState(CombatStateManager combat, float number)
     {
+        canHit = true;
         combat.circleSprite.color = Color.yellow;
         attackTimer = 0;
 
         combat.canMove = false;
 
+        combat.playerSpriteAnim.SetHeavySpriteToIdx(0);
+        //combat.playerSpriteAnim.heavyIndex = combat.playerSpriteAnim.heavyFrameStartup.Count - 1;
 
         // reset bools
         turnedHitboxOn = false;
@@ -74,5 +78,6 @@ public class HeavyAttackState : CombatBaseState
     {
         combat.canMove = true;
         combat.heavyAttackHitbox.SetActive(false);
+        combat.playerSpriteAnim.SetHeavySpriteToIdx(combat.playerSpriteAnim.heavyFrameStartup.Count - 1);
     }
 }

@@ -14,6 +14,9 @@ public class IdleState : CombatBaseState
         //lightDamageTimer = 0f;
         combat.circleSprite.color = Color.red;
         //Debug.Log(combat.bufferString);
+
+        combat.canMove = true;
+        combat.isStuck = false;
         if (combat.bufferString != "")
         {
             combat.SwitchState(combat.bufferDictionary[combat.bufferString]);
@@ -42,6 +45,11 @@ public class IdleState : CombatBaseState
         if (combat.rightTrigger.isPressed)
         {
             combat.SwitchState(combat.ShieldState);
+        }
+
+        if (combat.leftBumper.wasPressedThisFrame)
+        {
+            combat.SwitchState(combat.GrabState);
         }
 
         //if (takeLightDamageTimer >= combat.attackTriggerTime)

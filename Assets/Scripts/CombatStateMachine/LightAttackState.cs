@@ -7,10 +7,14 @@ public class LightAttackState : CombatBaseState
     public float attackTimer;
     public bool turnedHitboxOn;
     public bool turnedHitboxOff;
+    public bool canHit;
     public override void EnterState(CombatStateManager combat, float number)
     {
+        canHit = true;
         combat.circleSprite.color = Color.green;
         attackTimer = 0;
+        combat.playerSpriteAnim.SetLightSpriteToIdx(0);
+        //combat.playerSpriteAnim.lightIndex = combat.playerSpriteAnim.lightFrameStartup.Count - 1;
 
         // reset bools
         turnedHitboxOn = false;
@@ -70,5 +74,6 @@ public class LightAttackState : CombatBaseState
     public override void HitOutOfState(CombatStateManager combat)
     {
         combat.lightAttackHitbox.SetActive(false);
+        combat.playerSpriteAnim.SetLightSpriteToIdx(combat.playerSpriteAnim.lightFrameStartup.Count - 1);
     }
 }

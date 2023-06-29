@@ -26,10 +26,10 @@ public class ShieldState : CombatBaseState
     }
     public override void OnTriggerExit(CombatStateManager combat, Collider2D collider)
     {
-        throw new System.NotImplementedException();
+        
     }
     public override void HitOutOfState(CombatStateManager combat)
     {
-        throw new System.NotImplementedException();
+        combat.shield.SetActive(false);
     }
 }

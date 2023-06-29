@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class CombatStateManager : MonoBehaviour
 {
     public GameObject otherPlayer;
+    public CombatStateManager otherPlayerCombatManager;
     
     public string bufferString = "";
     public Dictionary<string, CombatBaseState> bufferDictionary = new Dictionary<string, CombatBaseState>();
@@ -20,6 +21,7 @@ public class CombatStateManager : MonoBehaviour
     public SplatterState SplatterState = new SplatterState();
     public ShieldState ShieldState = new ShieldState();
     public ShieldStunState ShieldStunState = new ShieldStunState();
+    public GrabbedState GrabbedState = new GrabbedState();
     public GrabState GrabState = new GrabState();
     public HoldState HoldState = new HoldState();
     public ThrowState ThrowState = new ThrowState();
@@ -28,7 +30,9 @@ public class CombatStateManager : MonoBehaviour
 
     public SpriteRenderer circleSprite;
     public Rigidbody2D rb;
+    public Collider2D mainCollider;
     public Transform playerSpriteTargetTransform;
+    public PlayerSpriteAnim playerSpriteAnim;
 
     // attack hitboxes & variables
     // light attack
@@ -47,6 +51,18 @@ public class CombatStateManager : MonoBehaviour
     public float heavyAttackDuration;
     public float heavyAttackDamage;
 
+    // light attack
+    [SerializeField] public GameObject grabHitbox;
+    public float grabStartup;
+    public float grabActiveHitboxDuration;
+    public float grabEndLag;
+    public float grabDuration;
+    public float holdLength;
+
+    public float throwDuration;
+
+    public float throwDamage;
+
     // hitstun stuff
     public float heavyAttackInitialHitstunLength;
     public float heavyAttackTotalHitstunLength;
@@ -55,12 +71,16 @@ public class CombatStateManager : MonoBehaviour
     public float lightAttackInitialHitstunLength;
     public float lightAttackTotalHitstunLength;
     public float lightAttackKnockbackStrength;
+    
+    public float throwTotalHitstunLength;
+    public float throwKnockbackStrength;
 
     public float clankHitstunDuration;
     public float clankKnockbackStrength;
 
     public float takeLightDamageTimer;
     public float takeHeavyDamageTimer;
+    public float getGrabbedTimer;
 
     // shield
     public GameObject shield;
@@ -88,20 +108,34 @@ public class CombatStateManager : MonoBehaviour
     public UnityEngine.InputSystem.Controls.ButtonControl leftBumper;
     public UnityEngine.InputSystem.Controls.StickControl leftStick;
 
+    // UI
     public float health;
+    public TextMesh healthText;
 
-    void Start()
+    // TEMP FUNCTION
+    public void UpdateHealthUI()
     {
+        healthText.text = health.ToString();
+    }
+
+    void Awake()
+    {
+        otherPlayerCombatManager = otherPlayer.GetComponent<CombatStateManager>();
+        
         circleSprite = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        mainCollider = GetComponent<Collider2D>();
 
         // Setting Numbers
         attackTriggerTime = 0.05f;
         health = 100f;
-        dashStrength = 200;
+        // TODO TEMP FUCNTION
+        UpdateHealthUI();
+        dashStrength = 300;
         dashLength = 0.5f;
         lightAttackDamage = 10f;
         heavyAttackDamage = 20f;
+        throwDamage = 15f;
         bufferSize = 0.25f;
 
         // hitstun stuff
@@ -112,6 +146,9 @@ public class CombatStateManager : MonoBehaviour
         lightAttackInitialHitstunLength = 0.1f;
         lightAttackTotalHitstunLength = 0.7f;
         lightAttackKnockbackStrength = 250;
+
+        throwTotalHitstunLength = 1.2f;
+        throwKnockbackStrength = 400;
 
         clankHitstunDuration = 0.2f;
         clankKnockbackStrength = 250;
@@ -158,7 +195,15 @@ public class CombatStateManager : MonoBehaviour
         heavyAttackEndLag = 0.35f;
         heavyAttackDuration = heavyAttackStartup + heavyAttackActiveHitboxDuration + heavyAttackEndLag;
 
-        
+        // grab variables
+        grabStartup = 0.2f;
+        grabActiveHitboxDuration = 0.1f;
+        grabEndLag = 0.2f;
+        grabDuration = grabStartup + grabActiveHitboxDuration + grabEndLag;
+
+        holdLength = 2.69f;
+
+        throwDuration = 0.4f;
 
         currentState = IdleState;
         currentState.EnterState(this);
@@ -167,11 +212,15 @@ public class CombatStateManager : MonoBehaviour
     void Update()
     {
         currentState.UpdateState(this);
-        if (!(currentState == SplatterState || currentState == ShieldState || currentState == ShieldStunState))
-        {
-            //Debug.Log(currentState.ToString());
-            GetHit();
-        } // else GetHitOnShield();
+        //if (!(currentState == SplatterState || currentState == ShieldState || currentState == ShieldStunState))
+        //{
+        GetHit();
+        //}
+    }
+
+    private void FixedUpdate()
+    {
+        
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -238,30 +287,49 @@ public class CombatStateManager : MonoBehaviour
         {
             takeHeavyDamageTimer += Time.deltaTime;
         }
+
+        // grab - take damage
+        if (collision.gameObject.layer.Equals(9))
+        {
+            getGrabbedTimer += Time.deltaTime;
+        }
     }
 
     private void GetHit()
     {
-        if (takeLightDamageTimer >= attackTriggerTime)
+        if (!(currentState == SplatterState || currentState == ShieldState || currentState == ShieldStunState))
         {
-            takeLightDamageTimer = 0;
-            currentState.HitOutOfState(this);
-            SwitchState(HitstunState, lightAttackDamage);
+            if (takeLightDamageTimer >= attackTriggerTime && otherPlayerCombatManager.LightAttackState.canHit)
+            {
+                takeLightDamageTimer = 0;
+                currentState.HitOutOfState(this);
+                SwitchState(HitstunState, lightAttackDamage);
+                otherPlayerCombatManager.LightAttackState.canHit = false;
+            }
+            if (takeHeavyDamageTimer >= attackTriggerTime && otherPlayerCombatManager.HeavyAttackState.canHit)
+            {
+                takeHeavyDamageTimer = 0;
+                currentState.HitOutOfState(this);
+                SwitchState(HitstunState, heavyAttackDamage);
+                otherPlayerCombatManager.HeavyAttackState.canHit = false;
+            }
         }
-        if (takeHeavyDamageTimer >= attackTriggerTime)
+        if (getGrabbedTimer >= attackTriggerTime && otherPlayerCombatManager.GrabState.canHit)
         {
-            takeHeavyDamageTimer = 0;
+            getGrabbedTimer = 0;
             currentState.HitOutOfState(this);
-            SwitchState(HitstunState, heavyAttackDamage);
+            SwitchState(GrabbedState);
+            otherPlayerCombatManager.GrabState.canHit = false;
         }
     }
 
     private void ResetGettingHitTimers(Collider2D collision)
     {
-        if (collision.gameObject.layer.Equals(6) || collision.gameObject.layer.Equals(7))
+        if (collision.gameObject.layer.Equals(6) || collision.gameObject.layer.Equals(7) || collision.gameObject.layer.Equals(9))
         {
             takeLightDamageTimer = 0f;
             takeHeavyDamageTimer = 0f;
+            getGrabbedTimer = 0f;
         }
     }
 }

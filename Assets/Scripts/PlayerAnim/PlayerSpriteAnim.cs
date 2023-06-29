@@ -39,6 +39,28 @@ public class PlayerSpriteAnim : MonoBehaviour
     [SerializeField] private Transform rightArmTargetIK;
     [SerializeField] private Transform leftArmTargetIK;
 
+    public List<float> heavyFrameStartup = new List<float>();
+    public int heavyIndex = 0;
+
+    public List<float> lightFrameStartup = new List<float>();
+    public int lightIndex = 0;
+    public void SetHeavySpriteToIdx(int idx)
+    {
+        if (attackSpriteRenderer.sprite != heavyAttackSprites[idx])
+        {
+            attackSpriteRenderer.sprite = heavyAttackSprites[idx];
+        }
+        heavyIndex = idx;
+    }
+    public void SetLightSpriteToIdx(int idx)
+    {
+        if (attackSpriteRenderer.sprite != lightAttackSprites[idx])
+        {
+            attackSpriteRenderer.sprite = lightAttackSprites[idx];
+        }
+        lightIndex = idx;
+    }
+
     void Start()
     {
         playerRb = player.GetComponent<Rigidbody2D>();
@@ -48,13 +70,34 @@ public class PlayerSpriteAnim : MonoBehaviour
         // low framerate effect
         // TODO: Is this the best way?
         InvokeRepeating("SetTransform", 0.2f, 0.07f);
+
+        // heavy frame setting
+        heavyFrameStartup.Add(combatStateManager.heavyAttackStartup / 6);
+        heavyFrameStartup.Add(combatStateManager.heavyAttackStartup / 3);
+        heavyFrameStartup.Add(5 * combatStateManager.heavyAttackStartup / 6);
+        heavyFrameStartup.Add(combatStateManager.heavyAttackStartup);
+        heavyFrameStartup.Add(combatStateManager.heavyAttackStartup +
+            combatStateManager.heavyAttackActiveHitboxDuration / 1.5f);
+        heavyFrameStartup.Add(combatStateManager.heavyAttackStartup +
+           combatStateManager.heavyAttackActiveHitboxDuration);
+        heavyFrameStartup.Add(combatStateManager.heavyAttackDuration);
+
+        // light frame startup
+        lightFrameStartup.Add(combatStateManager.lightAttackStartup / 3);
+        lightFrameStartup.Add(2 * combatStateManager.lightAttackStartup / 3);
+        lightFrameStartup.Add(combatStateManager.lightAttackStartup);
+        lightFrameStartup.Add(combatStateManager.lightAttackStartup +
+            combatStateManager.lightAttackActiveHitboxDuration / 1.5f);
+        lightFrameStartup.Add(combatStateManager.lightAttackStartup +
+            combatStateManager.lightAttackActiveHitboxDuration);
+        lightFrameStartup.Add(combatStateManager.lightAttackDuration);
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         MatchPlayerMovement();
-            
+
         if (combatStateManager.currentState == combatStateManager.IdleState)
         {
             WalkUpdateTarget();
@@ -86,7 +129,17 @@ public class PlayerSpriteAnim : MonoBehaviour
         else if (combatStateManager.currentState == combatStateManager.DashState)
         {
             DashUpdateTarget();
-        } else if (combatStateManager.currentState == combatStateManager.ShieldState)
+        }
+        else if (combatStateManager.currentState == combatStateManager.ShieldState)
+        {
+            WalkUpdateTarget();
+
+            WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
+            WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
+            WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
+            WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
+        }
+        else if (combatStateManager.currentState == combatStateManager.GrabbedState)
         {
             WalkUpdateTarget();
 
@@ -253,52 +306,25 @@ public class PlayerSpriteAnim : MonoBehaviour
             speed * Time.deltaTime);
     }
 
+    private void LightCicleSprite()
+    {
+
+        if (combatStateManager.LightAttackState.attackTimer < lightFrameStartup[lightIndex])
+        {
+            // this is checking if it is already not in that sprite
+            SetLightSpriteToIdx(lightIndex);
+        }
+        else if (combatStateManager.LightAttackState.attackTimer >= lightFrameStartup[lightIndex])
+        {
+            if (lightIndex < lightFrameStartup.Count)
+            {
+                lightIndex++;
+            }
+        }
+    }
     private void UpdateLightAttackSprites()
     {
-        if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackStartup/3)
-        {
-            if (attackSpriteRenderer.sprite != lightAttackSprites[0])
-            {
-                attackSpriteRenderer.sprite = lightAttackSprites[0];
-            }
-        }
-        else if (combatStateManager.LightAttackState.attackTimer < 2 * combatStateManager.lightAttackStartup / 3)
-        {
-            if (attackSpriteRenderer.sprite != lightAttackSprites[1])
-            {
-                attackSpriteRenderer.sprite = lightAttackSprites[1];
-            }
-        }
-        else if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackStartup)
-        {
-            if (attackSpriteRenderer.sprite != lightAttackSprites[2])
-            {
-                attackSpriteRenderer.sprite = lightAttackSprites[2];
-            }
-        }
-        else if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackStartup + 
-            combatStateManager.lightAttackActiveHitboxDuration / 1.5)
-        {
-            if (attackSpriteRenderer.sprite != lightAttackSprites[3])
-            {
-                attackSpriteRenderer.sprite = lightAttackSprites[3];
-            }
-        }
-        else if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackStartup +
-            combatStateManager.lightAttackActiveHitboxDuration)
-        {
-            if (attackSpriteRenderer.sprite != lightAttackSprites[4])
-            {
-                attackSpriteRenderer.sprite = lightAttackSprites[4];
-            }
-        }
-        else if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackDuration)
-        {
-            if (attackSpriteRenderer.sprite != lightAttackSprites[5])
-            {
-                attackSpriteRenderer.sprite = lightAttackSprites[5];
-            }
-        }
+        LightCicleSprite();
 
         if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackStartup)
         {
@@ -311,59 +337,27 @@ public class PlayerSpriteAnim : MonoBehaviour
         }
     }
 
-    private void UpdateHeavyAttackSprites()
+
+    private void HeavyCicleSprite()
     {
-        if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup / 6)
+        
+        if (combatStateManager.HeavyAttackState.attackTimer < heavyFrameStartup[heavyIndex])
         {
-            if (attackSpriteRenderer.sprite != heavyAttackSprites[0])
+            // this is checking if it is already not in that sprite
+            SetHeavySpriteToIdx(heavyIndex);
+        } 
+        else if (combatStateManager.HeavyAttackState.attackTimer >= heavyFrameStartup[heavyIndex])
+        {
+            if (heavyIndex < heavyFrameStartup.Count)
             {
-                attackSpriteRenderer.sprite = heavyAttackSprites[0];
+                heavyIndex++;
             }
         }
-        else if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup / 3)
-        {
-            if (attackSpriteRenderer.sprite != heavyAttackSprites[1])
-            {
-                attackSpriteRenderer.sprite = heavyAttackSprites[1];
-            }
-        }
-        else if (combatStateManager.HeavyAttackState.attackTimer < 5 * combatStateManager.heavyAttackStartup / 6)
-        {
-            if (attackSpriteRenderer.sprite != heavyAttackSprites[2])
-            {
-                attackSpriteRenderer.sprite = heavyAttackSprites[2];
-            }
-        }
-        else if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup)
-        {
-            if (attackSpriteRenderer.sprite != heavyAttackSprites[3])
-            {
-                attackSpriteRenderer.sprite = heavyAttackSprites[3];
-            }
-        }
-        else if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup +
-            combatStateManager.heavyAttackActiveHitboxDuration / 1.5)
-        {
-            if (attackSpriteRenderer.sprite != heavyAttackSprites[4])
-            {
-                attackSpriteRenderer.sprite = heavyAttackSprites[4];
-            }
-        }
-        else if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup +
-           combatStateManager.heavyAttackActiveHitboxDuration)
-        {
-            if (attackSpriteRenderer.sprite != heavyAttackSprites[5])
-            {
-                attackSpriteRenderer.sprite = heavyAttackSprites[5];
-            }
-        }
-        else if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackDuration)
-        {
-            if (attackSpriteRenderer.sprite != heavyAttackSprites[6])
-            {
-                attackSpriteRenderer.sprite = heavyAttackSprites[6];
-            }
-        }
+    }
+
+private void UpdateHeavyAttackSprites()
+    {
+        HeavyCicleSprite();
 
         if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup)
         {
