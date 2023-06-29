@@ -321,6 +321,16 @@ public class CombatStateManager : MonoBehaviour
             SwitchState(GrabbedState);
             otherPlayerCombatManager.GrabState.canHit = false;
         }
+        if (takeLightDamageTimer >= attackTriggerTime && otherPlayerCombatManager.LightAttackState.canHit)
+        {
+            takeLightDamageTimer = 0;
+            otherPlayerCombatManager.LightAttackState.canHit = false;
+        }
+        if (takeHeavyDamageTimer >= attackTriggerTime && otherPlayerCombatManager.HeavyAttackState.canHit)
+        {
+            takeHeavyDamageTimer = 0;
+            otherPlayerCombatManager.HeavyAttackState.canHit = false;
+        }
     }
 
     private void ResetGettingHitTimers(Collider2D collision)
