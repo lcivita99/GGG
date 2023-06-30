@@ -5,11 +5,19 @@ using UnityEngine;
 public class ThrowState : CombatBaseState
 {
     public float attackTimer;
+
+    //private List<CombatStateManager> playersYouAreGrabbing;
     public override void EnterState(CombatStateManager combat, float number)
     {
         attackTimer = 0;
+        //playersYouAreGrabbing = combat.PlayersYouAreAttacking();
         // TODO turn this off when exiting state
-        Physics2D.IgnoreCollision(combat.mainCollider, combat.otherPlayerCombatManager.mainCollider, true);
+        // ignore all players you are grabbing
+        //for (int i = 0; i < playersYouAreGrabbing.Count; i++)
+        //{
+        //    Physics2D.IgnoreCollision(combat.mainCollider, playersYouAreGrabbing[i].mainCollider, true);
+        //}
+        
     }
 
     public override void UpdateState(CombatStateManager combat)
@@ -18,12 +26,19 @@ public class ThrowState : CombatBaseState
 
         if (attackTimer >= combat.throwDuration)
         {
-            Physics2D.IgnoreCollision(combat.mainCollider, combat.otherPlayerCombatManager.mainCollider, false);
+            //for (int i = 0; i < playersYouAreGrabbing.Count; i++)
+            //{
+            //    Physics2D.IgnoreCollision(combat.mainCollider, playersYouAreGrabbing[i].mainCollider, false);
+            //}
             combat.SwitchState(combat.IdleState);
         }
 
+        if (attackTimer >= combat.throwDuration - combat.bufferSize)
+        {
+            combat.UpdateBufferInput();
+        }
         // buffer system
-        combat.UpdateBufferInput();
+        
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
@@ -37,6 +52,9 @@ public class ThrowState : CombatBaseState
     }
     public override void HitOutOfState(CombatStateManager combat)
     {
-        Physics2D.IgnoreCollision(combat.mainCollider, combat.otherPlayerCombatManager.mainCollider, false);
+        //for (int i = 0; i < playersYouAreGrabbing.Count; i++)
+        //{
+        //    Physics2D.IgnoreCollision(combat.mainCollider, playersYouAreGrabbing[i].mainCollider, false);
+        //}
     }
 }

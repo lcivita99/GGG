@@ -31,6 +31,7 @@ public class HitstunState : CombatBaseState
         } else if (moveID == combat.throwDamage)
         {
             currentHitstunDuration = combat.throwTotalHitstunLength;
+            Physics2D.IgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider, true);
         }
 
         //combat.takeHeavyDamageTimer = 0;
@@ -38,17 +39,34 @@ public class HitstunState : CombatBaseState
         combat.canMove = false;
         combat.isStuck = true;
 
-        hitDirection = (combat.transform.position - combat.otherPlayer.transform.position).normalized;
+        hitDirection = (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
+
+        //change hit direction if in throw mode
+        if (moveID == 15)
+        {
+            if (combat.playerAttackingYouManager.leftStick.ReadValue().magnitude >= 0.169f)
+            {
+                hitDirection = combat.playerAttackingYouManager.leftStick.ReadValue().normalized;
+            } else
+            {
+                hitDirection = (combat.playerAttackingYouManager.playerSpriteTargetTransform.up).normalized;
+            }
+        }
 
         wasKnockedBack = false;
 
+        //combat.ResetPlayerAttackingYou();
     }
 
     public override void UpdateState(CombatStateManager combat)
     {
         hitstunTimer += Time.deltaTime;
 
-
+        if (hitstunTimer >= combat.throwDuration &&
+            Physics2D.GetIgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider))
+        {
+            Physics2D.IgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider, false);
+        }
 
         // light
         if (moveID == combat.lightAttackDamage)
@@ -90,10 +108,7 @@ public class HitstunState : CombatBaseState
             {
                 wasKnockedBack = true;
                 combat.isStuck = false;
-                if (combat.otherPlayerCombatManager.leftStick.ReadValue().magnitude >= 0.169f)
-                {
-                    hitDirection = combat.otherPlayerCombatManager.leftStick.ReadValue().normalized;
-                }
+                
                 AddKnockback(combat, combat.throwKnockbackStrength);
             }
             
@@ -134,11 +149,12 @@ public class HitstunState : CombatBaseState
 
     public override void OnTriggerExit(CombatStateManager combat, Collider2D collider)
     {
-        throw new System.NotImplementedException();
+        
     }
     public override void HitOutOfState(CombatStateManager combat)
     {
         combat.isStuck = false;
+        Physics2D.IgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider, false);
     }
 
     private void AddKnockback(CombatStateManager combat, float hitStrength)

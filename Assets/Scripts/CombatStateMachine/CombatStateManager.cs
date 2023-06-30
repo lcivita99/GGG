@@ -5,8 +5,37 @@ using UnityEngine.InputSystem;
 
 public class CombatStateManager : MonoBehaviour
 {
-    public GameObject otherPlayer;
-    public CombatStateManager otherPlayerCombatManager;
+    //public GameObject otherPlayer;
+    //public CombatStateManager p1Manager;
+    //public CombatStateManager p2Manager;
+    //public CombatStateManager p3Manager;
+    //public CombatStateManager p4Manager;
+
+    public List<CombatStateManager> allPlayers = new List<CombatStateManager>();
+    public CombatStateManager playerAttackingYouManager;
+
+    public List<CombatStateManager> PlayersYouAreAttacking()
+    {
+        List<CombatStateManager> list = new List<CombatStateManager>();
+
+        for (int i = 0; i < allPlayers.Count; i++)
+        {
+            if (allPlayers[i].playerAttackingYouManager == this)
+            {
+                list.Add(allPlayers[i]);
+            }
+        }
+
+        return list;
+    }
+
+    // use this to disconnect yourself from the player attacking you (AKA, once they already have all the info they need from you)
+    public void ResetPlayerAttackingYou()
+    {
+        playerAttackingYouManager = null;
+    }
+
+    public PlayerMovement playerMovement;
     
     public string bufferString = "";
     public Dictionary<string, CombatBaseState> bufferDictionary = new Dictionary<string, CombatBaseState>();
@@ -107,7 +136,6 @@ public class CombatStateManager : MonoBehaviour
     public UnityEngine.InputSystem.Controls.ButtonControl rightBumper;
     public UnityEngine.InputSystem.Controls.ButtonControl leftBumper;
     public UnityEngine.InputSystem.Controls.StickControl leftStick;
-
     // UI
     public float health;
     public TextMesh healthText;
@@ -120,7 +148,12 @@ public class CombatStateManager : MonoBehaviour
 
     void Awake()
     {
-        otherPlayerCombatManager = otherPlayer.GetComponent<CombatStateManager>();
+        playerMovement = GetComponent<PlayerMovement>();
+        // assign tags
+        gameObject.tag = "p" + playerMovement.playerNumber.ToString();
+
+        // TODO setting it to null rn to check when stuff breaks
+        playerAttackingYouManager = null;
         
         circleSprite = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
@@ -209,12 +242,50 @@ public class CombatStateManager : MonoBehaviour
         currentState.EnterState(this);
     }
 
+    private void Start()
+    {
+        if (GameObject.FindGameObjectWithTag("p1") != null)
+        {
+            allPlayers.Add(GameObject.FindGameObjectWithTag("p1").GetComponent<CombatStateManager>());
+        }
+        if (GameObject.FindGameObjectWithTag("p2") != null)
+        {
+            allPlayers.Add(GameObject.FindGameObjectWithTag("p2").GetComponent<CombatStateManager>());
+        }
+        if (GameObject.FindGameObjectWithTag("p3") != null)
+        {
+            allPlayers.Add(GameObject.FindGameObjectWithTag("p3").GetComponent<CombatStateManager>());
+        }
+        if (GameObject.FindGameObjectWithTag("p4") != null)
+        {
+            allPlayers.Add(GameObject.FindGameObjectWithTag("p4").GetComponent<CombatStateManager>());
+        }
+
+        LightAttackState.canHit = new List<bool>();
+        for (int i = 0; i < allPlayers.Count; i++)
+        {
+            LightAttackState.canHit.Add(true);
+        }
+
+        HeavyAttackState.canHit = new List<bool>();
+        for (int i = 0; i < allPlayers.Count; i++)
+        {
+            HeavyAttackState.canHit.Add(true);
+        }
+
+        GrabState.canHit = new List<bool>();
+        for (int i = 0; i < allPlayers.Count; i++)
+        {
+            GrabState.canHit.Add(true);
+        }
+    }
+
     void Update()
     {
         currentState.UpdateState(this);
         //if (!(currentState == SplatterState || currentState == ShieldState || currentState == ShieldStunState))
         //{
-        GetHit();
+        
         //}
     }
 
@@ -293,43 +364,75 @@ public class CombatStateManager : MonoBehaviour
         {
             getGrabbedTimer += Time.deltaTime;
         }
+
+        GetHit(collision);
     }
 
-    private void GetHit()
+    private void GetHit(Collider2D collision)
     {
+        // TODO MANAGE CAN HIT STUFF! Right now you can't hit more than one person.
+        
         if (!(currentState == SplatterState || currentState == ShieldState || currentState == ShieldStunState))
         {
-            if (takeLightDamageTimer >= attackTriggerTime && otherPlayerCombatManager.LightAttackState.canHit)
+            if (takeLightDamageTimer >= attackTriggerTime)
             {
-                takeLightDamageTimer = 0;
-                currentState.HitOutOfState(this);
-                SwitchState(HitstunState, lightAttackDamage);
-                otherPlayerCombatManager.LightAttackState.canHit = false;
+                // ! update player attacking
+                playerAttackingYouManager = collision.transform.parent.parent.GetComponent<CombatStateManager>();
+
+                //Debug.Log(playerMovement.playerNumber - 1);
+                //Debug.Log(playerAttackingYouManager.LightAttackState.canHit.Count);
+                if (playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1])
+                {
+                    takeLightDamageTimer = 0;
+                    currentState.HitOutOfState(this);
+                    playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1] = false;
+                    SwitchState(HitstunState, lightAttackDamage);
+                }
             }
-            if (takeHeavyDamageTimer >= attackTriggerTime && otherPlayerCombatManager.HeavyAttackState.canHit)
+            if (takeHeavyDamageTimer >= attackTriggerTime)
             {
-                takeHeavyDamageTimer = 0;
-                currentState.HitOutOfState(this);
-                SwitchState(HitstunState, heavyAttackDamage);
-                otherPlayerCombatManager.HeavyAttackState.canHit = false;
+                // ! update player attacking
+                playerAttackingYouManager = collision.transform.parent.parent.GetComponent<CombatStateManager>();
+
+                if (playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1])
+                {
+                    takeHeavyDamageTimer = 0;
+                    currentState.HitOutOfState(this);
+                    playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1] = false;
+                    SwitchState(HitstunState, heavyAttackDamage);
+                }
             }
         }
-        if (getGrabbedTimer >= attackTriggerTime && otherPlayerCombatManager.GrabState.canHit)
+        if (getGrabbedTimer >= attackTriggerTime)
         {
-            getGrabbedTimer = 0;
-            currentState.HitOutOfState(this);
-            SwitchState(GrabbedState);
-            otherPlayerCombatManager.GrabState.canHit = false;
+            // ! update player attacking
+            playerAttackingYouManager = collision.transform.parent.parent.GetComponent<CombatStateManager>();
+
+            if (playerAttackingYouManager.GrabState.canHit[playerMovement.playerNumber - 1])
+            {
+                getGrabbedTimer = 0;
+                currentState.HitOutOfState(this);
+                playerAttackingYouManager.GrabState.canHit[playerMovement.playerNumber - 1] = false;
+                SwitchState(GrabbedState);
+            }
         }
-        if (takeLightDamageTimer >= attackTriggerTime && otherPlayerCombatManager.LightAttackState.canHit)
+        if (takeLightDamageTimer >= attackTriggerTime && playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1] &&
+            (currentState == SplatterState || currentState == ShieldState || currentState == ShieldStunState))
         {
+            // ! update player attacking
+            playerAttackingYouManager = collision.transform.parent.parent.GetComponent<CombatStateManager>();
+
             takeLightDamageTimer = 0;
-            otherPlayerCombatManager.LightAttackState.canHit = false;
+            playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1] = false;
         }
-        if (takeHeavyDamageTimer >= attackTriggerTime && otherPlayerCombatManager.HeavyAttackState.canHit)
+        if (takeHeavyDamageTimer >= attackTriggerTime && playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1] &&
+            (currentState == SplatterState || currentState == ShieldState || currentState == ShieldStunState))
         {
+            // ! update player attacking
+            playerAttackingYouManager = collision.transform.parent.parent.GetComponent<CombatStateManager>();
+
             takeHeavyDamageTimer = 0;
-            otherPlayerCombatManager.HeavyAttackState.canHit = false;
+            playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1] = false;
         }
     }
 

@@ -7,10 +7,13 @@ public class HeavyAttackState : CombatBaseState
     public float attackTimer;
     public bool turnedHitboxOn;
     public bool turnedHitboxOff;
-    public bool canHit;
+    public List<bool> canHit;
     public override void EnterState(CombatStateManager combat, float number)
     {
-        canHit = true;
+        for (int i = 0; i < canHit.Count; i++)
+        {
+            canHit[i] = true;
+        }
         combat.circleSprite.color = Color.yellow;
         attackTimer = 0;
 

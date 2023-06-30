@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class HoldState : CombatBaseState
 {
-    public float holdTimer;
+    private float holdTimer;
+    private bool hasTurnedOffHitbox;
+
+    public float timeToTurnOffHitbox = 0.1f;
+    
+    //public float holdTimer;
     public override void EnterState(CombatStateManager combat, float number)
     {
+        hasTurnedOffHitbox = false;
         combat.canMove = false;
-        combat.grabHitbox.SetActive(false);
 
         holdTimer = 0;
     }
@@ -17,19 +22,10 @@ public class HoldState : CombatBaseState
     {
         holdTimer += Time.deltaTime;
 
-        if (combat.lightAttackButton.wasPressedThisFrame || combat.heavyAttackButton.wasPressedThisFrame)
+        if (holdTimer >= timeToTurnOffHitbox && !hasTurnedOffHitbox)
         {
-            if (combat.leftStick.ReadValue().magnitude > 0.169f)
-            {
-                combat.otherPlayerCombatManager.SwitchState(combat.otherPlayerCombatManager.HitstunState, combat.throwDamage);
-                combat.SwitchState(combat.ThrowState);
-            }
-        }
-
-        if (holdTimer >= combat.holdLength)
-        {
-            combat.otherPlayerCombatManager.SwitchState(combat.otherPlayerCombatManager.IdleState);
-            combat.SwitchState(combat.IdleState);
+            hasTurnedOffHitbox = true;
+            combat.grabHitbox.SetActive(false);
         }
     }
 
@@ -44,6 +40,6 @@ public class HoldState : CombatBaseState
     }
     public override void HitOutOfState(CombatStateManager combat)
     {
-        
+        combat.grabHitbox.SetActive(false);
     }
 }
