@@ -248,6 +248,36 @@ public class CombatStateManager : MonoBehaviour
         currentState.EnterState(this, number);
     }
 
+    public void DoInput()
+    {
+        if (lightAttackButton.wasPressedThisFrame)
+        {
+            SwitchState(LightAttackState);
+        }
+
+        if (heavyAttackButton.wasPressedThisFrame)
+        {
+            SwitchState(HeavyAttackState);
+        }
+
+        if (dashButton.wasPressedThisFrame)
+        {
+            SwitchState(DashState);
+        }
+
+        // prevents shield state from putting itself into shield state
+        // since this function is being run there as well
+        if (rightTrigger.isPressed && currentState != ShieldState)
+        {
+            SwitchState(ShieldState);
+        }
+
+        if (leftBumper.wasPressedThisFrame)
+        {
+            SwitchState(GrabState);
+        }
+    }
+
 
     public void UpdateBufferInput()
     {

@@ -18,6 +18,35 @@ public class ShieldState : CombatBaseState
             combat.shield.SetActive(false);
             combat.SwitchState(combat.IdleState);
         }
+        // exit shield with input
+        // TODO figure out way to not repeat the first two lines of code in each thingy
+        if (combat.lightAttackButton.wasPressedThisFrame)
+        {
+            combat.canMove = true;
+            combat.shield.SetActive(false);
+            combat.SwitchState(combat.LightAttackState);
+        }
+
+        if (combat.heavyAttackButton.wasPressedThisFrame)
+        {
+            combat.canMove = true;
+            combat.shield.SetActive(false);
+            combat.SwitchState(combat.HeavyAttackState);
+        }
+
+        if (combat.dashButton.wasPressedThisFrame)
+        {
+            combat.canMove = true;
+            combat.shield.SetActive(false);
+            combat.SwitchState(combat.DashState);
+        }
+
+        if (combat.leftBumper.wasPressedThisFrame)
+        {
+            combat.canMove = true;
+            combat.shield.SetActive(false);
+            combat.SwitchState(combat.GrabState);
+        }
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)

@@ -51,42 +51,16 @@ public class IdleState : CombatBaseState
         {
             combat.SwitchState(combat.GrabState);
         }
-
-        //if (takeLightDamageTimer >= combat.attackTriggerTime)
-        //{
-        //    takeLightDamageTimer = 0;
-        //    combat.SwitchState(combat.HitstunState, combat.lightAttackDamage);
-        //} 
-        //if (takeHeavyDamageTimer >= combat.attackTriggerTime)
-        //{
-        //    takeHeavyDamageTimer = 0;
-        //    combat.SwitchState(combat.HitstunState, combat.heavyAttackDamage);
-        //}
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
     {
-        //// light attack - take damage
-        //if (collider.gameObject.layer.Equals(6))
-        //{
-        //    takeLightDamageTimer += Time.deltaTime;
-        //}
-
-
-        //// heavy attack - take damage
-        //if (collider.gameObject.layer.Equals(7))
-        //{
-        //    takeHeavyDamageTimer += Time.deltaTime;
-        //}
+        
     }
 
     public override void OnTriggerExit(CombatStateManager combat, Collider2D collider)
     {
-        //if (collider.gameObject.layer.Equals(6) || collider.gameObject.layer.Equals(7))
-        //{
-        //    takeLightDamageTimer = 0f;
-        //    takeHeavyDamageTimer = 0f;
-        //}
+        
     }
 
     public override void HitOutOfState(CombatStateManager combat)
