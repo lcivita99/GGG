@@ -147,7 +147,7 @@ public class CombatStateManager : MonoBehaviour
         lightAttackTotalHitstunLength = 0.7f;
         lightAttackKnockbackStrength = 250;
 
-        throwTotalHitstunLength = 1.2f;
+        throwTotalHitstunLength = 1.0f;
         throwKnockbackStrength = 400;
 
         clankHitstunDuration = 0.2f;
@@ -246,36 +246,6 @@ public class CombatStateManager : MonoBehaviour
     {
         currentState = state;
         currentState.EnterState(this, number);
-    }
-
-    public void DoInput()
-    {
-        if (lightAttackButton.wasPressedThisFrame)
-        {
-            SwitchState(LightAttackState);
-        }
-
-        if (heavyAttackButton.wasPressedThisFrame)
-        {
-            SwitchState(HeavyAttackState);
-        }
-
-        if (dashButton.wasPressedThisFrame)
-        {
-            SwitchState(DashState);
-        }
-
-        // prevents shield state from putting itself into shield state
-        // since this function is being run there as well
-        if (rightTrigger.isPressed && currentState != ShieldState)
-        {
-            SwitchState(ShieldState);
-        }
-
-        if (leftBumper.wasPressedThisFrame)
-        {
-            SwitchState(GrabState);
-        }
     }
 
 
