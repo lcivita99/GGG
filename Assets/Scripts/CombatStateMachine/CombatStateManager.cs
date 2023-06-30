@@ -176,8 +176,8 @@ public class CombatStateManager : MonoBehaviour
         heavyAttackTotalHitstunLength = 1f;
         heavyAttackKnockbackStrength = 400;
 
-        lightAttackInitialHitstunLength = 0.1f;
-        lightAttackTotalHitstunLength = 0.7f;
+        lightAttackInitialHitstunLength = 0.13f;
+        lightAttackTotalHitstunLength = 0.8f;
         lightAttackKnockbackStrength = 250;
 
         throwTotalHitstunLength = 1.0f;
@@ -219,13 +219,13 @@ public class CombatStateManager : MonoBehaviour
         // light attack variables
         lightAttackStartup = 0.2f;
         lightAttackActiveHitboxDuration = 0.1f;
-        lightAttackEndLag = 0.2f;
+        lightAttackEndLag = 0.3f;
         lightAttackDuration = lightAttackStartup + lightAttackActiveHitboxDuration + lightAttackEndLag;
 
         // heavy attack variables
         heavyAttackStartup = 0.35f;
         heavyAttackActiveHitboxDuration = 0.2f;
-        heavyAttackEndLag = 0.35f;
+        heavyAttackEndLag = 0.4f;
         heavyAttackDuration = heavyAttackStartup + heavyAttackActiveHitboxDuration + heavyAttackEndLag;
 
         // grab variables

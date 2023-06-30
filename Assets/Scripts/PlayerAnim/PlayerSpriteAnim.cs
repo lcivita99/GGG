@@ -84,7 +84,7 @@ public class PlayerSpriteAnim : MonoBehaviour
 
         // light frame startup
         lightFrameStartup.Add(combatStateManager.lightAttackStartup / 3);
-        lightFrameStartup.Add(2 * combatStateManager.lightAttackStartup / 3);
+        lightFrameStartup.Add(5 * combatStateManager.lightAttackStartup / 6);
         lightFrameStartup.Add(combatStateManager.lightAttackStartup);
         lightFrameStartup.Add(combatStateManager.lightAttackStartup +
             combatStateManager.lightAttackActiveHitboxDuration / 1.5f);
