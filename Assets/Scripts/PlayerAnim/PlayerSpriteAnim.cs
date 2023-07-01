@@ -130,16 +130,8 @@ public class PlayerSpriteAnim : MonoBehaviour
         {
             DashUpdateTarget();
         }
-        else if (combatStateManager.currentState == combatStateManager.ShieldState)
-        {
-            WalkUpdateTarget();
-
-            WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
-            WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
-            WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
-            WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
-        }
-        else if (combatStateManager.currentState == combatStateManager.GrabbedState)
+        else if (combatStateManager.currentState == combatStateManager.ShieldState ||
+            combatStateManager.currentState == combatStateManager.GrabbedState)
         {
             WalkUpdateTarget();
 
@@ -157,7 +149,8 @@ public class PlayerSpriteAnim : MonoBehaviour
     private void SetTransform()
     {
         transform.position = targetTransform.transform.position;
-        if (!combatStateManager.isStuck)
+        // can't rotate if in hitstun, or freeze frame stuff
+        if (!combatStateManager.isStuck && !combatStateManager.attackTimerStuck)
         {
             transform.rotation = targetTransform.transform.rotation;
         }

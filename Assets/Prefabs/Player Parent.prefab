@@ -2243,7 +2243,7 @@ GameObject:
   - component: {fileID: 8257823726546895576}
   - component: {fileID: 8257823726546895574}
   - component: {fileID: 8257823726546895579}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2383,8 +2383,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 476f1f0b06e1fe34582d34ae6d71984d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  otherPlayer: {fileID: 0}
-  otherPlayerCombatManager: {fileID: 0}
+  allPlayers: []
+  playerAttackingYouManager: {fileID: 0}
+  playerMovement: {fileID: 0}
   bufferString: 
   bufferSize: 0.2
   circleSprite: {fileID: 0}
@@ -2392,6 +2393,7 @@ MonoBehaviour:
   mainCollider: {fileID: 0}
   playerSpriteTargetTransform: {fileID: 8257823726599313348}
   playerSpriteAnim: {fileID: 5593019407884625152}
+  attackTimerStuck: 0
   lightAttackHitbox: {fileID: 8257823725034576862}
   lightAttackStartup: 0.1
   lightAttackActiveHitboxDuration: 0.1
@@ -2415,9 +2417,11 @@ MonoBehaviour:
   heavyAttackInitialHitstunLength: 0
   heavyAttackTotalHitstunLength: 0
   heavyAttackKnockbackStrength: 0
+  heavyAttackShieldStunLength: 0
   lightAttackInitialHitstunLength: 0
   lightAttackTotalHitstunLength: 0
   lightAttackKnockbackStrength: 0
+  lightAttackShieldStunLength: 0
   throwTotalHitstunLength: 0
   throwKnockbackStrength: 0
   clankHitstunDuration: 0

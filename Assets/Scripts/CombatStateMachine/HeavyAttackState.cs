@@ -22,6 +22,10 @@ public class HeavyAttackState : CombatBaseState
         combat.playerSpriteAnim.SetHeavySpriteToIdx(0);
         //combat.playerSpriteAnim.heavyIndex = combat.playerSpriteAnim.heavyFrameStartup.Count - 1;
 
+        // ! ! ! For some reason, triggers only check if there is on trigger enter for them if they are moving.
+        // this is a fix for that. A very minor force that makes no difference.
+        combat.rb.AddForce(combat.playerSpriteAnim.transform.up * 0.1f, ForceMode2D.Force);
+
         // reset bools
         turnedHitboxOn = false;
         turnedHitboxOff = false;
@@ -29,7 +33,10 @@ public class HeavyAttackState : CombatBaseState
 
     public override void UpdateState(CombatStateManager combat)
     {
-        attackTimer += Time.deltaTime;
+        if (!combat.attackTimerStuck)
+        {
+            attackTimer += Time.deltaTime;
+        }
 
         // startup
         if (attackTimer >= combat.heavyAttackStartup && !turnedHitboxOn)
@@ -56,13 +63,13 @@ public class HeavyAttackState : CombatBaseState
         }
 
         // endlag + return to Idle
-        if (attackTimer > combat.heavyAttackDuration)
+        if (attackTimer >= combat.heavyAttackDuration)
         {
             combat.canMove = true;
             combat.SwitchState(combat.IdleState);
         }
 
-        if (attackTimer > combat.heavyAttackDuration - combat.bufferSize)
+        if (attackTimer >= combat.heavyAttackDuration - combat.bufferSize)
         {
             combat.UpdateBufferInput();
         }
@@ -75,9 +82,9 @@ public class HeavyAttackState : CombatBaseState
 
     public override void OnTriggerExit(CombatStateManager combat, Collider2D collider)
     {
-        throw new System.NotImplementedException();
+        
     }
-    public override void HitOutOfState(CombatStateManager combat)
+    public override void ForcedOutOfState(CombatStateManager combat)
     {
         combat.canMove = true;
         combat.heavyAttackHitbox.SetActive(false);

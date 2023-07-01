@@ -50,7 +50,7 @@ public class ThrowState : CombatBaseState
     {
         throw new System.NotImplementedException();
     }
-    public override void HitOutOfState(CombatStateManager combat)
+    public override void ForcedOutOfState(CombatStateManager combat)
     {
         //for (int i = 0; i < playersYouAreGrabbing.Count; i++)
         //{

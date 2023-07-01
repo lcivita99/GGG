@@ -38,8 +38,12 @@ public class HoldState : CombatBaseState
     {
         
     }
-    public override void HitOutOfState(CombatStateManager combat)
+    public override void ForcedOutOfState(CombatStateManager combat)
     {
-        combat.grabHitbox.SetActive(false);
+        if (!hasTurnedOffHitbox)
+        {
+            hasTurnedOffHitbox = true;
+            combat.grabHitbox.SetActive(false);
+        }
     }
 }

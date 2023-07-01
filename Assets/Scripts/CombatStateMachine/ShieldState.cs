@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class ShieldState : CombatBaseState
 {
+    private Vector2 shieldKnockbackDir;
     public override void EnterState(CombatStateManager combat, float number)
     {
         combat.canMove = false;
         combat.shield.SetActive(true);
+
+        // number = shield knockback strength
+
+        if (number > 0)
+        {
+            shieldKnockbackDir = (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
+        }
+
+        combat.rb.AddForce(shieldKnockbackDir * number, ForceMode2D.Impulse);
     }
 
     public override void UpdateState(CombatStateManager combat)
@@ -57,7 +67,7 @@ public class ShieldState : CombatBaseState
     {
         
     }
-    public override void HitOutOfState(CombatStateManager combat)
+    public override void ForcedOutOfState(CombatStateManager combat)
     {
         combat.shield.SetActive(false);
     }

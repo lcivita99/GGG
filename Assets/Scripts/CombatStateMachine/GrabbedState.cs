@@ -36,23 +36,26 @@ public class GrabbedState : CombatBaseState
                 {
                     combat.playerAttackingYouManager.shield.SetActive(false);
                 }
+                combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
                 combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.ThrowState);
                 combat.SwitchState(combat.HitstunState, combat.throwDamage);
             }
         }
 
-        if (grabbedTimer > combat.playerAttackingYouManager.HoldState.timeToTurnOffHitbox && throwAsap)
+        else if (grabbedTimer > combat.playerAttackingYouManager.HoldState.timeToTurnOffHitbox && throwAsap)
         {
             if (combat.playerAttackingYouManager.grabHitbox.activeSelf)
             {
                 combat.playerAttackingYouManager.grabHitbox.SetActive(false);
             }
+            combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
             combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.ThrowState);
             combat.SwitchState(combat.HitstunState, combat.throwDamage);
         }
 
         if (grabbedTimer >= combat.playerAttackingYouManager.holdLength)
         {
+            combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
             combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.IdleState);
             combat.SwitchState(combat.IdleState);
         }
@@ -69,9 +72,10 @@ public class GrabbedState : CombatBaseState
     {
         
     }
-    public override void HitOutOfState(CombatStateManager combat)
+    public override void ForcedOutOfState(CombatStateManager combat)
     {
         Physics2D.IgnoreCollision(combat.playerAttackingYouManager.mainCollider, combat.mainCollider, false);
+        combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
         combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.IdleState);
     }
 
@@ -82,6 +86,7 @@ public class GrabbedState : CombatBaseState
             if (combat.leftStick.ReadValue().magnitude > 0.169f)
             {
                 combat.SwitchState(combat.HitstunState, combat.throwDamage);
+                combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
                 combat.playerAttackingYouManager.SwitchState(combat.ThrowState);
             }
         }

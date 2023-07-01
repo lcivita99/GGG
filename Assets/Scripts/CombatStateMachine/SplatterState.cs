@@ -23,7 +23,7 @@ public class SplatterState : CombatBaseState
     {
         throw new System.NotImplementedException();
     }
-    public override void HitOutOfState(CombatStateManager combat)
+    public override void ForcedOutOfState(CombatStateManager combat)
     {
         throw new System.NotImplementedException();
     }

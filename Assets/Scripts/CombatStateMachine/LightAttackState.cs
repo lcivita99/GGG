@@ -20,14 +20,31 @@ public class LightAttackState : CombatBaseState
         combat.playerSpriteAnim.SetLightSpriteToIdx(0);
         //combat.playerSpriteAnim.lightIndex = combat.playerSpriteAnim.lightFrameStartup.Count - 1;
 
+        // ! ! ! For some reason, triggers only check if there is on trigger enter for them if they are moving.
+        // this is a fix for that. A very minor force that makes no difference.
+        combat.rb.AddForce(combat.playerSpriteAnim.transform.up * 0.1f, ForceMode2D.Force);
+
         // reset bools
         turnedHitboxOn = false;
         turnedHitboxOff = false;
+
+        // set move direction
+        if (combat.leftStick.ReadValue().magnitude >= 0.1f)
+        {
+            combat.lightAttackHitbox.transform.up = combat.leftStick.ReadValue().normalized;
+        }
+        else
+        {
+            combat.lightAttackHitbox.transform.up = combat.playerSpriteTargetTransform.up;
+        }
     }
 
     public override void UpdateState(CombatStateManager combat)
     {
-        attackTimer += Time.deltaTime;
+        if (!combat.attackTimerStuck)
+        {
+            attackTimer += Time.deltaTime;
+        }
 
         // startup
         if (attackTimer >= combat.lightAttackStartup && !turnedHitboxOn)
@@ -35,15 +52,7 @@ public class LightAttackState : CombatBaseState
             turnedHitboxOn = true;
             combat.lightAttackHitbox.SetActive(true);
 
-            // set move direction
-            if (combat.leftStick.ReadValue().magnitude >= 0.1f)
-            {
-                combat.lightAttackHitbox.transform.up = combat.leftStick.ReadValue().normalized;
-            }
-            else
-            {
-                combat.lightAttackHitbox.transform.up = combat.playerSpriteTargetTransform.up;
-            }
+            
         }
 
         // deactivate move
@@ -54,12 +63,12 @@ public class LightAttackState : CombatBaseState
         }
 
         // endlag + return to Idle
-        if (attackTimer > combat.lightAttackDuration)
+        if (attackTimer >= combat.lightAttackDuration)
         {
             combat.SwitchState(combat.IdleState);
         }
 
-        if (attackTimer > combat.lightAttackDuration - combat.bufferSize)
+        if (attackTimer >= combat.lightAttackDuration - combat.bufferSize)
         {
             combat.UpdateBufferInput();
         }
@@ -72,10 +81,10 @@ public class LightAttackState : CombatBaseState
 
     public override void OnTriggerExit(CombatStateManager combat, Collider2D collider)
     {
-        throw new System.NotImplementedException();
+        
     }
 
-    public override void HitOutOfState(CombatStateManager combat)
+    public override void ForcedOutOfState(CombatStateManager combat)
     {
         combat.lightAttackHitbox.SetActive(false);
         combat.playerSpriteAnim.SetLightSpriteToIdx(combat.playerSpriteAnim.lightFrameStartup.Count - 1);

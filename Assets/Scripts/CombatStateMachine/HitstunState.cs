@@ -35,7 +35,7 @@ public class HitstunState : CombatBaseState
         }
 
         //combat.takeHeavyDamageTimer = 0;
-
+        combat.playerAttackingYouManager.attackTimerStuck = true;
         combat.canMove = false;
         combat.isStuck = true;
 
@@ -54,6 +54,8 @@ public class HitstunState : CombatBaseState
         }
 
         wasKnockedBack = false;
+
+        //Debug.Log("Entered hitstun");
 
         //combat.ResetPlayerAttackingYou();
     }
@@ -75,6 +77,7 @@ public class HitstunState : CombatBaseState
             {
                 wasKnockedBack = true;
                 combat.isStuck = false;
+                combat.playerAttackingYouManager.attackTimerStuck = false;
                 AddKnockback(combat, combat.lightAttackKnockbackStrength);
             }
 
@@ -92,6 +95,7 @@ public class HitstunState : CombatBaseState
                 //combat.otherPlayerCombatManager.HeavyAttackState.canHit = false;
                 wasKnockedBack = true;
                 combat.isStuck = false;
+                combat.playerAttackingYouManager.attackTimerStuck = false;
                 AddKnockback(combat, combat.heavyAttackKnockbackStrength);
             }
 
@@ -108,7 +112,8 @@ public class HitstunState : CombatBaseState
             {
                 wasKnockedBack = true;
                 combat.isStuck = false;
-                
+                combat.playerAttackingYouManager.attackTimerStuck = false;
+
                 AddKnockback(combat, combat.throwKnockbackStrength);
             }
             
@@ -126,6 +131,7 @@ public class HitstunState : CombatBaseState
             {
                 wasKnockedBack = true;
                 combat.isStuck = false;
+                combat.playerAttackingYouManager.attackTimerStuck = false;
                 AddKnockback(combat, combat.clankKnockbackStrength);
 
                 combat.canMove = true;
@@ -151,9 +157,10 @@ public class HitstunState : CombatBaseState
     {
         
     }
-    public override void HitOutOfState(CombatStateManager combat)
+    public override void ForcedOutOfState(CombatStateManager combat)
     {
         combat.isStuck = false;
+        combat.playerAttackingYouManager.attackTimerStuck = false;
         Physics2D.IgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider, false);
     }
 

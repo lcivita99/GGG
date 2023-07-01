@@ -57,7 +57,7 @@ public class DashState : CombatBaseState
         
     }
 
-    public override void HitOutOfState(CombatStateManager combat)
+    public override void ForcedOutOfState(CombatStateManager combat)
     {
         
     }
