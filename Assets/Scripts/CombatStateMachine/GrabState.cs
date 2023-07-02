@@ -10,6 +10,9 @@ public class GrabState : CombatBaseState
     public List<bool> canHit;
     public override void EnterState(CombatStateManager combat, float number)
     {
+        combat.playerSpriteAnim.SetGrabSpriteToIdx(0);
+
+
         for (int i = 0; i < canHit.Count; i++)
         {
             canHit[i] = true;
@@ -83,6 +86,7 @@ public class GrabState : CombatBaseState
     {
         // just doing this to prevent activating hitbox after deactivating it
         turnedHitboxOn = true;
+        combat.playerSpriteAnim.SetGrabSpriteToIdx(combat.playerSpriteAnim.grabFrameStartup.Count - 1);
 
         combat.grabHitbox.SetActive(false);
         // TODO combat.playerSpriteAnim.SetLightSpriteToIdx(combat.playerSpriteAnim.lightFrameStartup.Count - 1);

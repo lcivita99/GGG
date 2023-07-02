@@ -14,6 +14,8 @@ public class HitstunState : CombatBaseState
     private float moveID;
 
     private bool wasKnockedBack;
+
+    private Color startColor = new Color(1, 0.7f, 0.7f, 1);
     public override void EnterState(CombatStateManager combat, float number)
     {
         //Debug.Log("entered hitstun" + Time.deltaTime);
@@ -21,6 +23,8 @@ public class HitstunState : CombatBaseState
         combat.health -= moveID;
         combat.UpdateHealthUI();
         hitstunTimer = 0;
+
+        
 
         if (moveID == combat.lightAttackDamage)
         {
@@ -54,10 +58,6 @@ public class HitstunState : CombatBaseState
         }
 
         wasKnockedBack = false;
-
-        //Debug.Log("Entered hitstun");
-
-        //combat.ResetPlayerAttackingYou();
     }
 
     public override void UpdateState(CombatStateManager combat)
@@ -81,9 +81,15 @@ public class HitstunState : CombatBaseState
                 AddKnockback(combat, combat.lightAttackKnockbackStrength);
             }
 
+            if (wasKnockedBack)
+            {
+                LerpFromRed(combat, combat.lightAttackInitialHitstunLength, combat.lightAttackTotalHitstunLength);
+            }
+
             if (hitstunTimer >= combat.lightAttackTotalHitstunLength)
             {
                 combat.canMove = true;
+                combat.playerSpriteRenderer.color = Color.white;
                 combat.SwitchState(combat.IdleState);
             }
         }
@@ -99,9 +105,15 @@ public class HitstunState : CombatBaseState
                 AddKnockback(combat, combat.heavyAttackKnockbackStrength);
             }
 
+            if (wasKnockedBack)
+            {
+                LerpFromRed(combat, combat.heavyAttackInitialHitstunLength, combat.heavyAttackTotalHitstunLength);
+            }
+
             if (hitstunTimer >= combat.heavyAttackTotalHitstunLength)
             {
                 combat.canMove = true;
+                combat.playerSpriteRenderer.color = Color.white;
                 combat.SwitchState(combat.IdleState);
             }
         }
@@ -116,11 +128,17 @@ public class HitstunState : CombatBaseState
 
                 AddKnockback(combat, combat.throwKnockbackStrength);
             }
-            
-            
+
+            if (wasKnockedBack)
+            {
+                LerpFromRed(combat, 0, combat.throwTotalHitstunLength);
+            }
+
+
             if (hitstunTimer >= combat.throwTotalHitstunLength)
             {
                 combat.canMove = true;
+                combat.playerSpriteRenderer.color = Color.white;
                 combat.SwitchState(combat.IdleState);
             }
         }
@@ -162,6 +180,7 @@ public class HitstunState : CombatBaseState
         combat.isStuck = false;
         combat.playerAttackingYouManager.attackTimerStuck = false;
         Physics2D.IgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider, false);
+        combat.playerSpriteRenderer.color = Color.white;
     }
 
     private void AddKnockback(CombatStateManager combat, float hitStrength)
@@ -171,6 +190,7 @@ public class HitstunState : CombatBaseState
         {
             DI = DI.normalized;
         }
+        combat.playerSpriteRenderer.color = startColor;
 
         combat.rb.AddForce((hitDirection + DI*DIStrength) * hitStrength, ForceMode2D.Impulse);
     }
@@ -184,5 +204,10 @@ public class HitstunState : CombatBaseState
         }
 
         combat.rb.AddForce((hitDirection + DI * DIStrength) * hitStrength, ForceMode2D.Impulse);
+    }
+
+    private void LerpFromRed(CombatStateManager combat, float initialHitstunLength, float totalHitstunLength)
+    {
+        combat.playerSpriteRenderer.color += Time.deltaTime * (Color.green + Color.blue) * 1.5f * (totalHitstunLength - initialHitstunLength);
     }
 }

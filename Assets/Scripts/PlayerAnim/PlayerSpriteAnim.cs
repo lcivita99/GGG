@@ -20,6 +20,9 @@ public class PlayerSpriteAnim : MonoBehaviour
     [SerializeField] private SpriteRenderer attackSpriteRenderer;
     [SerializeField] private Sprite[] lightAttackSprites;
     [SerializeField] private Sprite[] heavyAttackSprites;
+    [SerializeField] private Sprite[] grabSprites;
+    //[SerializeField] private Sprite[] grabbedSprites;
+    public GameObject grabbedIndicator;
 
     // limb bases
     [SerializeField] private Transform rightLegBase;
@@ -44,6 +47,10 @@ public class PlayerSpriteAnim : MonoBehaviour
 
     public List<float> lightFrameStartup = new List<float>();
     public int lightIndex = 0;
+
+    public List<float> grabFrameStartup = new List<float>();
+    public int grabIndex = 0;
+
     public void SetHeavySpriteToIdx(int idx)
     {
         if (attackSpriteRenderer.sprite != heavyAttackSprites[idx])
@@ -59,6 +66,15 @@ public class PlayerSpriteAnim : MonoBehaviour
             attackSpriteRenderer.sprite = lightAttackSprites[idx];
         }
         lightIndex = idx;
+    }
+
+    public void SetGrabSpriteToIdx(int idx)
+    {
+        if (attackSpriteRenderer.sprite != grabSprites[idx])
+        {
+            attackSpriteRenderer.sprite = grabSprites[idx];
+        }
+        grabIndex = idx;
     }
 
     void Start()
@@ -91,6 +107,16 @@ public class PlayerSpriteAnim : MonoBehaviour
         lightFrameStartup.Add(combatStateManager.lightAttackStartup +
             combatStateManager.lightAttackActiveHitboxDuration);
         lightFrameStartup.Add(combatStateManager.lightAttackDuration);
+
+        // grab frame startup
+        grabFrameStartup.Add(combatStateManager.grabStartup / 3);
+        grabFrameStartup.Add(5 * combatStateManager.grabStartup / 6);
+        grabFrameStartup.Add(combatStateManager.grabStartup);
+        grabFrameStartup.Add(combatStateManager.grabStartup +
+            combatStateManager.grabActiveHitboxDuration / 1.5f);
+        grabFrameStartup.Add(combatStateManager.grabStartup +
+            combatStateManager.grabActiveHitboxDuration);
+        grabFrameStartup.Add(combatStateManager.grabDuration);
     }
 
     // Update is called once per frame
@@ -130,10 +156,34 @@ public class PlayerSpriteAnim : MonoBehaviour
         {
             DashUpdateTarget();
         }
-        else if (combatStateManager.currentState == combatStateManager.ShieldState ||
-            combatStateManager.currentState == combatStateManager.GrabbedState)
+        else if (combatStateManager.currentState == combatStateManager.ShieldState )
         {
             WalkUpdateTarget();
+
+            WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
+            WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
+            WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
+            WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
+        }
+        else if (combatStateManager.currentState == combatStateManager.GrabbedState)
+        {
+            WalkUpdateTarget();
+
+            if (!grabbedIndicator.activeSelf)
+            {
+                grabbedIndicator.SetActive(true);
+            }
+
+            WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
+            WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
+            WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
+            WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
+        }
+        else if (combatStateManager.currentState == combatStateManager.GrabState)
+        {
+            WalkUpdateTarget();
+
+            UpdateGrabSprites();
 
             WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
             WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
@@ -299,7 +349,7 @@ public class PlayerSpriteAnim : MonoBehaviour
             speed * Time.deltaTime);
     }
 
-    private void LightCicleSprite()
+    private void LightCycleSprite()
     {
 
         if (combatStateManager.LightAttackState.attackTimer < lightFrameStartup[lightIndex])
@@ -317,7 +367,7 @@ public class PlayerSpriteAnim : MonoBehaviour
     }
     private void UpdateLightAttackSprites()
     {
-        LightCicleSprite();
+        LightCycleSprite();
 
         if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackStartup)
         {
@@ -330,8 +380,69 @@ public class PlayerSpriteAnim : MonoBehaviour
         }
     }
 
+    private void GrabCycleSprite()
+    {
 
-    private void HeavyCicleSprite()
+        if (combatStateManager.GrabState.attackTimer < grabFrameStartup[grabIndex])
+        {
+            // this is checking if it is already not in that sprite
+            SetGrabSpriteToIdx(grabIndex);
+        }
+        else if (combatStateManager.GrabState.attackTimer >= grabFrameStartup[grabIndex])
+        {
+            if (grabIndex < grabFrameStartup.Count)
+            {
+                grabIndex++;
+            }
+        }
+    }
+    private void UpdateGrabSprites()
+    {
+        GrabCycleSprite();
+
+        if (combatStateManager.GrabState.attackTimer < combatStateManager.grabStartup)
+        {
+            attackSpriteRenderer.gameObject.transform.position = targetTransform.transform.position;
+            attackSpriteRenderer.gameObject.transform.rotation = targetTransform.transform.rotation;
+        }
+        else
+        {
+            attackSpriteRenderer.gameObject.transform.position = combatStateManager.grabHitbox.transform.position;
+            attackSpriteRenderer.gameObject.transform.rotation = combatStateManager.grabHitbox.transform.rotation;
+        }
+    }
+
+
+    //private void UpdateGrabbedSprites()
+    //{
+    //    GrabbedCycleSprites();
+
+    //    attackSpriteRenderer.gameObject.transform.position = combatStateManager.transform.position;
+    //    attackSpriteRenderer.gameObject.transform.rotation = combatStateManager.transform.rotation;
+    //}
+
+    //private void GrabbedCycleSprites()
+    //{
+    //    if (combatStateManager.GrabbedState.grabbedTimer < grabFrameStartup[grabIndex])
+    //    {
+    //        // this is checking if it is already not in that sprite
+    //        SetGrabbedSpriteToIdx(grabbedIndex);
+    //    }
+    //    else if (combatStateManager.GrabState.attackTimer >= grabbedFrameStartup[grabbedIndex])
+    //    {
+    //        if (grabbedIndex < grabbedFrameStartup.Count)
+    //        {
+    //            grabbedIndex++;
+    //        }
+    //    }
+
+    //    if (combatStateManager.GrabbedState.grabbedTimer >= grabbedFrameStartup[3])
+    //    {
+    //        grabbedIndex = 2;
+    //    }
+    //}
+
+    private void HeavyCycleSprite()
     {
         
         if (combatStateManager.HeavyAttackState.attackTimer < heavyFrameStartup[heavyIndex])
@@ -350,7 +461,7 @@ public class PlayerSpriteAnim : MonoBehaviour
 
 private void UpdateHeavyAttackSprites()
     {
-        HeavyCicleSprite();
+        HeavyCycleSprite();
 
         if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup)
         {

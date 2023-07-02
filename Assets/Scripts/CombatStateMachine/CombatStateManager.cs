@@ -62,6 +62,8 @@ public class CombatStateManager : MonoBehaviour
     public Collider2D mainCollider;
     public Transform playerSpriteTargetTransform;
     public PlayerSpriteAnim playerSpriteAnim;
+    public SpriteRenderer playerSpriteRenderer;
+    public GameObject splatterSpriteAnim;
 
     // attack hitboxes & variables
     public bool attackTimerStuck;
@@ -237,12 +239,14 @@ public class CombatStateManager : MonoBehaviour
         // grab variables
         grabStartup = 0.2f;
         grabActiveHitboxDuration = 0.1f;
-        grabEndLag = 0.2f;
+        grabEndLag = 0.3f;
         grabDuration = grabStartup + grabActiveHitboxDuration + grabEndLag;
 
         holdLength = 2.69f;
 
         throwDuration = 0.4f;
+
+        playerSpriteRenderer = playerSpriteAnim.gameObject.GetComponent<SpriteRenderer>();
 
         currentState = IdleState;
         currentState.EnterState(this);
@@ -324,6 +328,19 @@ public class CombatStateManager : MonoBehaviour
     }
 
 
+    // TODO Fix that you can splatter away from wall if u start at wall and dash away
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        // SPLATTER
+        if ((currentState == DashState || currentState == HitstunState) && collision.gameObject.layer.Equals(10))
+        {
+            SplatterState.splatterDirection = collision.contacts[0].normal;
+            currentState.ForcedOutOfState(this);
+            SwitchState(SplatterState);
+        }
+    }
+
+
     public void SwitchState(CombatBaseState state)
     {
         currentState = state;
@@ -393,11 +410,7 @@ public class CombatStateManager : MonoBehaviour
         {
             if (takeLightDamageTimer >= attackTriggerTime)
             {
-                // ! update player attacking
-                if (collision.transform.parent.parent.GetComponent<CombatStateManager>() != null)
-                {
-                    playerAttackingYouManager = collision.transform.parent.parent.GetComponent<CombatStateManager>();
-                }
+                UpdatePlayerAttackingYou(collision);
 
                 if (playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1])
                 {
@@ -409,11 +422,7 @@ public class CombatStateManager : MonoBehaviour
             }
             if (takeHeavyDamageTimer >= attackTriggerTime)
             {
-                // ! update player attacking
-                if (collision.transform.parent.parent.GetComponent<CombatStateManager>() != null)
-                {
-                    playerAttackingYouManager = collision.transform.parent.parent.GetComponent<CombatStateManager>();
-                }
+                UpdatePlayerAttackingYou(collision);
 
                 if (playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1])
                 {
@@ -425,11 +434,8 @@ public class CombatStateManager : MonoBehaviour
             }
         } else if (currentState == ShieldState)
         {
-            // ! update player attacking
-            if (collision.transform.parent.parent.GetComponent<CombatStateManager>() != null)
-            {
-                playerAttackingYouManager = collision.transform.parent.parent.GetComponent<CombatStateManager>();
-            }
+            UpdatePlayerAttackingYou(collision);
+
             // get shield light attacked
             if (takeLightDamageTimer >= attackTriggerTime && playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1])
             {
@@ -451,11 +457,7 @@ public class CombatStateManager : MonoBehaviour
         // get grabbed
         if (getGrabbedTimer >= attackTriggerTime)
         {
-            // ! update player attacking
-            if (collision.transform.parent.parent.GetComponent<CombatStateManager>() != null)
-            {
-                playerAttackingYouManager = collision.transform.parent.parent.GetComponent<CombatStateManager>();
-            }
+            UpdatePlayerAttackingYou(collision);
 
             if (playerAttackingYouManager.GrabState.canHit[playerMovement.playerNumber - 1])
             {
@@ -465,29 +467,18 @@ public class CombatStateManager : MonoBehaviour
                 SwitchState(GrabbedState);
             }
         }
+    }
 
-    //    // get shield light attacked
-    //    if (takeLightDamageTimer >= attackTriggerTime && playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1] &&
-    //        (currentState == SplatterState || currentState == ShieldState || currentState == ShieldStunState))
-    //    {
-    //        // ! update player attacking
-    //        playerAttackingYouManager = collision.transform.parent.parent.GetComponent<CombatStateManager>();
-
-    //        takeLightDamageTimer = 0;
-    //        playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1] = false;
-    //        SwitchState(ShieldStunState, lightAttackShieldStunLength);
-    //    }
-    //    // get shield heavy attacked
-    //    if (takeHeavyDamageTimer >= attackTriggerTime && playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1] &&
-    //        (currentState == SplatterState || currentState == ShieldState || currentState == ShieldStunState))
-    //    {
-    //        // ! update player attacking
-    //        playerAttackingYouManager = collision.transform.parent.parent.GetComponent<CombatStateManager>();
-
-    //        takeHeavyDamageTimer = 0;
-    //        playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1] = false;
-    //        SwitchState(ShieldStunState, heavyAttackShieldStunLength);
-    //    }
+    private void UpdatePlayerAttackingYou(Collider2D collision)
+    {
+        // ! update player attacking
+        if (collision.transform.parent.parent)
+        {
+            if (collision.transform.parent.parent.GetComponent<CombatStateManager>() != null)
+            {
+                playerAttackingYouManager = collision.transform.parent.parent.GetComponent<CombatStateManager>();
+            }
+        }
     }
 
     private void ResetGettingHitTimers(Collider2D collision)

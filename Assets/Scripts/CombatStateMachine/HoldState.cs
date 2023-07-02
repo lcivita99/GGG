@@ -12,6 +12,8 @@ public class HoldState : CombatBaseState
     //public float holdTimer;
     public override void EnterState(CombatStateManager combat, float number)
     {
+        combat.playerSpriteAnim.SetGrabSpriteToIdx(combat.playerSpriteAnim.grabFrameStartup.Count - 1);
+
         hasTurnedOffHitbox = false;
         combat.canMove = false;
 

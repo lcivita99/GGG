@@ -38,6 +38,7 @@ public class GrabbedState : CombatBaseState
                 }
                 combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
                 combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.ThrowState);
+                combat.playerSpriteAnim.grabbedIndicator.SetActive(false);
                 combat.SwitchState(combat.HitstunState, combat.throwDamage);
             }
         }
@@ -50,6 +51,7 @@ public class GrabbedState : CombatBaseState
             }
             combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
             combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.ThrowState);
+            combat.playerSpriteAnim.grabbedIndicator.SetActive(false);
             combat.SwitchState(combat.HitstunState, combat.throwDamage);
         }
 
@@ -57,6 +59,7 @@ public class GrabbedState : CombatBaseState
         {
             combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
             combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.IdleState);
+            combat.playerSpriteAnim.grabbedIndicator.SetActive(false);
             combat.SwitchState(combat.IdleState);
         }
 
@@ -75,6 +78,7 @@ public class GrabbedState : CombatBaseState
     public override void ForcedOutOfState(CombatStateManager combat)
     {
         Physics2D.IgnoreCollision(combat.playerAttackingYouManager.mainCollider, combat.mainCollider, false);
+        combat.playerSpriteAnim.grabbedIndicator.SetActive(false);
         combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
         combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.IdleState);
     }
