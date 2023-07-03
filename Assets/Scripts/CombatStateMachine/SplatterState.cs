@@ -41,6 +41,7 @@ public class SplatterState : CombatBaseState
 
         else if (bounceType == "dash")
         {
+            combat.BecomeInvulnerable(splatterLength);
             bounceMultiplier = strongBounceMultiplier;
         }
         
