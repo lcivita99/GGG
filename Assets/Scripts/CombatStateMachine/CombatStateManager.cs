@@ -60,6 +60,7 @@ public class CombatStateManager : MonoBehaviour
     public SpriteRenderer circleSprite;
     public Rigidbody2D rb;
     public Collider2D mainCollider;
+    public GameObject invulnerableCollider;
     public Transform playerSpriteTargetTransform;
     public PlayerSpriteAnim playerSpriteAnim;
     public SpriteRenderer playerSpriteRenderer;
@@ -116,6 +117,9 @@ public class CombatStateManager : MonoBehaviour
     public float takeLightDamageTimer;
     public float takeHeavyDamageTimer;
     public float getGrabbedTimer;
+
+    // splatter invulnerability
+    public float splatterInvulnerableTime;
 
     // shield
     public GameObject shield;
@@ -193,6 +197,9 @@ public class CombatStateManager : MonoBehaviour
 
         clankHitstunDuration = 0.2f;
         clankKnockbackStrength = 250;
+
+        // splatter
+        splatterInvulnerableTime = 0.6f;
 
         // movement
         canMove = true;
@@ -489,5 +496,27 @@ public class CombatStateManager : MonoBehaviour
             takeHeavyDamageTimer = 0f;
             getGrabbedTimer = 0f;
         }
+    }
+
+    // for idle state
+    public void BecomeInvulnerable(float timeInvulnerable)
+    {
+        invulnerableCollider.SetActive(true);
+        mainCollider.enabled = false;
+        playerSpriteRenderer.color = Color.white / 2f;
+        StartCoroutine(InvulnerableDelay(timeInvulnerable));
+    }
+
+    public IEnumerator InvulnerableDelay(float timeInvulnerable)
+    {
+        yield return new WaitForSeconds(timeInvulnerable);
+        BecomeVulnerable();
+    }
+
+    public void BecomeVulnerable()
+    {
+        invulnerableCollider.SetActive(false);
+        mainCollider.enabled = true;
+        playerSpriteRenderer.color = Color.white;
     }
 }

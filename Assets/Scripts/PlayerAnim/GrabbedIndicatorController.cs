@@ -54,6 +54,11 @@ public class GrabbedIndicatorController : MonoBehaviour
         {
             targetLocalScale -= Vector3.one * Time.deltaTime * holdLength;
         }
+
+        if (combateStateManager.currentState != combateStateManager.GrabbedState)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void UpdateScale()

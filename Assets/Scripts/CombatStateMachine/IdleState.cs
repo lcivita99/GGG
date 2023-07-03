@@ -5,15 +5,21 @@ using UnityEngine;
 
 public class IdleState : CombatBaseState
 {
-    //public float takeLightDamageTimer;
-    //public float takeHeavyDamageTimer;
+
+    private float invulnerableTime;
 
 
     public override void EnterState(CombatStateManager combat, float number)
     {
-        //lightDamageTimer = 0f;
-        combat.circleSprite.color = Color.red;
-        //Debug.Log(combat.bufferString);
+        invulnerableTime = number;
+
+        if (invulnerableTime > 0)
+        {
+            // become invulnerable for specified length
+            //Debug.Log("Knows to have invulnerable time");
+            invulnerableTime = number;
+            combat.BecomeInvulnerable(invulnerableTime);
+        }
 
         combat.canMove = true;
         combat.isStuck = false;
@@ -65,6 +71,9 @@ public class IdleState : CombatBaseState
 
     public override void ForcedOutOfState(CombatStateManager combat)
     {
-        
+        combat.StopCoroutine(combat.InvulnerableDelay(invulnerableTime));
+        combat.BecomeVulnerable();
     }
+
+    
 }

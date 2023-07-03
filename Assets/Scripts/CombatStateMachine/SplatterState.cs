@@ -24,6 +24,8 @@ public class SplatterState : CombatBaseState
 
         combat.playerSpriteRenderer.color = Color.clear;
         combat.mainCollider.enabled = false;
+
+        combat.bufferString = "";
     }
 
     public override void UpdateState(CombatStateManager combat)
@@ -44,7 +46,7 @@ public class SplatterState : CombatBaseState
             combat.playerSpriteRenderer.color = Color.white;
             combat.splatterSpriteAnim.SetActive(false);
             
-            combat.SwitchState(combat.IdleState);
+            combat.SwitchState(combat.IdleState, combat.splatterInvulnerableTime);
         }
     }
 
