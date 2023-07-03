@@ -28,6 +28,7 @@ public class SplatterState : CombatBaseState
         bounceType = str;
         if (bounceType == "hitstun")
         {
+            combat.BecomeInvulnerable(splatterLength + combat.splatterInvulnerableTime);
             if (combat.HitstunState.moveID == combat.lightAttackDamage)
             {
                 bounceMultiplier = weakBounceMultiplier;
@@ -50,7 +51,9 @@ public class SplatterState : CombatBaseState
         combat.splatterSpriteAnim.SetActive(true);
 
         combat.playerSpriteRenderer.enabled = false;
-        combat.mainCollider.enabled = false;
+        //combat.mainCollider.enabled = false;
+
+        
 
         combat.bufferString = "";
     }
@@ -70,7 +73,7 @@ public class SplatterState : CombatBaseState
 
             if (splatterTimer >= splatterLength)
             {
-                combat.mainCollider.enabled = true;
+                //combat.mainCollider.enabled = true;
                 combat.canMove = true;
                 combat.isStuck = false;
                 combat.playerSpriteRenderer.enabled = true;
@@ -94,7 +97,7 @@ public class SplatterState : CombatBaseState
 
             if (splatterTimer >= splatterLength)
             {
-                combat.mainCollider.enabled = true;
+                //combat.mainCollider.enabled = true;
                 combat.canMove = true;
                 combat.isStuck = false;
                 combat.playerSpriteRenderer.enabled = true;

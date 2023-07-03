@@ -23,9 +23,10 @@ public class HitstunState : CombatBaseState
         //Debug.Log("entered hitstun" + Time.deltaTime);
         moveID = number;
         
-        combat.UpdateHealthUI();
+        
         hitstunTimer = 0;
 
+        //Debug.Log(moveID);
 
         // Light attack case
         if (moveID == combat.lightAttackDamage)
@@ -72,6 +73,8 @@ public class HitstunState : CombatBaseState
         
 
         wasKnockedBack = false;
+
+        combat.UpdateHealthUI();
     }
 
     public override void UpdateState(CombatStateManager combat)
