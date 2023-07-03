@@ -10,19 +10,46 @@ public class SplatterState : CombatBaseState
 
     public Vector2 splatterDirection;
 
+    public float bounceStrength;
+    public float bounceMultiplier;
+    public float weakBounceMultiplier = 1;
+    public float strongBounceMultiplier = 1.469f;
     public bool hasBounced;
-    public override void EnterState(CombatStateManager combat, float number)
+
+    public string bounceType;
+
+    public override void EnterState(CombatStateManager combat, float number, string str)
     {
+        bounceStrength = number;
         splatterTimer = 0;
         combat.canMove = false;
         combat.isStuck = true;
+
+        bounceType = str;
+        if (bounceType == "hitstun")
+        {
+            if (combat.HitstunState.moveID == combat.lightAttackDamage)
+            {
+                bounceMultiplier = weakBounceMultiplier;
+            }
+            else if (combat.HitstunState.moveID == combat.throwDamage || combat.HitstunState.moveID == combat.heavyAttackDamage)
+            {
+                bounceMultiplier = strongBounceMultiplier;
+            }
+        }
+
+        else if (bounceType == "dash")
+        {
+            bounceMultiplier = strongBounceMultiplier;
+        }
+        
 
         hasBounced = false;
 
         combat.splatterSpriteAnim.transform.up = splatterDirection;
         combat.splatterSpriteAnim.SetActive(true);
 
-        combat.playerSpriteRenderer.color = Color.clear;
+        combat.playerSpriteRenderer.enabled = false;
         combat.mainCollider.enabled = false;
 
         combat.bufferString = "";
@@ -32,21 +59,49 @@ public class SplatterState : CombatBaseState
     {
         splatterTimer += Time.deltaTime;
 
-        if (splatterTimer >= splatterLength / 2 && !hasBounced)
+        if (bounceType == "hitstun")
         {
-            hasBounced = true;
-            combat.rb.AddForce(splatterDirection * combat.dashStrength, ForceMode2D.Impulse);
+            if (splatterTimer >= splatterLength / 1.2f && !hasBounced)
+            {
+                hasBounced = true;
+                combat.isStuck = false;
+                combat.rb.AddForce(splatterDirection * combat.dashStrength * bounceMultiplier * (1 - bounceStrength), ForceMode2D.Impulse);
+            }
+
+            if (splatterTimer >= splatterLength)
+            {
+                combat.mainCollider.enabled = true;
+                combat.canMove = true;
+                combat.isStuck = false;
+                combat.playerSpriteRenderer.enabled = true;
+                combat.splatterSpriteAnim.SetActive(false);
+
+                combat.SwitchState(combat.IdleState, combat.splatterInvulnerableTime);
+            }
         }
 
-        if (splatterTimer >= splatterLength)
+        else if (bounceType == "dash")
         {
-            combat.mainCollider.enabled = true;
-            combat.canMove = true;
-            combat.isStuck = false;
-            combat.playerSpriteRenderer.color = Color.white;
-            combat.splatterSpriteAnim.SetActive(false);
-            
-            combat.SwitchState(combat.IdleState, combat.splatterInvulnerableTime);
+            if (splatterTimer >= splatterLength / 1.2f && !hasBounced)
+            {
+                hasBounced = true;
+                combat.isStuck = false;
+                float dotProduct = Vector2.Dot(combat.DashState.dashDirection, splatterDirection);
+                Vector2 reflectionDirection = combat.DashState.dashDirection - 2f * dotProduct * splatterDirection;
+                splatterDirection = reflectionDirection;
+                combat.rb.AddForce(splatterDirection * combat.dashStrength * bounceMultiplier * (1 - bounceStrength), ForceMode2D.Impulse);
+            }
+
+            if (splatterTimer >= splatterLength)
+            {
+                combat.mainCollider.enabled = true;
+                combat.canMove = true;
+                combat.isStuck = false;
+                combat.playerSpriteRenderer.enabled = true;
+                combat.splatterSpriteAnim.SetActive(false);
+
+                combat.SwitchState(combat.IdleState);
+            }
         }
     }
 
@@ -64,7 +119,7 @@ public class SplatterState : CombatBaseState
         combat.mainCollider.enabled = true;
         combat.canMove = true;
         combat.isStuck = false;
-        combat.playerSpriteRenderer.color = Color.white;
+        combat.playerSpriteRenderer.enabled = true;
         combat.splatterSpriteAnim.SetActive(false);
     }
 }

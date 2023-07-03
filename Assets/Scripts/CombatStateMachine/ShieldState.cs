@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShieldState : CombatBaseState
 {
     private Vector2 shieldKnockbackDir;
-    public override void EnterState(CombatStateManager combat, float number)
+    public override void EnterState(CombatStateManager combat, float number, string str)
     {
         combat.canMove = false;
         combat.shield.SetActive(true);

@@ -9,7 +9,7 @@ public class IdleState : CombatBaseState
     private float invulnerableTime;
 
 
-    public override void EnterState(CombatStateManager combat, float number)
+    public override void EnterState(CombatStateManager combat, float number, string str)
     {
         invulnerableTime = number;
 

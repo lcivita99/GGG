@@ -8,7 +8,7 @@ public class GrabState : CombatBaseState
     public bool turnedHitboxOn;
     public bool turnedHitboxOff;
     public List<bool> canHit;
-    public override void EnterState(CombatStateManager combat, float number)
+    public override void EnterState(CombatStateManager combat, float number, string str)
     {
         combat.playerSpriteAnim.SetGrabSpriteToIdx(0);
 

@@ -11,7 +11,7 @@ public class ShieldStunState : CombatBaseState
     public float shieldKnockbackStrength = 100f;
 
     public CombatStateManager playerWhoPutYouInShieldStun;
-    public override void EnterState(CombatStateManager combat, float number)
+    public override void EnterState(CombatStateManager combat, float number, string str)
     {
         shieldStunTimer = 0;
         combat.isStuck = true;

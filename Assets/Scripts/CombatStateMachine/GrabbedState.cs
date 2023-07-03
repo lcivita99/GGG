@@ -9,16 +9,20 @@ public class GrabbedState : CombatBaseState
     public float grabbedTimer;
 
     private bool throwAsap;
-    public override void EnterState(CombatStateManager combat, float number)
+
+    private CombatStateManager playerWhoGrabbedYou;
+    public override void EnterState(CombatStateManager combat, float number, string str)
     {
         combat.canMove = false;
         combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.HoldState);
+
+        playerWhoGrabbedYou = combat.playerAttackingYouManager;
 
         grabbedTimer = 0;
 
         throwAsap = false;
         
-        locationToBe = combat.playerAttackingYouManager.transform.position + (combat.gameObject.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
+        locationToBe = playerWhoGrabbedYou.transform.position + (combat.gameObject.transform.position - playerWhoGrabbedYou.transform.position).normalized;
     }
 
     public override void UpdateState(CombatStateManager combat)
@@ -27,43 +31,59 @@ public class GrabbedState : CombatBaseState
 
         combat.rb.AddForce((locationToBe - combat.rb.position) * 400 * Time.deltaTime, ForceMode2D.Impulse);
 
-        if (combat.playerAttackingYouManager.lightAttackButton.wasPressedThisFrame || combat.playerAttackingYouManager.heavyAttackButton.wasPressedThisFrame)
+        if (grabbedTimer < playerWhoGrabbedYou.HoldState.timeToTurnOffHitbox)
         {
-            throwAsap = true;
-            if (grabbedTimer > combat.playerAttackingYouManager.HoldState.timeToTurnOffHitbox)
+            if (playerWhoGrabbedYou.lightAttackButton.wasPressedThisFrame || playerWhoGrabbedYou.heavyAttackButton.wasPressedThisFrame)
             {
-                if (combat.playerAttackingYouManager.grabHitbox.activeSelf)
+                throwAsap = true;   
+            }
+            //if (grabbedTimer > playerWhoGrabbedYou.HoldState.timeToTurnOffHitbox)
+            //{
+            //    if (playerWhoGrabbedYou.grabHitbox.activeSelf)
+            //    {
+            //        playerWhoGrabbedYou.shield.SetActive(false);
+            //    }
+            //    playerWhoGrabbedYou.currentState.ForcedOutOfState(combat);
+            //    playerWhoGrabbedYou.SwitchState(playerWhoGrabbedYou.ThrowState);
+            //    combat.playerSpriteAnim.grabbedIndicator.SetActive(false);
+            //    combat.SwitchState(combat.HitstunState, combat.throwDamage);
+            //}
+        }
+
+        else
+        {
+            if (throwAsap || (playerWhoGrabbedYou.lightAttackButton.wasPressedThisFrame || playerWhoGrabbedYou.heavyAttackButton.wasPressedThisFrame))
+            {
+                combat.canMove = false;
+                if (playerWhoGrabbedYou.grabHitbox.activeSelf)
                 {
-                    combat.playerAttackingYouManager.shield.SetActive(false);
+                    playerWhoGrabbedYou.grabHitbox.SetActive(false);
                 }
-                combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
-                combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.ThrowState);
+                playerWhoGrabbedYou.currentState.ForcedOutOfState(playerWhoGrabbedYou);
+                playerWhoGrabbedYou.SwitchState(playerWhoGrabbedYou.ThrowState);
                 combat.playerSpriteAnim.grabbedIndicator.SetActive(false);
                 combat.SwitchState(combat.HitstunState, combat.throwDamage);
             }
+            
         }
 
-        else if (grabbedTimer > combat.playerAttackingYouManager.HoldState.timeToTurnOffHitbox && throwAsap)
+        if (grabbedTimer >= playerWhoGrabbedYou.holdLength)
         {
-            if (combat.playerAttackingYouManager.grabHitbox.activeSelf)
-            {
-                combat.playerAttackingYouManager.grabHitbox.SetActive(false);
-            }
-            combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
-            combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.ThrowState);
-            combat.playerSpriteAnim.grabbedIndicator.SetActive(false);
-            combat.SwitchState(combat.HitstunState, combat.throwDamage);
-        }
-
-        if (grabbedTimer >= combat.playerAttackingYouManager.holdLength)
-        {
-            combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
-            combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.IdleState);
+            playerWhoGrabbedYou.currentState.ForcedOutOfState(playerWhoGrabbedYou);
+            playerWhoGrabbedYou.SwitchState(playerWhoGrabbedYou.IdleState);
             combat.playerSpriteAnim.grabbedIndicator.SetActive(false);
             combat.SwitchState(combat.IdleState);
         }
 
         CheckGrabberThrow(combat);
+
+        if (playerWhoGrabbedYou.currentState == playerWhoGrabbedYou.HitstunState)
+        {
+            //combat.canMove = true;
+            Physics2D.IgnoreCollision(playerWhoGrabbedYou.mainCollider, combat.mainCollider, false);
+            combat.playerSpriteAnim.grabbedIndicator.SetActive(false);
+            combat.SwitchState(combat.IdleState);
+        }
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
@@ -77,21 +97,22 @@ public class GrabbedState : CombatBaseState
     }
     public override void ForcedOutOfState(CombatStateManager combat)
     {
-        Physics2D.IgnoreCollision(combat.playerAttackingYouManager.mainCollider, combat.mainCollider, false);
+        //combat.canMove = true;
+        Physics2D.IgnoreCollision(playerWhoGrabbedYou.mainCollider, combat.mainCollider, false);
         combat.playerSpriteAnim.grabbedIndicator.SetActive(false);
-        combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
-        combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.IdleState);
+        playerWhoGrabbedYou.currentState.ForcedOutOfState(playerWhoGrabbedYou);
+        playerWhoGrabbedYou.SwitchState(playerWhoGrabbedYou.IdleState);
     }
 
     public void CheckGrabberThrow(CombatStateManager combat)
     {
-        if (combat.playerAttackingYouManager.lightAttackButton.wasPressedThisFrame || combat.playerAttackingYouManager.heavyAttackButton.wasPressedThisFrame)
+        if (playerWhoGrabbedYou.lightAttackButton.wasPressedThisFrame || playerWhoGrabbedYou.heavyAttackButton.wasPressedThisFrame)
         {
             if (combat.leftStick.ReadValue().magnitude > 0.169f)
             {
                 combat.SwitchState(combat.HitstunState, combat.throwDamage);
-                combat.playerAttackingYouManager.currentState.ForcedOutOfState(combat);
-                combat.playerAttackingYouManager.SwitchState(combat.ThrowState);
+                playerWhoGrabbedYou.currentState.ForcedOutOfState(playerWhoGrabbedYou);
+                playerWhoGrabbedYou.SwitchState(playerWhoGrabbedYou.ThrowState);
             }
         }
     }

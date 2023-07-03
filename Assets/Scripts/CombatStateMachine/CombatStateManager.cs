@@ -10,6 +10,7 @@ public class CombatStateManager : MonoBehaviour
     //public CombatStateManager p2Manager;
     //public CombatStateManager p3Manager;
     //public CombatStateManager p4Manager;
+    public string currentStateString;
 
     public List<CombatStateManager> allPlayers = new List<CombatStateManager>();
     public CombatStateManager playerAttackingYouManager;
@@ -76,6 +77,7 @@ public class CombatStateManager : MonoBehaviour
     public float lightAttackEndLag;
     public float lightAttackDuration;
     public float lightAttackDamage;
+    public float lightAttackDamageMultiplier;
 
     // heavy attack
     [SerializeField] public GameObject heavyAttackHitbox;
@@ -84,6 +86,7 @@ public class CombatStateManager : MonoBehaviour
     public float heavyAttackEndLag;
     public float heavyAttackDuration;
     public float heavyAttackDamage;
+    public float heavyAttackDamageMultiplier;
 
     // light attack
     [SerializeField] public GameObject grabHitbox;
@@ -92,6 +95,7 @@ public class CombatStateManager : MonoBehaviour
     public float grabEndLag;
     public float grabDuration;
     public float holdLength;
+    public float throwDamageMultiplier;
 
     public float throwDuration;
 
@@ -120,6 +124,7 @@ public class CombatStateManager : MonoBehaviour
 
     // splatter invulnerability
     public float splatterInvulnerableTime;
+    public int splatterCounter;
 
     // shield
     public GameObject shield;
@@ -177,8 +182,11 @@ public class CombatStateManager : MonoBehaviour
         dashStrength = 300;
         dashLength = 0.5f;
         lightAttackDamage = 10f;
+        lightAttackDamageMultiplier = 1;
         heavyAttackDamage = 20f;
+        heavyAttackDamageMultiplier = 1;
         throwDamage = 15f;
+        throwDamageMultiplier = 1;
         bufferSize = 0.25f;
 
         // hitstun stuff
@@ -295,25 +303,13 @@ public class CombatStateManager : MonoBehaviour
         {
             GrabState.canHit.Add(true);
         }
-
-        // player collider ignore other player's shields
-        //for (int i = 0; i < allPlayers.Count; i++)
-        //{
-        //    if (this != allPlayers[i])
-        //    {
-        //        Debug.Log("it ran");
-        //        Physics2D.IgnoreCollision(mainCollider, allPlayers[i].shield.GetComponentInChildren<Collider2D>(), true);
-        //    }
-        //}
     }
 
     void Update()
     {
         currentState.UpdateState(this);
-        //if (!(currentState == SplatterState || currentState == ShieldState || currentState == ShieldStunState))
-        //{
-        
-        //}
+
+        currentStateString = currentState.ToString();
     }
 
     private void FixedUpdate()
@@ -338,12 +334,44 @@ public class CombatStateManager : MonoBehaviour
     // TODO Fix that you can splatter away from wall if u start at wall and dash away
     private void OnCollisionStay2D(Collision2D collision)
     {
+        
         // SPLATTER
-        if ((currentState == DashState || currentState == HitstunState) && collision.gameObject.layer.Equals(10))
+        if ((currentState == HitstunState) && collision.gameObject.layer.Equals(10))
         {
-            SplatterState.splatterDirection = collision.contacts[0].normal;
-            currentState.ForcedOutOfState(this);
-            SwitchState(SplatterState);
+            if (splatterCounter >= 1)
+            {
+                SplatterState.splatterDirection = collision.contacts[0].normal;
+                currentState.ForcedOutOfState(this);
+                float collisionStrength = Mathf.Clamp(
+                    (HitstunState.hitstunTimer - HitstunState.currentInitialHitstunDuration) / (HitstunState.currentHitstunDuration / 6),
+                    0.15f, 1f);
+                //Debug.Log(collisionStrength);
+                SwitchState(SplatterState, collisionStrength, "hitstun");
+            }
+            splatterCounter++;
+        }
+        else if ((currentState == DashState) && collision.gameObject.layer.Equals(10))
+        {
+            if (splatterCounter >= 1)
+            {
+                SplatterState.splatterDirection = collision.contacts[0].normal;
+                currentState.ForcedOutOfState(this);
+                float collisionStrength = Mathf.Clamp(
+                     DashState.dashTimer/ (dashLength / 2),
+                    0.15f, 1f);
+                //Debug.Log(collisionStrength);
+                SwitchState(SplatterState, collisionStrength, "dash");
+            }
+            splatterCounter++;
+        }
+        
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer.Equals(10))
+        {
+            splatterCounter = 0;
         }
     }
 
@@ -360,6 +388,11 @@ public class CombatStateManager : MonoBehaviour
         currentState.EnterState(this, number);
     }
 
+    public void SwitchState(CombatBaseState state, float number, string str)
+    {
+        currentState = state;
+        currentState.EnterState(this, number, str);
+    }
 
     public void UpdateBufferInput()
     {
@@ -405,8 +438,6 @@ public class CombatStateManager : MonoBehaviour
         {
             getGrabbedTimer += Time.deltaTime;
         }
-
-        
 
         GetHit(collision);
     }

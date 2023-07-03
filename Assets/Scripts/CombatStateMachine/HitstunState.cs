@@ -4,38 +4,64 @@ using UnityEngine;
 
 public class HitstunState : CombatBaseState
 {
-    private float hitstunTimer;
+    public float hitstunTimer;
     private Vector2 hitDirection;
     private Vector2 DI;
     private float DIStrength = 0.25f;
 
-    private float currentHitstunDuration;
+    public float currentHitstunDuration;
+    public float currentInitialHitstunDuration;
 
-    private float moveID;
+    public float moveID;
 
     private bool wasKnockedBack;
 
     private Color startColor = new Color(1, 0.7f, 0.7f, 1);
-    public override void EnterState(CombatStateManager combat, float number)
+    public override void EnterState(CombatStateManager combat, float number, string str)
     {
+        combat.bufferString = "";
         //Debug.Log("entered hitstun" + Time.deltaTime);
         moveID = number;
-        combat.health -= moveID;
+        
         combat.UpdateHealthUI();
         hitstunTimer = 0;
 
-        
 
+        // Light attack case
         if (moveID == combat.lightAttackDamage)
         {
             currentHitstunDuration = combat.lightAttackTotalHitstunLength;
-        } else if (moveID == combat.heavyAttackDamage)
+            currentInitialHitstunDuration = combat.lightAttackInitialHitstunLength;
+            combat.health -= moveID * combat.lightAttackDamageMultiplier;
+            hitDirection = (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
+        }
+
+        // heavy attack case
+        else if (moveID == combat.heavyAttackDamage)
         {
             currentHitstunDuration = combat.heavyAttackTotalHitstunLength;
-        } else if (moveID == combat.throwDamage)
+            currentInitialHitstunDuration = combat.heavyAttackInitialHitstunLength;
+            combat.health -= moveID * combat.heavyAttackDamageMultiplier;
+            hitDirection = (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
+        }
+
+        // throw case
+        else if (moveID == combat.throwDamage)
         {
             currentHitstunDuration = combat.throwTotalHitstunLength;
+            currentInitialHitstunDuration = 0;
             Physics2D.IgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider, true);
+            combat.health -= moveID * combat.throwDamageMultiplier;
+
+            //change hit direction if in throw mode
+            if (combat.playerAttackingYouManager.leftStick.ReadValue().magnitude >= 0.169f)
+            {
+                hitDirection = combat.playerAttackingYouManager.leftStick.ReadValue().normalized;
+            }
+            else
+            {
+                hitDirection = (combat.playerAttackingYouManager.playerSpriteTargetTransform.up).normalized;
+            }
         }
 
         //combat.takeHeavyDamageTimer = 0;
@@ -43,19 +69,7 @@ public class HitstunState : CombatBaseState
         combat.canMove = false;
         combat.isStuck = true;
 
-        hitDirection = (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
-
-        //change hit direction if in throw mode
-        if (moveID == 15)
-        {
-            if (combat.playerAttackingYouManager.leftStick.ReadValue().magnitude >= 0.169f)
-            {
-                hitDirection = combat.playerAttackingYouManager.leftStick.ReadValue().normalized;
-            } else
-            {
-                hitDirection = (combat.playerAttackingYouManager.playerSpriteTargetTransform.up).normalized;
-            }
-        }
+        
 
         wasKnockedBack = false;
     }
@@ -147,6 +161,8 @@ public class HitstunState : CombatBaseState
         {
             if (hitstunTimer >= combat.clankHitstunDuration && !wasKnockedBack)
             {
+                Debug.Log("entered clank state RED ALERT");
+
                 wasKnockedBack = true;
                 combat.isStuck = false;
                 combat.playerAttackingYouManager.attackTimerStuck = false;
@@ -154,7 +170,6 @@ public class HitstunState : CombatBaseState
 
                 combat.canMove = true;
                 combat.SwitchState(combat.IdleState);
-
                 // add knockback
             }
         }

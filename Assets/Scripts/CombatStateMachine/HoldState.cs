@@ -8,11 +8,15 @@ public class HoldState : CombatBaseState
     private bool hasTurnedOffHitbox;
 
     public float timeToTurnOffHitbox = 0.1f;
+
+    private Vector2 startPos;
     
     //public float holdTimer;
-    public override void EnterState(CombatStateManager combat, float number)
+    public override void EnterState(CombatStateManager combat, float number, string str)
     {
         combat.playerSpriteAnim.SetGrabSpriteToIdx(combat.playerSpriteAnim.grabFrameStartup.Count - 1);
+
+        startPos = combat.rb.position;
 
         hasTurnedOffHitbox = false;
         combat.canMove = false;
@@ -23,6 +27,8 @@ public class HoldState : CombatBaseState
     public override void UpdateState(CombatStateManager combat)
     {
         holdTimer += Time.deltaTime;
+
+        combat.rb.AddForce((startPos - combat.rb.position) * 1000f * Time.deltaTime, ForceMode2D.Impulse);
 
         if (holdTimer >= timeToTurnOffHitbox && !hasTurnedOffHitbox)
         {
@@ -47,5 +53,7 @@ public class HoldState : CombatBaseState
             hasTurnedOffHitbox = true;
             combat.grabHitbox.SetActive(false);
         }
+        combat.canMove = true;
+        combat.isStuck = false;
     }
 }

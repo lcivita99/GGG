@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class DashState : CombatBaseState
 {
-    private float dashTimer;
-    public override void EnterState(CombatStateManager combat, float number)
+    public float dashTimer;
+
+    public Vector2 dashDirection;
+    public override void EnterState(CombatStateManager combat, float number, string str)
     {
         dashTimer = 0;
         combat.canMove = false;
         combat.circleSprite.color = Color.blue;
+
+        
         if (combat.leftStick.ReadValue().magnitude > 0.1f)
         {
-            combat.rb.AddForce(combat.dashStrength * combat.leftStick.ReadValue().normalized, ForceMode2D.Impulse);
+            dashDirection = combat.leftStick.ReadValue().normalized;
+            combat.rb.AddForce(combat.dashStrength * dashDirection, ForceMode2D.Impulse);
         } else
         {
-            combat.rb.AddForce(combat.dashStrength * combat.playerSpriteTargetTransform.up, ForceMode2D.Impulse);
+            dashDirection = combat.playerSpriteTargetTransform.up;
+            combat.rb.AddForce(combat.dashStrength * dashDirection, ForceMode2D.Impulse);
         }
         
         combat.bufferString = "";

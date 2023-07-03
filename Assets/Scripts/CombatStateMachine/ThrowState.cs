@@ -7,7 +7,7 @@ public class ThrowState : CombatBaseState
     public float attackTimer;
 
     //private List<CombatStateManager> playersYouAreGrabbing;
-    public override void EnterState(CombatStateManager combat, float number)
+    public override void EnterState(CombatStateManager combat, float number, string str)
     {
         attackTimer = 0;
         //playersYouAreGrabbing = combat.PlayersYouAreAttacking();
