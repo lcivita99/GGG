@@ -74,7 +74,7 @@ public class HitstunState : CombatBaseState
 
         wasKnockedBack = false;
 
-        combat.UpdateHealthUI();
+        //combat.UpdateHealthUI();
     }
 
     public override void UpdateState(CombatStateManager combat)
@@ -95,7 +95,12 @@ public class HitstunState : CombatBaseState
                 wasKnockedBack = true;
                 combat.isStuck = false;
                 combat.playerAttackingYouManager.attackTimerStuck = false;
-                AddKnockback(combat, combat.lightAttackKnockbackStrength);
+                if (combat.health <= 0) combat.SwitchState(combat.DyingState);
+                else 
+                { 
+                    combat.UpdateHealthUI();
+                    AddKnockback(combat, combat.lightAttackKnockbackStrength);
+                }
             }
 
             if (wasKnockedBack)
@@ -119,7 +124,14 @@ public class HitstunState : CombatBaseState
                 wasKnockedBack = true;
                 combat.isStuck = false;
                 combat.playerAttackingYouManager.attackTimerStuck = false;
-                AddKnockback(combat, combat.heavyAttackKnockbackStrength);
+                if (combat.health <= 0) combat.SwitchState(combat.DyingState);
+                else
+                {
+                    combat.UpdateHealthUI();
+                    AddKnockback(combat, combat.heavyAttackKnockbackStrength);
+                }
+
+                
             }
 
             if (wasKnockedBack)
@@ -142,8 +154,14 @@ public class HitstunState : CombatBaseState
                 wasKnockedBack = true;
                 combat.isStuck = false;
                 combat.playerAttackingYouManager.attackTimerStuck = false;
+                if (combat.health <= 0) combat.SwitchState(combat.DyingState);
+                else
+                {
+                    combat.UpdateHealthUI();
+                    AddKnockback(combat, combat.throwKnockbackStrength);
+                }
 
-                AddKnockback(combat, combat.throwKnockbackStrength);
+
             }
 
             if (wasKnockedBack)

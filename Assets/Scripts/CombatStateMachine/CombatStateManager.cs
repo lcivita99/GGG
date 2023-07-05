@@ -56,6 +56,8 @@ public class CombatStateManager : MonoBehaviour
     public HoldState HoldState = new HoldState();
     public ThrowState ThrowState = new ThrowState();
     public HitstunState HitstunState = new HitstunState();
+    public DyingState DyingState = new DyingState();
+    public DeadState DeadState = new DeadState();
     //public SpecialState SpecialState = new SpecialState();
 
     public SpriteRenderer circleSprite;
@@ -139,6 +141,9 @@ public class CombatStateManager : MonoBehaviour
     // dash variables
     public float dashStrength;
     public float dashLength;
+
+    // dying variables:
+    
 
     // TODO: Temporary gamepad assignment
     public Gamepad gamepad;
@@ -260,6 +265,9 @@ public class CombatStateManager : MonoBehaviour
         holdLength = 2.69f;
 
         throwDuration = 0.4f;
+
+        DyingState.dyingLength = 0.3f;
+        DeadState.deadLength = 2f;
 
         playerSpriteRenderer = playerSpriteAnim.gameObject.GetComponent<SpriteRenderer>();
 
@@ -468,6 +476,7 @@ public class CombatStateManager : MonoBehaviour
                     currentState.ForcedOutOfState(this);
                     playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1] = false;
                     SwitchState(HitstunState, heavyAttackDamage);
+                    
                 }
             }
         } else if (currentState == ShieldState)
