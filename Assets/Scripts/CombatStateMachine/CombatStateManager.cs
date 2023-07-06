@@ -58,6 +58,7 @@ public class CombatStateManager : MonoBehaviour
     public HitstunState HitstunState = new HitstunState();
     public DyingState DyingState = new DyingState();
     public DeadState DeadState = new DeadState();
+    public RespawnState RespawnState = new RespawnState();
     //public SpecialState SpecialState = new SpecialState();
 
     public SpriteRenderer circleSprite;
@@ -266,8 +267,12 @@ public class CombatStateManager : MonoBehaviour
 
         throwDuration = 0.4f;
 
+        // Death variables
         DyingState.dyingLength = 0.3f;
-        DeadState.deadLength = 2f;
+        DeadState.deadLength = 1f;
+
+        RespawnState.respawnLength = 2f;
+
 
         playerSpriteRenderer = playerSpriteAnim.gameObject.GetComponent<SpriteRenderer>();
 

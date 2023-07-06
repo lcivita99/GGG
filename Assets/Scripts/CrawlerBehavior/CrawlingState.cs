@@ -15,7 +15,7 @@ public class CrawlingState : CrawlerBaseState
         {
             if (crawler.timer >= 0) crawler.timer -= Time.deltaTime;
         }
-        else crawler.timer += Time.deltaTime;
+        else crawler.timer += Time.deltaTime * crawler.speedBuff;
         
 
         if (Input.GetKeyDown(KeyCode.Space))

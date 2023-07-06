@@ -38,10 +38,7 @@ public class CrawlerStateManager : MonoBehaviour
 
     public bool goingBackwards;
 
-
-
-
-
+    public float speedBuff;
 
 
 
@@ -72,6 +69,8 @@ public class CrawlerStateManager : MonoBehaviour
 
         GetUpState.getUpLength = 0.5f;
         KnockbackState.knockbackSpeed = 5f;
+
+        speedBuff = 1f;
 
 
 
