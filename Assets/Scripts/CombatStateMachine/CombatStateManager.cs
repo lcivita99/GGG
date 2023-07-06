@@ -59,6 +59,7 @@ public class CombatStateManager : MonoBehaviour
     public DyingState DyingState = new DyingState();
     public DeadState DeadState = new DeadState();
     public RespawnState RespawnState = new RespawnState();
+    public PipeState PipeState = new PipeState();
     //public SpecialState SpecialState = new SpecialState();
 
     public SpriteRenderer circleSprite;
@@ -143,7 +144,9 @@ public class CombatStateManager : MonoBehaviour
     public float dashStrength;
     public float dashLength;
 
-    // dying variables:
+    // Pipes
+    public Vector2 leftPipeExit;
+    public Vector2 rightPipeExit;
     
 
     // TODO: Temporary gamepad assignment
@@ -182,7 +185,7 @@ public class CombatStateManager : MonoBehaviour
 
         // Setting Numbers
         attackTriggerTime = 0.05f;
-        health = 100f;
+        health = 10f;
         // TODO TEMP FUCNTION
         UpdateHealthUI();
         dashStrength = 300;
@@ -272,6 +275,11 @@ public class CombatStateManager : MonoBehaviour
         DeadState.deadLength = 1f;
 
         RespawnState.respawnLength = 2f;
+
+        // Pipe Positions:
+        leftPipeExit = new Vector2(-10f, 8f);
+        rightPipeExit = new Vector2(10f, 8f);
+
 
 
         playerSpriteRenderer = playerSpriteAnim.gameObject.GetComponent<SpriteRenderer>();
@@ -550,6 +558,13 @@ public class CombatStateManager : MonoBehaviour
         mainCollider.enabled = false;
         playerSpriteRenderer.color = Color.white / 2f;
         StartCoroutine(InvulnerableDelay(timeInvulnerable));
+    }
+
+    public void BecomeInvulnerable()
+    {
+        invulnerableCollider.SetActive(true);
+        mainCollider.enabled = false;
+        playerSpriteRenderer.color = Color.white / 2f;
     }
 
     public IEnumerator InvulnerableDelay(float timeInvulnerable)

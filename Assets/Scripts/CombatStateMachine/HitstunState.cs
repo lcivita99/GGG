@@ -19,6 +19,7 @@ public class HitstunState : CombatBaseState
     private Color startColor = new Color(1, 0.7f, 0.7f, 1);
     public override void EnterState(CombatStateManager combat, float number, string str)
     {
+        //Debug.Log("entered hitstun");
         combat.bufferString = "";
         //Debug.Log("entered hitstun" + Time.deltaTime);
         moveID = number;
@@ -53,6 +54,7 @@ public class HitstunState : CombatBaseState
             currentInitialHitstunDuration = 0;
             Physics2D.IgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider, true);
             combat.health -= moveID * combat.throwDamageMultiplier;
+
 
             //change hit direction if in throw mode
             if (combat.playerAttackingYouManager.leftStick.ReadValue().magnitude >= 0.169f)

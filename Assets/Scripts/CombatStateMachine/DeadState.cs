@@ -10,7 +10,6 @@ public class DeadState : CombatBaseState
     {
         timer = 0f;
         combat.health = 0f;
-        Debug.Log("Dedge");
         combat.UpdateHealthUI();
         combat.mainCollider.enabled = false;
         combat.invulnerableCollider.SetActive(false);
@@ -24,6 +23,7 @@ public class DeadState : CombatBaseState
 
         if (timer >= deadLength)
         {
+
             combat.SwitchState(combat.RespawnState);
         }
 

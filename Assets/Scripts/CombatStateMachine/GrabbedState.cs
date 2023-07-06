@@ -62,6 +62,7 @@ public class GrabbedState : CombatBaseState
                 playerWhoGrabbedYou.currentState.ForcedOutOfState(playerWhoGrabbedYou);
                 playerWhoGrabbedYou.SwitchState(playerWhoGrabbedYou.ThrowState);
                 combat.playerSpriteAnim.grabbedIndicator.SetActive(false);
+                //Debug.Log("ran twice");
                 combat.SwitchState(combat.HitstunState, combat.throwDamage);
             }
             
@@ -75,7 +76,7 @@ public class GrabbedState : CombatBaseState
             combat.SwitchState(combat.IdleState);
         }
 
-        CheckGrabberThrow(combat);
+        //CheckGrabberThrow(combat);
 
         if (playerWhoGrabbedYou.currentState == playerWhoGrabbedYou.HitstunState)
         {
@@ -104,16 +105,16 @@ public class GrabbedState : CombatBaseState
         playerWhoGrabbedYou.SwitchState(playerWhoGrabbedYou.IdleState);
     }
 
-    public void CheckGrabberThrow(CombatStateManager combat)
-    {
-        if (playerWhoGrabbedYou.lightAttackButton.wasPressedThisFrame || playerWhoGrabbedYou.heavyAttackButton.wasPressedThisFrame)
-        {
-            if (combat.leftStick.ReadValue().magnitude > 0.169f)
-            {
-                combat.SwitchState(combat.HitstunState, combat.throwDamage);
-                playerWhoGrabbedYou.currentState.ForcedOutOfState(playerWhoGrabbedYou);
-                playerWhoGrabbedYou.SwitchState(playerWhoGrabbedYou.ThrowState);
-            }
-        }
-    }
+    //public void CheckGrabberThrow(CombatStateManager combat)
+    //{
+    //    if (playerWhoGrabbedYou.lightAttackButton.wasPressedThisFrame || playerWhoGrabbedYou.heavyAttackButton.wasPressedThisFrame)
+    //    {
+    //        if (combat.leftStick.ReadValue().magnitude > 0.169f)
+    //        {
+    //            combat.SwitchState(combat.HitstunState, combat.throwDamage);
+    //            playerWhoGrabbedYou.currentState.ForcedOutOfState(playerWhoGrabbedYou);
+    //            playerWhoGrabbedYou.SwitchState(playerWhoGrabbedYou.ThrowState);
+    //        }
+    //    }
+    //}
 }
