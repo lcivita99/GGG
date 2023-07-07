@@ -99,8 +99,8 @@ public class HitstunState : CombatBaseState
                 combat.playerAttackingYouManager.attackTimerStuck = false;
                 if (combat.health <= 0) combat.SwitchState(combat.DyingState);
                 else 
-                { 
-                    combat.UpdateHealthUI();
+                {
+                    combat.healthBarVisuals.UpdateUI();
                     AddKnockback(combat, combat.lightAttackKnockbackStrength);
                 }
             }
@@ -129,7 +129,7 @@ public class HitstunState : CombatBaseState
                 if (combat.health <= 0) combat.SwitchState(combat.DyingState);
                 else
                 {
-                    combat.UpdateHealthUI();
+                    combat.healthBarVisuals.UpdateUI();
                     AddKnockback(combat, combat.heavyAttackKnockbackStrength);
                 }
 
@@ -159,7 +159,7 @@ public class HitstunState : CombatBaseState
                 if (combat.health <= 0) combat.SwitchState(combat.DyingState);
                 else
                 {
-                    combat.UpdateHealthUI();
+                    combat.healthBarVisuals.UpdateUI();
                     AddKnockback(combat, combat.throwKnockbackStrength);
                 }
 

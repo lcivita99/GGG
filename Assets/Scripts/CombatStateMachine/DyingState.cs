@@ -12,7 +12,7 @@ public class DyingState : CombatBaseState
         combat.isStuck = true;
         timer = 0f;
         combat.health = 0f;
-        combat.UpdateHealthUI();
+        combat.healthBarVisuals.UpdateUI();
         combat.mainCollider.enabled = false;
         combat.invulnerableCollider.SetActive(false);
 

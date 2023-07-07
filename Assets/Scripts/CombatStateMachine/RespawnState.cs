@@ -31,7 +31,7 @@ public class RespawnState : CombatBaseState
         timer += Time.deltaTime;
         if (combat.health < 100)
         combat.health = Mathf.Floor((timer / respawnLength) * 100);
-        combat.UpdateHealthUI();
+        combat.healthBarVisuals.UpdateUI();
 
         // when condition is met
         //for (int i = 0; i < combat.allPlayers.Count; i++)

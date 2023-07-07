@@ -162,13 +162,14 @@ public class CombatStateManager : MonoBehaviour
     public UnityEngine.InputSystem.Controls.StickControl leftStick;
     // UI
     public float health;
-    public TextMesh healthText;
+    //public TextMesh healthText;
+    public HealthBarVisuals healthBarVisuals;
 
     // TEMP FUNCTION
-    public void UpdateHealthUI()
-    {
-        healthText.text = health.ToString();
-    }
+    //public void UpdateHealthUI()
+    //{
+    //    healthText.text = health.ToString();
+    //}
 
     void Awake()
     {
@@ -185,9 +186,9 @@ public class CombatStateManager : MonoBehaviour
 
         // Setting Numbers
         attackTriggerTime = 0.05f;
-        health = 10f;
+        health = 100f;
         // TODO TEMP FUCNTION
-        UpdateHealthUI();
+        healthBarVisuals.UpdateUI();
         dashStrength = 300;
         dashLength = 0.5f;
         lightAttackDamage = 10f;
