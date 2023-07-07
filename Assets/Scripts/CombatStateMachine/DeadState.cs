@@ -14,6 +14,13 @@ public class DeadState : CombatBaseState
         combat.mainCollider.enabled = false;
         combat.invulnerableCollider.SetActive(false);
 
+        // set up death anim
+        combat.playerSpriteAnim.deathAnim.transform.up =
+            (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
+        combat.playerSpriteAnim.deathAnim.transform.position = combat.transform.position;
+        combat.playerSpriteRenderer.color = Color.clear;
+        combat.playerSpriteRenderer.enabled = false;
+        combat.playerSpriteAnim.deathAnim.SetActive(true);
     }
 
     public override void UpdateState(CombatStateManager combat)
@@ -23,7 +30,7 @@ public class DeadState : CombatBaseState
 
         if (timer >= deadLength)
         {
-
+            
             combat.SwitchState(combat.RespawnState);
         }
 
@@ -40,5 +47,6 @@ public class DeadState : CombatBaseState
     }
     public override void ForcedOutOfState(CombatStateManager combat)
     {
+
     }
 }

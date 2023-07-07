@@ -10,8 +10,8 @@ public class RespawnState : CombatBaseState
     public override void EnterState(CombatStateManager combat, float number, string str)
     {
         timer = 0f;
-        combat.canMove = true;
-        combat.isStuck = false;
+        combat.canMove = false;
+        combat.isStuck = true;
         combat.health = 0f;
         combat.mainCollider.enabled = true;
         combat.invulnerableCollider.SetActive(true);
@@ -22,16 +22,37 @@ public class RespawnState : CombatBaseState
         {
             Physics2D.IgnoreCollision(combat.invulnerableCollider.GetComponent<Collider2D>(), combat.allPlayers[i].invulnerableCollider.GetComponent<Collider2D>(), true);
         }
-
         combat.BecomeInvulnerable();
+        combat.playerSpriteRenderer.enabled = true;
     }
 
     public override void UpdateState(CombatStateManager combat)
     {
         timer += Time.deltaTime;
-        if (combat.health < 100)
-        combat.health = Mathf.Floor((timer / respawnLength) * 100);
-        combat.healthBarVisuals.UpdateUI();
+
+        if (timer <= respawnLength)
+        {
+            // fill health
+            if (combat.health < 100)
+                combat.health = Mathf.Floor((timer / respawnLength) * 100);
+            combat.healthBarVisuals.UpdateUI();
+
+            // become visible
+            combat.playerSpriteRenderer.color = Color.Lerp(Color.clear, Color.white, timer / respawnLength);
+        }
+        else
+        {
+            // allow move & rotate
+            if (!combat.canMove)
+            {
+                combat.canMove = true;
+            }
+            if (combat.isStuck)
+            {
+                combat.isStuck = false;
+            }
+        }
+        
 
         // when condition is met
         //for (int i = 0; i < combat.allPlayers.Count; i++)

@@ -24,6 +24,8 @@ public class PlayerSpriteAnim : MonoBehaviour
     //[SerializeField] private Sprite[] grabbedSprites;
     public GameObject grabbedIndicator;
 
+    public GameObject deathAnim;
+
     // limb bases
     [SerializeField] private Transform rightLegBase;
     [SerializeField] private Transform leftLegBase;

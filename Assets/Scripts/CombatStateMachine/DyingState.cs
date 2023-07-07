@@ -15,14 +15,16 @@ public class DyingState : CombatBaseState
         combat.healthBarVisuals.UpdateUI();
         combat.mainCollider.enabled = false;
         combat.invulnerableCollider.SetActive(false);
-
     }
 
     public override void UpdateState(CombatStateManager combat)
     {
         timer += Time.deltaTime;
-        if (timer >= dyingLength) combat.SwitchState(combat.DeadState);
-
+        if (timer >= dyingLength)
+        {
+            
+            combat.SwitchState(combat.DeadState);
+        }
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
