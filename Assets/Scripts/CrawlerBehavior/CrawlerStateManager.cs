@@ -40,7 +40,7 @@ public class CrawlerStateManager : MonoBehaviour
 
     public float speedBuff;
 
-
+    
 
 
     IEnumerator Start()
@@ -50,7 +50,7 @@ public class CrawlerStateManager : MonoBehaviour
         currentState = CrawlingState;
         currentState.EnterState(this);
         timer = 0f;
-        totalTime = 120f;
+        totalTime = 15f;
 
         HitstunState.hitstunLength = 0.5f;
 
