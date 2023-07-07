@@ -56,9 +56,6 @@ public class ShopManager : MonoBehaviour
     };
 
 
-
-
-
     private void Awake()
     {
 
