@@ -50,7 +50,7 @@ public class CrawlerStateManager : MonoBehaviour
         currentState = CrawlingState;
         currentState.EnterState(this);
         timer = 0f;
-        totalTime = 15f;
+        totalTime = 120f;
 
         HitstunState.hitstunLength = 0.5f;
 
