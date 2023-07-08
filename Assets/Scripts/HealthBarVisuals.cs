@@ -51,7 +51,7 @@ public class HealthBarVisuals : MonoBehaviour
     public void UpdateUI()
     {
         //timer = 0;
-        healthScale = combatStateManager.health / 100;
+        healthScale = Mathf.Clamp(combatStateManager.health / 100, 0, 1);
         healthObj.transform.localScale = Vector3.one - Vector3.right * (1 - healthScale);
     }
 }

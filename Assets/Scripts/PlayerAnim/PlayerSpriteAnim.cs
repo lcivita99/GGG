@@ -215,7 +215,7 @@ public class PlayerSpriteAnim : MonoBehaviour
     //}
 
     // functional
-    private void SetTransform()
+    public void SetTransform()
     {
         transform.position = targetTransform.transform.position;
         // can't rotate if in hitstun, or freeze frame stuff

@@ -363,7 +363,7 @@ public class CombatStateManager : MonoBehaviour
     {
         
         // SPLATTER
-        if ((currentState == HitstunState) && collision.gameObject.layer.Equals(10))
+        if ((currentState == HitstunState) && collision.gameObject.layer.Equals(10) && health > 0)
         {
             if (splatterCounter >= 1)
             {
@@ -471,7 +471,7 @@ public class CombatStateManager : MonoBehaviour
 
     private void GetHit(Collider2D collision)
     {
-        if (!(currentState == SplatterState || currentState == ShieldState || currentState == ShieldStunState))
+        if (!(/*currentState == SplatterState ||*/ currentState == ShieldState || currentState == ShieldStunState))
         {
             if (takeLightDamageTimer >= attackTriggerTime)
             {

@@ -6,6 +6,7 @@ public class PipeState : CombatBaseState
 {
     public float timeToExitPipe = 1.5f;
     private bool pushedOut;
+    private bool becameVuln;
     float pipeSide;
     Vector2 leftPipeExit = new Vector2(-10f, 7.69f);
     float timer;
@@ -15,6 +16,7 @@ public class PipeState : CombatBaseState
     {
         //Debug.Log("IM IN A PIPE!");
         pushedOut = false;
+        becameVuln = false;
         combat.playerSpriteRenderer.enabled = false;
         pipeSide = number;
         combat.mainCollider.enabled = false;
@@ -56,10 +58,18 @@ public class PipeState : CombatBaseState
             pushedOut = true;
             combat.playerSpriteRenderer.enabled = true;
             combat.playerSpriteTargetTransform.up = Vector3.down;
+            combat.playerSpriteAnim.SetTransform();
             combat.rb.AddForce(combat.dashStrength * dashDirection, ForceMode2D.Impulse);
-        } else if (timer >= timeToExitPipe + 0.25f)
+        }
+        else if (timer >= timeToExitPipe + 0.1f && !becameVuln)
         {
+            becameVuln = true;
             combat.BecomeVulnerable();
+            //combat.SwitchState(combat.IdleState);
+        }
+        else if (timer >= timeToExitPipe + 0.3f)
+        {
+            //combat.BecomeVulnerable();
             combat.SwitchState(combat.IdleState);
         }
 
