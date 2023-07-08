@@ -4,37 +4,42 @@ using UnityEngine;
 
 public class PipeState : CombatBaseState
 {
+    public float timeToExitPipe = 1.5f;
+    private bool pushedOut;
     float pipeSide;
     Vector2 leftPipeExit = new Vector2(-10f, 7.69f);
-    float dashTimer;
+    float timer;
 
     Vector2 dashDirection = new Vector2(0, -1f);
     public override void EnterState(CombatStateManager combat, float number, string str)
     {
-        Debug.Log("IM IN A PIPE!");
+        //Debug.Log("IM IN A PIPE!");
+        pushedOut = false;
+        combat.playerSpriteRenderer.enabled = false;
         pipeSide = number;
+        combat.mainCollider.enabled = false;
         if (pipeSide == 1)
         {
             combat.transform.position = leftPipeExit;
         }
 
-        dashTimer = 0;
+        timer = 0;
         combat.canMove = false;
-        combat.circleSprite.color = Color.blue;
+        //combat.circleSprite.color = Color.blue;
 
 
-        if (combat.leftStick.ReadValue().magnitude > 0.1f)
-        {
-            //dashDirection = combat.leftStick.ReadValue().normalized;
-            combat.rb.AddForce(combat.dashStrength * dashDirection, ForceMode2D.Impulse);
-        }
-        else
-        {
-            //dashDirection = combat.playerSpriteTargetTransform.up;
-            combat.rb.AddForce(combat.dashStrength * dashDirection, ForceMode2D.Impulse);
-        }
+        //if (combat.leftStick.ReadValue().magnitude > 0.1f)
+        //{
+        //    //dashDirection = combat.leftStick.ReadValue().normalized;
+        //    combat.rb.AddForce(combat.dashStrength * dashDirection, ForceMode2D.Impulse);
+        //}
+        //else
+        //{
+        //    //dashDirection = combat.playerSpriteTargetTransform.up;
+        //    combat.rb.AddForce(combat.dashStrength * dashDirection, ForceMode2D.Impulse);
+        //}
 
-        combat.bufferString = "";
+        //combat.bufferString = "";
         //Debug.Log(combat.dashStrength);
 
 
@@ -42,32 +47,47 @@ public class PipeState : CombatBaseState
 
     public override void UpdateState(CombatStateManager combat)
     {
-        dashTimer += Time.deltaTime;
+        timer += Time.deltaTime;
 
-        if (dashTimer >= combat.dashLength)
+        if (timer >= timeToExitPipe && !pushedOut)
         {
+            combat.canMove = true;
+            combat.isStuck = false;
+            pushedOut = true;
+            combat.playerSpriteRenderer.enabled = true;
+            combat.playerSpriteTargetTransform.up = Vector3.down;
+            combat.rb.AddForce(combat.dashStrength * dashDirection, ForceMode2D.Impulse);
+        } else if (timer >= timeToExitPipe + 0.25f)
+        {
+            combat.BecomeVulnerable();
             combat.SwitchState(combat.IdleState);
         }
 
-        else if (combat.lightAttackButton.wasPressedThisFrame)
-        {
-            combat.SwitchState(combat.LightAttackState);
-        }
+        //if (timer >= combat.dashLength)
+        //{
+        //    combat.playerSpriteRenderer.enabled = true;
+        //    combat.SwitchState(combat.IdleState);
+        //}
 
-        else if (combat.heavyAttackButton.wasPressedThisFrame)
-        {
-            combat.SwitchState(combat.HeavyAttackState);
-        }
+        //else if (combat.lightAttackButton.wasPressedThisFrame)
+        //{
+        //    combat.SwitchState(combat.LightAttackState);
+        //}
 
-        else if (combat.leftBumper.wasPressedThisFrame)
-        {
-            combat.SwitchState(combat.GrabState);
-        }   
+        //else if (combat.heavyAttackButton.wasPressedThisFrame)
+        //{
+        //    combat.SwitchState(combat.HeavyAttackState);
+        //}
+
+        //else if (combat.leftBumper.wasPressedThisFrame)
+        //{
+        //    combat.SwitchState(combat.GrabState);
+        //}   
     }
 
     public override void LateUpdateState(CombatStateManager combat)
     {
-        //combat.playerSpriteAnim.PipeAnimUpdate();
+        combat.playerSpriteAnim.PipeAnimUpdate();
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)

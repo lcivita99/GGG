@@ -17,19 +17,21 @@ public class EnterPipe : MonoBehaviour
             player.canMove = false;
             player.isStuck = true;
             //player.SwitchState(player.PipeState, pipeSide);
-            StartCoroutine(EnterPipeState());
+
+            player.SwitchState(player.PipeState, pipeSide);
+            //StartCoroutine(EnterPipeState());
             
         }
     }
     // Coroutine that waits for 2 seconds
-    private IEnumerator EnterPipeState()
-    {
-        yield return new WaitForSeconds(2);
+    //private IEnumerator EnterPipeState()
+    //{
+    //    yield return new WaitForSeconds(2);
 
-        player.canMove = true;
-        player.isStuck = false;
-        // Call the function after 2 seconds
-        player.SwitchState(player.PipeState, pipeSide);
-    }
+    //    player.canMove = true;
+    //    player.isStuck = false;
+    //    // Call the function after 2 seconds
+    //    player.SwitchState(player.PipeState, pipeSide);
+    //}
 
 }

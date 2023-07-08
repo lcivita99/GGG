@@ -204,10 +204,10 @@ public class PlayerSpriteAnim : MonoBehaviour
         WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
     }
 
-    //public void IdleAnimUpdate()
-    //{
-
-    //}
+    public void PipeAnimUpdate()
+    {
+        DashUpdateTarget();
+    }
 
     //public void IdleAnimUpdate()
     //{
