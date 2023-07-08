@@ -38,25 +38,30 @@ public class IdleState : CombatBaseState
             combat.SwitchState(combat.LightAttackState);
         }
 
-        if (combat.heavyAttackButton.wasPressedThisFrame)
+        else if (combat.heavyAttackButton.wasPressedThisFrame)
         {
             combat.SwitchState(combat.HeavyAttackState);
         }
 
-        if (combat.dashButton.wasPressedThisFrame)
+        else if (combat.dashButton.wasPressedThisFrame)
         {
             combat.SwitchState(combat.DashState);
         }
 
-        if (combat.rightTrigger.isPressed)
+        else if (combat.rightTrigger.isPressed)
         {
             combat.SwitchState(combat.ShieldState);
         }
 
-        if (combat.leftBumper.wasPressedThisFrame)
+        else if (combat.leftBumper.wasPressedThisFrame)
         {
             combat.SwitchState(combat.GrabState);
         }
+    }
+
+    public override void LateUpdateState(CombatStateManager combat)
+    {
+        combat.playerSpriteAnim.IdleAnimUpdate();
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)

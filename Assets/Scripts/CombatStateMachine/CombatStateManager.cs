@@ -186,7 +186,7 @@ public class CombatStateManager : MonoBehaviour
 
         // Setting Numbers
         attackTriggerTime = 0.05f;
-        health = 100f;
+        health = 50f;
         // TODO TEMP FUCNTION
         healthBarVisuals.UpdateUI();
         dashStrength = 300;
@@ -332,6 +332,11 @@ public class CombatStateManager : MonoBehaviour
         currentState.UpdateState(this);
 
         currentStateString = currentState.ToString();
+    }
+
+    private void LateUpdate()
+    {
+        currentState.LateUpdateState(this);
     }
 
     private void FixedUpdate()

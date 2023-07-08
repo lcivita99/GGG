@@ -87,6 +87,11 @@ public class GrabbedState : CombatBaseState
         }
     }
 
+    public override void LateUpdateState(CombatStateManager combat)
+    {
+        combat.playerSpriteAnim.GrabbedAnimUpdate();
+    }
+
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
     {
         

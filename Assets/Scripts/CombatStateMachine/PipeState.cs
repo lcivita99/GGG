@@ -65,6 +65,11 @@ public class PipeState : CombatBaseState
         }   
     }
 
+    public override void LateUpdateState(CombatStateManager combat)
+    {
+        //combat.playerSpriteAnim.PipeAnimUpdate();
+    }
+
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
     {
 

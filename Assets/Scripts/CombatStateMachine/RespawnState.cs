@@ -63,6 +63,11 @@ public class RespawnState : CombatBaseState
         //combat.SwitchState(combat.PipeState);
     }
 
+    public override void LateUpdateState(CombatStateManager combat)
+    {
+        combat.playerSpriteAnim.RespawnAnimUpdate();
+    }
+
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
     {
 

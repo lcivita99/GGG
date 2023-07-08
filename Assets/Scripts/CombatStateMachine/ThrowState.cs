@@ -41,6 +41,11 @@ public class ThrowState : CombatBaseState
         
     }
 
+    public override void LateUpdateState(CombatStateManager combat)
+    {
+        //combat.playerSpriteAnim.ThrowAnimUpdate();
+    }
+
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
     {
         
