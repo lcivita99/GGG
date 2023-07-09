@@ -1,10 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
-public class CribmateStats
+public class CribmateStats : ICloneable
 {
-    public string name;
-    public float poolOdds;
-    public int cost;
+    public string name { get; set; }
+    public int poolOdds { get; set; }
+    public int cribID { get; set; }
+    public int cost { get; set; }
+    public bool swap = true;
+
+    public object Clone()
+    {
+        return new CribmateStats
+        {
+            name = String.Copy(this.name),
+            poolOdds = this.poolOdds,
+            cost = this.cost,
+            swap = this.swap
+        };
+    }
 }

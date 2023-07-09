@@ -6,15 +6,25 @@ public class ShopManager : MonoBehaviour
 {
     // list of cribmates
 
+    public static ShopManager instance { get; private set; }
+
     public List<GameObject> cribmates = new List<GameObject>();
 
     public Dictionary<int, CribmateStats> cribmateDictionary = new Dictionary<int, CribmateStats>();
 
 
     private List<int> originalProbabilities;
+    private List<int> secondWave;
+
+
+
+
+
 
 
     private int cribsToSwap;
+
+    private int[] cribIDs = new int[3] { 0, 1, 2 };
 
     public Vector2 firstSlotPosition;
     public Vector2 secondSlotPosition;
@@ -30,6 +40,7 @@ public class ShopManager : MonoBehaviour
     CribmateStats cribmate0Stats = new CribmateStats
     {
         name = "jacque",
+        cribID = 0,
         poolOdds = 3,
         cost = 10
     };
@@ -37,6 +48,7 @@ public class ShopManager : MonoBehaviour
     CribmateStats cribmate1Stats = new CribmateStats
     {
         name = "luca",
+        cribID = 1,
         poolOdds = 3,
         cost = 10
     };
@@ -44,6 +56,7 @@ public class ShopManager : MonoBehaviour
     CribmateStats cribmate2Stats = new CribmateStats
     {
         name = "pedro",
+        cribID = 2,
         poolOdds = 3,
         cost = 10
     };
@@ -51,6 +64,7 @@ public class ShopManager : MonoBehaviour
     CribmateStats cribmate3Stats = new CribmateStats
     {
         name = "luna",
+        cribID = 3,
         poolOdds = 3,
         cost = 10
     };
@@ -59,7 +73,18 @@ public class ShopManager : MonoBehaviour
     private void Awake()
     {
 
+        // Singleton!
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         originalProbabilities = new List<int> { 0, 0, 0, 0, 1, 1, 1, 2, 2, 3 };
+        secondWave = new List<int> { 0, 1, 1, 1, 2, 2, 3, 3, 3, 3 };
 
         cribmateDictionary[0] = cribmate0Stats;
         cribmateDictionary[1] = cribmate1Stats;
@@ -76,6 +101,8 @@ public class ShopManager : MonoBehaviour
         slots.Add(secondSlotPosition);
         slots.Add(thirdSlotPosition);
 
+        AddInitialShop();
+
         //FillShop(3);
        // DisplayThreeCribMates();
     }
@@ -84,50 +111,107 @@ public class ShopManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Debug.Log("Swapping");
-            FillShop(3);
+            //Debug.Log("Swapping");
+            FillShop();
         }
     }
 
-    public void FillShop (int swapIndex)
+    public void FillShop ()
     {
-        // currently deletes entire shop
-        for (int i = 0; i < curShopCribmates.Count; i++)
-        {
-            Destroy(curShopCribmates[i]);
-        }
-        // will always initially be a copy of the original probabilities
+    List<(int, int)> cribAndSlotList = new List<(int, int)>();
+    // Destroy the Cribmates that have to be swapped and update their location
+    DestroyShopCribmates(cribAndSlotList);
+        Debug.Log(cribAndSlotList.Count);
+
+        // initialized weighted list
         List<int> weightedProbabilities = new List<int>(originalProbabilities);
 
-        // FIRST: CHECK THE SHOPLIST:
-        // TODO: update laters
-        cribsToSwap = 3;
-        // Second: Calculate the new cribmate to be added:
-
+        // list that show the picked number
         List<int> pickedNumbers = new List<int>();
-        //
-        for (int i = 0; i < cribsToSwap; i++) // pick 3 numbers
+
+        for (int i = 0; i < cribsToSwap; i++) // pick x numbers
        {
-            if (weightedProbabilities.Count == 0)
+            // This means there are less unique numbers in our pool
+            if (weightedProbabilities.Count == 0) 
             {
-                break; // Avoid an infinite loop if there are less than 3 unique numbers
+                Debug.Log("CHANGING");
+                originalProbabilities = new List<int>(secondWave);
+                weightedProbabilities = new List<int>(secondWave);
             }
+
+
             int index = Random.Range(0, weightedProbabilities.Count);
             int picked = weightedProbabilities[index];
+
+            // removes from the original pool:
+            RemoveFromPool(index);
+
+            // TODO: ENSURE PICK is not the same as previous
+
+
             // Remove all occurrences of the picked number to ensure uniqueness
             weightedProbabilities.RemoveAll(item => item == picked);
-            pickedNumbers.Add(picked);
-        }
-        //
-        for (int i = 0; i < pickedNumbers.Count; i++)
-        {
-            Debug.Log(slots[i]);
-            GameObject instance = Instantiate(cribmates[pickedNumbers[i]], slots[i], Quaternion.identity);
-            curShopCribmates.Add(instance);
-        }
+            var provtuple = cribAndSlotList[i];
+            cribAndSlotList[i] = (picked, provtuple.Item2);
+
             
+        }
+
+        cribsToSwap = 0;
+
+        // Add the cribmates to
+        for (int i = 0; i < cribAndSlotList.Count; i++)
+        {
+       
+            GameObject instance = Instantiate(cribmates[cribAndSlotList[i].Item1], slots[cribAndSlotList[i].Item2], Quaternion.identity);
+            instance.GetComponent<CribmateManager>().SetStats(cribmateDictionary[cribAndSlotList[i].Item1]);
+            curShopCribmates.Add(instance);
+        }      
     }
 
-    // [ 1, 1, 1, 1, 2, 2, 2, 3, 3, 4]
 
+    private void AddInitialShop()
+    {
+        // Add the cribmates to
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject instance = Instantiate(cribmates[i], slots[i], Quaternion.identity);
+            instance.GetComponent<CribmateManager>().SetStats(cribmateDictionary[i]);
+            curShopCribmates.Add(instance);
+        }
+    }
+
+    public void UpdatePool() { }
+
+    private void DestroyShopCribmates(List<(int, int)> pickedCribs)
+    {
+        // Create a copy of the curShopCribmates list for iteration
+        List<GameObject> curShopCribmatesCopy = new List<GameObject>(curShopCribmates);
+        List<GameObject> cribsToDestroy = new List<GameObject>();
+
+        for (int i = 0; i < curShopCribmatesCopy.Count; i++)
+        {
+            if (curShopCribmatesCopy[i].GetComponent<CribmateManager>().stats.swap)
+            {
+                cribsToSwap++;
+                pickedCribs.Add((0, i));
+                GameObject cribDestroy = curShopCribmatesCopy[i];
+                cribIDs[i] = curShopCribmatesCopy[i].GetComponent<CribmateManager>().stats.cribID;
+                cribsToDestroy.Add(cribDestroy);
+            }
+        }
+
+        // Destroying and removing GameObjects from the original list
+        foreach (GameObject crib in cribsToDestroy)
+        {
+            curShopCribmates.Remove(crib);
+            Destroy(crib);
+        }
+    }
+
+
+    private void RemoveFromPool(int index)
+    {
+        originalProbabilities.RemoveAt(index);
+    }
 }
