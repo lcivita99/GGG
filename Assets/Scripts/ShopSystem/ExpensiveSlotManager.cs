@@ -105,10 +105,7 @@ public class ExpensiveSlotManager : MonoBehaviour
 
         currentCribmate = Instantiate(expensiveCribmates[0], slotPosition, Quaternion.identity);
 
-        for (int i = 0; i < playerInteractionManagers.Count; i++)
-        {
-            playerInteractionManagers[i].AddInteractableObj(currentCribmate);
-        }
+        AddCurrentCribmateToAllDictionaries();
 
         cribID = 3;
     }
@@ -122,6 +119,7 @@ public class ExpensiveSlotManager : MonoBehaviour
 
     public void ChangeSlot()
     {
+        RemoveCurrentCribmateFromAllDictionaries();
         Destroy(currentCribmate);
         weightedProbabilities = new List<int>(originalProbabilities);
         weightedProbabilities.RemoveAll(item => item == cribID);
@@ -141,6 +139,23 @@ public class ExpensiveSlotManager : MonoBehaviour
         currentCribmate.GetComponent<CribmateManager>().SetStats(cribmateDictionary[picked]);
         cribID = picked;
         originalProbabilities.Remove(picked);
+        AddCurrentCribmateToAllDictionaries();
+    }
+
+    private void AddCurrentCribmateToAllDictionaries()
+    {
+        for (int i = 0; i < playerInteractionManagers.Count; i++)
+        {
+            playerInteractionManagers[i].AddInteractableObj(currentCribmate);
+        }
+    }
+
+    private void RemoveCurrentCribmateFromAllDictionaries()
+    {
+        for (int i = 0; i < playerInteractionManagers.Count; i++)
+        {
+            playerInteractionManagers[i].RemoveInteractableObj(currentCribmate);
+        }
     }
 
 

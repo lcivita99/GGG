@@ -34,6 +34,11 @@ public class PlayerInteractionManager : MonoBehaviour
         interactableObjs.Add(obj, (range, interactable));
     }
 
+    public void RemoveInteractableObj(GameObject obj)
+    {
+        interactableObjs.Remove(obj);
+    }
+
     // ! Late update so that adding or removing would be considered that frame
     void LateUpdate()
     {
