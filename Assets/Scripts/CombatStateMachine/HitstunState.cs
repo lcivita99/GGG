@@ -35,6 +35,7 @@ public class HitstunState : CombatBaseState
             currentHitstunDuration = combat.lightAttackTotalHitstunLength;
             currentInitialHitstunDuration = combat.lightAttackInitialHitstunLength;
             combat.health -= moveID * combat.lightAttackDamageMultiplier;
+            combat.healthBarVisuals.UpdateUI();
             hitDirection = (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
         }
 
@@ -44,6 +45,7 @@ public class HitstunState : CombatBaseState
             currentHitstunDuration = combat.heavyAttackTotalHitstunLength;
             currentInitialHitstunDuration = combat.heavyAttackInitialHitstunLength;
             combat.health -= moveID * combat.heavyAttackDamageMultiplier;
+            combat.healthBarVisuals.UpdateUI();
             hitDirection = (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
         }
 
@@ -54,6 +56,7 @@ public class HitstunState : CombatBaseState
             currentInitialHitstunDuration = 0;
             Physics2D.IgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider, true);
             combat.health -= moveID * combat.throwDamageMultiplier;
+            combat.healthBarVisuals.UpdateUI();
 
 
             //change hit direction if in throw mode
@@ -100,7 +103,7 @@ public class HitstunState : CombatBaseState
                 if (combat.health <= 0) combat.SwitchState(combat.DyingState);
                 else 
                 {
-                    combat.healthBarVisuals.UpdateUI();
+                    //combat.healthBarVisuals.UpdateUI();
                     AddKnockback(combat, combat.lightAttackKnockbackStrength);
                 }
             }
@@ -129,7 +132,7 @@ public class HitstunState : CombatBaseState
                 if (combat.health <= 0) combat.SwitchState(combat.DyingState);
                 else
                 {
-                    combat.healthBarVisuals.UpdateUI();
+                    //combat.healthBarVisuals.UpdateUI();
                     AddKnockback(combat, combat.heavyAttackKnockbackStrength);
                 }
 
@@ -159,7 +162,7 @@ public class HitstunState : CombatBaseState
                 if (combat.health <= 0) combat.SwitchState(combat.DyingState);
                 else
                 {
-                    combat.healthBarVisuals.UpdateUI();
+                    //combat.healthBarVisuals.UpdateUI();
                     AddKnockback(combat, combat.throwKnockbackStrength);
                 }
 
@@ -202,6 +205,11 @@ public class HitstunState : CombatBaseState
         {
             combat.UpdateBufferInput();
         }
+    }
+
+    public override void LateUpdateState(CombatStateManager combat)
+    {
+        //combat.playerSpriteAnim.HitstunAnimUpdate();
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)

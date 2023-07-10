@@ -37,26 +37,31 @@ public class ShieldState : CombatBaseState
             combat.SwitchState(combat.LightAttackState);
         }
 
-        if (combat.heavyAttackButton.wasPressedThisFrame)
+        else if (combat.heavyAttackButton.wasPressedThisFrame)
         {
             combat.canMove = true;
             combat.shield.SetActive(false);
             combat.SwitchState(combat.HeavyAttackState);
         }
 
-        if (combat.dashButton.wasPressedThisFrame)
+        else if (combat.dashButton.wasPressedThisFrame)
         {
             combat.canMove = true;
             combat.shield.SetActive(false);
             combat.SwitchState(combat.DashState);
         }
 
-        if (combat.leftBumper.wasPressedThisFrame)
+        else if (combat.leftBumper.wasPressedThisFrame)
         {
             combat.canMove = true;
             combat.shield.SetActive(false);
             combat.SwitchState(combat.GrabState);
         }
+    }
+
+    public override void LateUpdateState(CombatStateManager combat)
+    {
+        combat.playerSpriteAnim.ShieldAnimUpdate();
     }
 
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)

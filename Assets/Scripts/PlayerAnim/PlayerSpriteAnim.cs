@@ -125,80 +125,97 @@ public class PlayerSpriteAnim : MonoBehaviour
     void LateUpdate()
     {
         MatchPlayerMovement();
-
-        if (combatStateManager.currentState == combatStateManager.IdleState)
-        {
-            WalkUpdateTarget();
-
-            WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
-            WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
-            WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
-            WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
-        }
-        else if (combatStateManager.currentState == combatStateManager.LightAttackState)
-        {
-            WalkUpdateTarget();
-
-            UpdateLightAttackSprites();
-
-            // animate punching arm
-            RightPunch();
-
-            // update walk except for attacking hands
-            WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
-            WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
-        }
-        else if (combatStateManager.currentState == combatStateManager.HeavyAttackState)
-        {
-            WalkUpdateTarget();
-            UpdateHeavyAttackSprites();
-            FullBodyPunch();
-        }
-        else if (combatStateManager.currentState == combatStateManager.DashState)
-        {
-            DashUpdateTarget();
-        }
-        else if (combatStateManager.currentState == combatStateManager.ShieldState )
-        {
-            WalkUpdateTarget();
-
-            WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
-            WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
-            WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
-            WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
-        }
-        else if (combatStateManager.currentState == combatStateManager.GrabbedState)
-        {
-            WalkUpdateTarget();
-
-            if (!grabbedIndicator.activeSelf)
-            {
-                grabbedIndicator.SetActive(true);
-            }
-
-            WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
-            WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
-            WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
-            WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
-        }
-        else if (combatStateManager.currentState == combatStateManager.GrabState)
-        {
-            WalkUpdateTarget();
-
-            UpdateGrabSprites();
-
-            WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
-            WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
-            WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
-            WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
-        }
-        else
-        {
-            return;
-        }
     }
 
-    private void SetTransform()
+    // state-based updates
+    public void IdleAnimUpdate()
+    {
+        WalkUpdateTarget();
+
+        WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
+        WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
+        WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
+        WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
+    }
+    public void LightAttackAnimUpdate()
+    {
+        WalkUpdateTarget();
+
+        UpdateLightAttackSprites();
+
+        // animate punching arm
+        RightPunch();
+
+        // update walk except for attacking hands
+        WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
+        WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
+    }
+    public void HeavyAttackAnimUpdate()
+    {
+        WalkUpdateTarget();
+        UpdateHeavyAttackSprites();
+        FullBodyPunch();
+    }
+    public void DashAnimUpdate()
+    {
+        DashUpdateTarget();
+    }
+    public void ShieldAnimUpdate()
+    {
+        WalkUpdateTarget();
+
+        WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
+        WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
+        WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
+        WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
+    }
+    public void GrabbedAnimUpdate()
+    {
+        WalkUpdateTarget();
+
+        if (!grabbedIndicator.activeSelf)
+        {
+            grabbedIndicator.SetActive(true);
+        }
+
+        WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
+        WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
+        WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
+        WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
+    }
+    public void GrabAnimUpdate()
+    {
+        WalkUpdateTarget();
+
+        UpdateGrabSprites();
+
+        WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
+        WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
+        WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
+        WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
+    }
+    public void RespawnAnimUpdate()
+    {
+        WalkUpdateTarget();
+
+        WalkSwitchIKTarget(leftArmTargetIK, leftArmTarget);
+        WalkSwitchIKTarget(leftLegTargetIK, leftLegTarget);
+        WalkSwitchIKTarget(rightLegTargetIK, rightLegTarget);
+        WalkSwitchIKTarget(rightArmTargetIK, rightArmTarget);
+    }
+
+    public void PipeAnimUpdate()
+    {
+        DashUpdateTarget();
+    }
+
+    //public void IdleAnimUpdate()
+    //{
+
+    //}
+
+    // functional
+    public void SetTransform()
     {
         transform.position = targetTransform.transform.position;
         // can't rotate if in hitstun, or freeze frame stuff
@@ -207,7 +224,6 @@ public class PlayerSpriteAnim : MonoBehaviour
             transform.rotation = targetTransform.transform.rotation;
         }
     }
-
     void MatchPlayerMovement()
     {
         moveDir = playerMovement.gamepad.leftStick.ReadValue();
@@ -220,7 +236,6 @@ public class PlayerSpriteAnim : MonoBehaviour
         targetTransform.transform.up = Vector3.Lerp(targetTransform.transform.up, moveDir, Time.deltaTime * 25);
         targetTransform.transform.position = player.transform.position;
     }
-
     void WalkSwitchIKTarget(Transform IKTransform, Transform IKConstant)
     {
         if (Vector3.Distance(IKTransform.position, IKConstant.position) > 0.6f)
@@ -228,7 +243,6 @@ public class PlayerSpriteAnim : MonoBehaviour
             IKTransform.position = IKConstant.position;
         }
     }
-
     void WalkUpdateTarget()
     {
         // TODO: make these into Vector3 functions or variables perhaps?
@@ -238,7 +252,6 @@ public class PlayerSpriteAnim : MonoBehaviour
         leftLegTarget.position = leftLegBase.position + (-transform.up + -transform.right) / 4 + moveDir/2;
         leftArmTarget.position = leftArmBase.position + (transform.up + -transform.right) / 4 + moveDir/2;
     }
-
     void DashUpdateTarget()
     {
         rightLegTargetIK.position = rightLegBase.position + (-transform.up) / 2;
@@ -247,7 +260,6 @@ public class PlayerSpriteAnim : MonoBehaviour
         leftLegTargetIK.position = leftLegBase.position + (-transform.up) / 2;
         leftArmTargetIK.position = leftArmBase.position + (-transform.up + -transform.right/2) / 2;
     }
-
     void RightPunch()
     {
         if (combatStateManager.LightAttackState.attackTimer < combatStateManager.lightAttackStartup / 2)
@@ -281,7 +293,6 @@ public class PlayerSpriteAnim : MonoBehaviour
                 15);
         }
     }
-
     void FullBodyPunch()
     {
         if (combatStateManager.HeavyAttackState.attackTimer < combatStateManager.heavyAttackStartup/2)
@@ -339,7 +350,6 @@ public class PlayerSpriteAnim : MonoBehaviour
                 10);
         }
     }
-
     private void IKToTarget(Transform IKTrans, Vector3 target, float speed)
     {
         IKTrans.position += new Vector3(combatStateManager.rb.velocity.x, combatStateManager.rb.velocity.y) * Time.deltaTime;
@@ -350,7 +360,6 @@ public class PlayerSpriteAnim : MonoBehaviour
         IKTrans.position = Vector3.MoveTowards(IKTrans.position, target,
             speed * Time.deltaTime);
     }
-
     private void LightCycleSprite()
     {
 
@@ -381,7 +390,6 @@ public class PlayerSpriteAnim : MonoBehaviour
             attackSpriteRenderer.gameObject.transform.rotation = combatStateManager.lightAttackHitbox.transform.rotation;
         }
     }
-
     private void GrabCycleSprite()
     {
 
@@ -413,37 +421,6 @@ public class PlayerSpriteAnim : MonoBehaviour
             attackSpriteRenderer.gameObject.transform.rotation = combatStateManager.grabHitbox.transform.rotation;
         }
     }
-
-
-    //private void UpdateGrabbedSprites()
-    //{
-    //    GrabbedCycleSprites();
-
-    //    attackSpriteRenderer.gameObject.transform.position = combatStateManager.transform.position;
-    //    attackSpriteRenderer.gameObject.transform.rotation = combatStateManager.transform.rotation;
-    //}
-
-    //private void GrabbedCycleSprites()
-    //{
-    //    if (combatStateManager.GrabbedState.grabbedTimer < grabFrameStartup[grabIndex])
-    //    {
-    //        // this is checking if it is already not in that sprite
-    //        SetGrabbedSpriteToIdx(grabbedIndex);
-    //    }
-    //    else if (combatStateManager.GrabState.attackTimer >= grabbedFrameStartup[grabbedIndex])
-    //    {
-    //        if (grabbedIndex < grabbedFrameStartup.Count)
-    //        {
-    //            grabbedIndex++;
-    //        }
-    //    }
-
-    //    if (combatStateManager.GrabbedState.grabbedTimer >= grabbedFrameStartup[3])
-    //    {
-    //        grabbedIndex = 2;
-    //    }
-    //}
-
     private void HeavyCycleSprite()
     {
         
@@ -460,8 +437,7 @@ public class PlayerSpriteAnim : MonoBehaviour
             }
         }
     }
-
-private void UpdateHeavyAttackSprites()
+    private void UpdateHeavyAttackSprites()
     {
         HeavyCycleSprite();
 

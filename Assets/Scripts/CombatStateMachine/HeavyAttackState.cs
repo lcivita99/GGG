@@ -75,6 +75,11 @@ public class HeavyAttackState : CombatBaseState
         }
     }
 
+    public override void LateUpdateState(CombatStateManager combat)
+    {
+        combat.playerSpriteAnim.HeavyAttackAnimUpdate();
+    }
+
     public override void OnTriggerStay(CombatStateManager combat, Collider2D collider)
     {
         
