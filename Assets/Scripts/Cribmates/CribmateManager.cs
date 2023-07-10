@@ -13,6 +13,14 @@ public class CribmateManager : MonoBehaviour
     public LayerMask playerTargetLayer;
     public LayerMask invulnerableTargetLayer;
 
+    private bool outlineEnabled;
+    private float xRange = 2;
+    private float yRange = 4;
+
+    private List<Transform> players = new List<Transform>();
+
+
+
     private void Start()
     {
         // Create an instance of the original material
@@ -21,13 +29,29 @@ public class CribmateManager : MonoBehaviour
         // Assign the instance material to the object
         GetComponent<Renderer>().material = instanceMaterial;
 
-        playerTargetLayer = LayerMask.NameToLayer("player");
-        playerTargetLayer = LayerMask.NameToLayer("invulnerable");
+        if (GameObject.FindGameObjectWithTag("p1") != null)
+        {
+            players.Add(GameObject.FindGameObjectWithTag("p1").transform);
+        }
+        if (GameObject.FindGameObjectWithTag("p2") != null)
+        {
+            players.Add(GameObject.FindGameObjectWithTag("p2").transform);
+        }
+        if (GameObject.FindGameObjectWithTag("p3") != null)
+        {
+            players.Add(GameObject.FindGameObjectWithTag("p3").transform);
+        }
+        if (GameObject.FindGameObjectWithTag("p4") != null)
+        {
+            players.Add(GameObject.FindGameObjectWithTag("p4").transform);
+        }
+
+        DisableOutline();
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void Update()
     {
-        
+        CheckPlayerDistance();
     }
 
     public void SetStats(CribmateStats statsSetter)
@@ -38,16 +62,45 @@ public class CribmateManager : MonoBehaviour
     // outline stuff
     public void EnableOutline()
     {
+        outlineEnabled = true;
         instanceMaterial.SetFloat("_EnableOutline", 1.0f);
     }
 
     public void DisableOutline()
     {
+        outlineEnabled = false;
         instanceMaterial.SetFloat("_EnableOutline", 0f);
     }
 
     public void SetOutlineColor(Color color)
     {
         instanceMaterial.SetColor("_OutlineColor", color);
+    }
+
+    private void CheckPlayerDistance()
+    {
+        bool playerFound = false;
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (Mathf.Abs(transform.position.x - players[i].position.x) < xRange &&
+                Mathf.Abs(transform.position.y - players[i].position.y) < yRange)
+            {
+                playerFound = true;
+                break;
+            }
+        }
+        if (playerFound)
+        {
+            if (!outlineEnabled)
+            {
+                EnableOutline();
+            }
+        } else
+        {
+            if (outlineEnabled)
+            {
+                DisableOutline();
+            }
+        }
     }
 }
