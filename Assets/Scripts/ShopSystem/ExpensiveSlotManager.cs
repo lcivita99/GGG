@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MediumSlotManager : MonoBehaviour
+public class ExpensiveSlotManager : MonoBehaviour
 {
+    public List<PlayerInteractionManager> playerInteractionManagers = new List<PlayerInteractionManager>();
+
     // add in editor
-    public List<GameObject> mediumCribmates = new List<GameObject>();
+    public List<GameObject> expensiveCribmates = new List<GameObject>();
 
     //Dictionary of CribIDs with their respective stats
     public Dictionary<int, CribmateStats> cribmateDictionary = new Dictionary<int, CribmateStats>();
@@ -35,7 +37,7 @@ public class MediumSlotManager : MonoBehaviour
 
     CribmateStats cribmate0Stats = new CribmateStats
     {
-        name = "medium03",
+        name = "cheap0",
         cribID = 0,
         poolOdds = 3,
         cost = 10
@@ -43,7 +45,7 @@ public class MediumSlotManager : MonoBehaviour
 
     CribmateStats cribmate1Stats = new CribmateStats
     {
-        name = "medium01",
+        name = "cheap1",
         cribID = 1,
         poolOdds = 3,
         cost = 10
@@ -51,7 +53,7 @@ public class MediumSlotManager : MonoBehaviour
 
     CribmateStats cribmate2Stats = new CribmateStats
     {
-        name = "medium02",
+        name = "cheap2",
         cribID = 2,
         poolOdds = 3,
         cost = 10
@@ -59,7 +61,7 @@ public class MediumSlotManager : MonoBehaviour
 
     CribmateStats cribmate3Stats = new CribmateStats
     {
-        name = "medium03",
+        name = "cheap3",
         cribID = 3,
         poolOdds = 3,
         cost = 10
@@ -76,12 +78,40 @@ public class MediumSlotManager : MonoBehaviour
         cribmateDictionary[2] = cribmate2Stats;
         cribmateDictionary[3] = cribmate3Stats;
 
-        slotPosition = new Vector2(0f, 6.69f);
-        currentCribmate = Instantiate(mediumCribmates[0], slotPosition, Quaternion.identity);
-        cribID = 1;
+        slotPosition = new Vector2(2.3f, 6.69f);
+        //currentCribmate = Instantiate(expensiveCribmates[0], slotPosition, Quaternion.identity);
+        //cribID = 1;
 
     }
 
+    private void Start()
+    {
+        if (GameObject.FindGameObjectWithTag("p1") != null)
+        {
+            playerInteractionManagers.Add(GameObject.FindGameObjectWithTag("p1").GetComponent<PlayerInteractionManager>());
+        }
+        if (GameObject.FindGameObjectWithTag("p2") != null)
+        {
+            playerInteractionManagers.Add(GameObject.FindGameObjectWithTag("p2").GetComponent<PlayerInteractionManager>());
+        }
+        if (GameObject.FindGameObjectWithTag("p3") != null)
+        {
+            playerInteractionManagers.Add(GameObject.FindGameObjectWithTag("p3").GetComponent<PlayerInteractionManager>());
+        }
+        if (GameObject.FindGameObjectWithTag("p4") != null)
+        {
+            playerInteractionManagers.Add(GameObject.FindGameObjectWithTag("p4").GetComponent<PlayerInteractionManager>());
+        }
+
+        currentCribmate = Instantiate(expensiveCribmates[0], slotPosition, Quaternion.identity);
+
+        for (int i = 0; i < playerInteractionManagers.Count; i++)
+        {
+            playerInteractionManagers[i].AddInteractableObj(currentCribmate);
+        }
+
+        cribID = 3;
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.C))
@@ -106,7 +136,7 @@ public class MediumSlotManager : MonoBehaviour
         int index = Random.Range(0, weightedProbabilities.Count);
         int picked = weightedProbabilities[index];
 
-        GameObject instance = Instantiate(mediumCribmates[picked], slotPosition, Quaternion.identity);
+        GameObject instance = Instantiate(expensiveCribmates[picked], slotPosition, Quaternion.identity);
         currentCribmate = instance;
         currentCribmate.GetComponent<CribmateManager>().SetStats(cribmateDictionary[picked]);
         cribID = picked;

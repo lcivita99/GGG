@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CheapSlotManager : MonoBehaviour
 {
+    public List<PlayerInteractionManager> playerInteractionManagers = new List<PlayerInteractionManager>();
+    
     // add in editor
     public List<GameObject> cheapCribmates = new List<GameObject>();
 
@@ -79,9 +81,37 @@ public class CheapSlotManager : MonoBehaviour
         cribmateDictionary[3] = cribmate3Stats;
 
         slotPosition = new Vector2(-2.3f, 6.69f);
-        currentCribmate = Instantiate(cheapCribmates[0], slotPosition, Quaternion.identity);
-        cribID = 1;
+        
 
+    }
+
+    private void Start()
+    {
+        if (GameObject.FindGameObjectWithTag("p1") != null)
+        {
+            playerInteractionManagers.Add(GameObject.FindGameObjectWithTag("p1").GetComponent<PlayerInteractionManager>());
+        }
+        if (GameObject.FindGameObjectWithTag("p2") != null)
+        {
+            playerInteractionManagers.Add(GameObject.FindGameObjectWithTag("p2").GetComponent<PlayerInteractionManager>());
+        }
+        if (GameObject.FindGameObjectWithTag("p3") != null)
+        {
+            playerInteractionManagers.Add(GameObject.FindGameObjectWithTag("p3").GetComponent<PlayerInteractionManager>());
+        }
+        if (GameObject.FindGameObjectWithTag("p4") != null)
+        {
+            playerInteractionManagers.Add(GameObject.FindGameObjectWithTag("p4").GetComponent<PlayerInteractionManager>());
+        }
+
+        currentCribmate = Instantiate(cheapCribmates[0], slotPosition, Quaternion.identity);
+
+        for(int i = 0; i < playerInteractionManagers.Count; i++)
+        {
+            playerInteractionManagers[i].AddInteractableObj(currentCribmate);
+        }
+
+        cribID = 1;
     }
 
     private void Update()
@@ -91,12 +121,12 @@ public class CheapSlotManager : MonoBehaviour
             ChangeSlot();
         }
 
-        timer += Time.deltaTime;
+        //timer += Time.deltaTime;
 
-        if (timer >= 5f)
-        {
-            ChangeSlot();
-        }
+        //if (timer >= 5f)
+        //{
+        //    ChangeSlot();
+        //}
     }
 
     public void ChangeSlot()

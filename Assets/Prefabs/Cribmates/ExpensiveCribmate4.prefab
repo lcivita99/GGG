@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 4824321597553022730}
   - component: {fileID: 8073271715253960397}
   - component: {fileID: 7766366063917398443}
+  - component: {fileID: -7355048489358945115}
   m_Layer: 0
   m_Name: ExpensiveCribmate4
-  m_TagString: Untagged
+  m_TagString: interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,3 +98,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3a1fd655eea74b52bc03c94be575424, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-7355048489358945115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4917521826025354875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dcd143acbee48a44bd55d88c9d8a82e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInteractionManagers: []
+  originalMaterial: {fileID: 2100000, guid: 4c0227cf674cd8c4ca28c85f0364f0cc, type: 2}
+  range: {x: 1, y: 2}
