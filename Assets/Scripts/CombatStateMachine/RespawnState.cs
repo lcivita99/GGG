@@ -42,6 +42,11 @@ public class RespawnState : CombatBaseState
         }
         else
         {
+            if (combat.health != 100)
+            {
+                combat.health = 100;
+            }
+
             // allow move & rotate
             if (!combat.canMove)
             {
