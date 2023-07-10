@@ -15,6 +15,7 @@ public class CribmateStats : ICloneable
             name = String.Copy(this.name),
             poolOdds = this.poolOdds,
             cost = this.cost,
+            cribID = this.cribID,
             swap = this.swap
         };
     }
