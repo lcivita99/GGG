@@ -45,6 +45,7 @@ public class RespawnState : CombatBaseState
             if (combat.health != 100)
             {
                 combat.health = 100;
+                combat.healthBarVisuals.UpdateUI();
             }
 
             // allow move & rotate
