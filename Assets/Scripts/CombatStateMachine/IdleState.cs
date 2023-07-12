@@ -14,6 +14,8 @@ public class IdleState : CombatBaseState
     public GameObject channellingObj;
     private InteractableObject curIOScript;
 
+    private int curCost;
+
     public override void EnterState(CombatStateManager combat, float number, string str)
     {
         invulnerableTime = number;
@@ -93,10 +95,25 @@ public class IdleState : CombatBaseState
                 var tuple = combat.interaction.interactableObjs[key];
                 if (tuple.Item2)
                 {
-                    channelling = true;
-                    channellingObj = key;
-                    curIOScript = channellingObj.GetComponent<InteractableObject>();
-                    timeToChannel = curIOScript.timeToChannel;
+                    if (key.layer.Equals(16)) //cribmate
+                    {
+                        curCost = key.GetComponent<CribmateManager>().stats.cost;
+                        Debug.Log(curCost);
+                    }
+                    else
+                    {
+                        curCost = 0;
+                    }
+
+                    if (combat.currencyManager.currency >= curCost)
+                    {
+                        channelling = true;
+                        channellingObj = key;
+                        curIOScript = channellingObj.GetComponent<InteractableObject>();
+                        timeToChannel = curIOScript.timeToChannel;
+                        break;
+                    }
+                    break;
                 }
             }
         }

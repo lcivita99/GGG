@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9206294046132423975}
   - component: {fileID: 5929211128098087059}
   - component: {fileID: -1949286672892165932}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: ExpensiveCribmate3
   m_TagString: interactable
   m_Icon: {fileID: 0}

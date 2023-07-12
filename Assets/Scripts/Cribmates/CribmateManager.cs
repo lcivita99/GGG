@@ -8,6 +8,8 @@ public class CribmateManager : MonoBehaviour
     public GameObject deathAnimPrefab;
     private ShopManager shop = ShopManager.instance;
 
+  
+
     //public Material originalMaterial; // Reference to the original material
     //private Material instanceMaterial; // Instance material for this specific object
 

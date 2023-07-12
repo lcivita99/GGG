@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 759205102864747373}
   - component: {fileID: 1244282213272423435}
   - component: {fileID: -430366544884274158}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: MediumCribmate4
   m_TagString: interactable
   m_Icon: {fileID: 0}

@@ -9,6 +9,9 @@ TagManager:
   - p3
   - p4
   - interactable
+  - baseline
+  - cribUp1
+  - cribUp2
   layers:
   - Default
   - TransparentFX
@@ -16,17 +19,17 @@ TagManager:
   - player
   - Water
   - UI
-  - lightAttack
-  - heavyAttack
+  - lightAttack1
+  - heavyAttack1
   - shield
   - grab
   - wall
   - invulnerable
-  - 
-  - 
-  - 
-  - 
-  - 
+  - lightAttack2
+  - heavyAttack2
+  - lightAttack3
+  - heavyAttack3
+  - cribmate
   - 
   - 
   - 

@@ -14,6 +14,7 @@ public class CombatStateManager : MonoBehaviour
 
     public List<CombatStateManager> allPlayers = new List<CombatStateManager>();
     public CombatStateManager playerAttackingYouManager;
+    public CurrencyManager currencyManager;
 
     public List<CombatStateManager> PlayersYouAreAttacking()
     {
@@ -84,7 +85,7 @@ public class CombatStateManager : MonoBehaviour
     public float lightAttackEndLag;
     public float lightAttackDuration;
     public float lightAttackDamage;
-    public float lightAttackDamageMultiplier;
+    public float lightAttackDamageBonus;
 
     // heavy attack
     public GameObject[] heavyAttackHitbox;
@@ -96,7 +97,7 @@ public class CombatStateManager : MonoBehaviour
     public float heavyAttackEndLag;
     public float heavyAttackDuration;
     public float heavyAttackDamage;
-    public float heavyAttackDamageMultiplier;
+    public float heavyAttackDamageBonus;
 
     // light attack
     [SerializeField] public GameObject grabHitbox;
@@ -169,10 +170,17 @@ public class CombatStateManager : MonoBehaviour
     public UnityEngine.InputSystem.Controls.ButtonControl rightBumper;
     public UnityEngine.InputSystem.Controls.ButtonControl leftBumper;
     public UnityEngine.InputSystem.Controls.StickControl leftStick;
-    // UI
+    
+    
+    
+    // Stats
     public float health;
     //public TextMesh healthText;
     public HealthBarVisuals healthBarVisuals;
+
+    //public int currency = 0;
+    //public float passiveIncomePerMinute = 1;
+    //public float passiveIncomeTimer = 0;
 
     // TEMP FUNCTION
     //public void UpdateHealthUI()
@@ -184,6 +192,7 @@ public class CombatStateManager : MonoBehaviour
     {
         playerMovement = GetComponent<PlayerMovement>();
         interaction = GetComponent<PlayerInteractionManager>();
+        currencyManager = GetComponent<CurrencyManager>();
         // assign tags
         gameObject.tag = "p" + playerMovement.playerNumber.ToString();
 
@@ -202,9 +211,9 @@ public class CombatStateManager : MonoBehaviour
         dashStrength = 300;
         dashLength = 0.5f;
         lightAttackDamage = 10f;
-        lightAttackDamageMultiplier = 1;
+        lightAttackDamageBonus = 1;
         heavyAttackDamage = 20f;
-        heavyAttackDamageMultiplier = 1;
+        heavyAttackDamageBonus = 1;
         throwDamage = 15f;
         throwDamageMultiplier = 1;
         bufferSize = 0.25f;
@@ -493,7 +502,7 @@ public class CombatStateManager : MonoBehaviour
                     takeLightDamageTimer = 0;
                     currentState.ForcedOutOfState(this);
                     playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1] = false;
-                    SwitchState(HitstunState, lightAttackDamage);
+                    SwitchState(HitstunState, lightAttackDamage, collision.tag);
                 }
             }
             if (takeHeavyDamageTimer >= attackTriggerTime)
@@ -505,7 +514,7 @@ public class CombatStateManager : MonoBehaviour
                     takeHeavyDamageTimer = 0;
                     currentState.ForcedOutOfState(this);
                     playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1] = false;
-                    SwitchState(HitstunState, heavyAttackDamage);
+                    SwitchState(HitstunState, heavyAttackDamage, collision.tag);
                     
                 }
             }
@@ -602,8 +611,20 @@ public class CombatStateManager : MonoBehaviour
         if (curHitbox < hitBoxArray.Length - 1)
         {
             curHitbox += 1;
-        
         }
         return curHitbox;
     }
+
+    //public void PassiveIncome()
+    //{
+    //    passiveIncomeTimer += Time.deltaTime;
+
+    //    float timeToAddCoin = 60 / passiveIncomePerMinute;
+
+    //    if (passiveIncomeTimer >= timeToAddCoin)
+    //    {
+    //        currency++;
+    //        passiveIncomeTimer = 0;
+    //    }
+    //}
 }

@@ -13,6 +13,7 @@ public class HitstunState : CombatBaseState
     public float currentInitialHitstunDuration;
 
     public float moveID;
+    public string attackMod;
 
     private bool wasKnockedBack;
 
@@ -34,7 +35,7 @@ public class HitstunState : CombatBaseState
         {
             currentHitstunDuration = combat.lightAttackTotalHitstunLength;
             currentInitialHitstunDuration = combat.lightAttackInitialHitstunLength;
-            combat.health -= moveID * combat.lightAttackDamageMultiplier;
+            combat.health -= moveID + combat.playerAttackingYouManager.lightAttackDamageBonus;
             combat.healthBarVisuals.UpdateUI();
             hitDirection = (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
         }
@@ -44,7 +45,7 @@ public class HitstunState : CombatBaseState
         {
             currentHitstunDuration = combat.heavyAttackTotalHitstunLength;
             currentInitialHitstunDuration = combat.heavyAttackInitialHitstunLength;
-            combat.health -= moveID * combat.heavyAttackDamageMultiplier;
+            combat.health -= moveID + combat.heavyAttackDamageBonus;
             combat.healthBarVisuals.UpdateUI();
             hitDirection = (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
         }
