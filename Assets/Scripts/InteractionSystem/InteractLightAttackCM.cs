@@ -9,7 +9,7 @@ public class InteractLightAttackCM : InteractableObject
     {
         cribmate = GetComponent<CribmateManager>();
 
-        combat.currencyManager.currency -= cribmate.stats.cost;
+        combat.currencyManager.ChangeCurrency(-cribmate.stats.cost);
         // switch to bigger hitbox & add damage
         combat.curLightAttackHitbox = combat.UpgradeAttack(combat.curLightAttackHitbox, combat.lightAttackHitbox);
 

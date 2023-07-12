@@ -9,6 +9,8 @@ public class CurrencyManager : MonoBehaviour
     public float passiveIncomePerMinute = 1;
     public float passiveIncomeTimer = 0;
 
+    public SpriteRenderer currencyUI;
+
 
     void Start()
     {
@@ -29,8 +31,17 @@ public class CurrencyManager : MonoBehaviour
 
         if (passiveIncomeTimer >= timeToAddCoin)
         {
-            currency++;
+            ChangeCurrency(1);
             passiveIncomeTimer = 0;
         }
+    }
+
+    public void ChangeCurrency(int amount)
+    {
+        currency += amount;
+
+        currency = Mathf.Clamp(currency, 0, 99);
+
+        currencyUI.sprite = SpriteNumbers.instance.numbers[currency];
     }
 }

@@ -6,6 +6,8 @@ public class DeadState : CombatBaseState
 {
     public float timer;
     public float deadLength;
+
+    public int coinsLost = 3;
     public override void EnterState(CombatStateManager combat, float number, string str)
     {
         timer = 0f;
@@ -21,6 +23,10 @@ public class DeadState : CombatBaseState
         combat.playerSpriteRenderer.color = Color.clear;
         combat.playerSpriteRenderer.enabled = false;
         combat.playerSpriteAnim.deathAnim.SetActive(true);
+
+        combat.currencyManager.ChangeCurrency(-coinsLost);
+
+        // TODO Instantiate 3 coins at death
     }
 
     public override void UpdateState(CombatStateManager combat)
