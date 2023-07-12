@@ -75,7 +75,10 @@ public class CombatStateManager : MonoBehaviour
     public bool attackTimerStuck;
 
     // light attack
-    [SerializeField] public GameObject lightAttackHitbox;
+    public GameObject[] lightAttackHitbox;
+    public int curLightAttackHitbox;
+
+
     public float lightAttackStartup;
     public float lightAttackActiveHitboxDuration;
     public float lightAttackEndLag;
@@ -84,7 +87,10 @@ public class CombatStateManager : MonoBehaviour
     public float lightAttackDamageMultiplier;
 
     // heavy attack
-    [SerializeField] public GameObject heavyAttackHitbox;
+    public GameObject[] heavyAttackHitbox;
+    public int curHeavyAttackHitbox;
+
+
     public float heavyAttackStartup;
     public float heavyAttackActiveHitboxDuration;
     public float heavyAttackEndLag;
@@ -147,6 +153,9 @@ public class CombatStateManager : MonoBehaviour
     // Pipes
     public Vector2 leftPipeExit;
     public Vector2 rightPipeExit;
+
+    //Interaction Manager
+    public PlayerInteractionManager interaction;
     
 
     // TODO: Temporary gamepad assignment
@@ -174,6 +183,7 @@ public class CombatStateManager : MonoBehaviour
     void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        interaction = GetComponent<PlayerInteractionManager>();
         // assign tags
         gameObject.tag = "p" + playerMovement.playerNumber.ToString();
 
@@ -254,6 +264,7 @@ public class CombatStateManager : MonoBehaviour
         lightAttackActiveHitboxDuration = 0.1f;
         lightAttackEndLag = 0.3f;
         lightAttackDuration = lightAttackStartup + lightAttackActiveHitboxDuration + lightAttackEndLag;
+        curLightAttackHitbox = 0;
 
         // heavy attack variables
         heavyAttackStartup = 0.35f;
@@ -584,5 +595,15 @@ public class CombatStateManager : MonoBehaviour
         invulnerableCollider.SetActive(false);
         mainCollider.enabled = true;
         playerSpriteRenderer.color = Color.white;
+    }
+
+    public int UpgradeAttack(int curHitbox, GameObject[] hitBoxArray)
+    {
+        if (curHitbox < hitBoxArray.Length - 1)
+        {
+            curHitbox += 1;
+        
+        }
+        return curHitbox;
     }
 }

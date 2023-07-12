@@ -10,6 +10,7 @@ public class LightAttackState : CombatBaseState
     public List<bool> canHit;
     public override void EnterState(CombatStateManager combat, float number, string str)
     {
+       
         for (int i = 0; i < canHit.Count; i++)
         {
             canHit[i] = true;
@@ -31,11 +32,11 @@ public class LightAttackState : CombatBaseState
         // set move direction
         if (combat.leftStick.ReadValue().magnitude >= 0.1f)
         {
-            combat.lightAttackHitbox.transform.up = combat.leftStick.ReadValue().normalized;
+            combat.lightAttackHitbox[combat.curLightAttackHitbox].transform.up = combat.leftStick.ReadValue().normalized;
         }
         else
         {
-            combat.lightAttackHitbox.transform.up = combat.playerSpriteTargetTransform.up;
+            combat.lightAttackHitbox[combat.curLightAttackHitbox].transform.up = combat.playerSpriteTargetTransform.up;
         }
     }
 
@@ -50,7 +51,7 @@ public class LightAttackState : CombatBaseState
         if (attackTimer >= combat.lightAttackStartup && !turnedHitboxOn)
         {
             turnedHitboxOn = true;
-            combat.lightAttackHitbox.SetActive(true);
+            combat.lightAttackHitbox[combat.curLightAttackHitbox].SetActive(true);
 
             
         }
@@ -59,7 +60,7 @@ public class LightAttackState : CombatBaseState
         if (attackTimer >= combat.lightAttackStartup + combat.lightAttackActiveHitboxDuration && !turnedHitboxOff)
         {
             turnedHitboxOff = true;
-            combat.lightAttackHitbox.SetActive(false);
+            combat.lightAttackHitbox[combat.curLightAttackHitbox].SetActive(false);
         }
 
         // endlag + return to Idle
@@ -91,7 +92,7 @@ public class LightAttackState : CombatBaseState
 
     public override void ForcedOutOfState(CombatStateManager combat)
     {
-        combat.lightAttackHitbox.SetActive(false);
+        combat.lightAttackHitbox[combat.curLightAttackHitbox].SetActive(false);
         combat.playerSpriteAnim.SetLightSpriteToIdx(combat.playerSpriteAnim.lightFrameStartup.Count - 1);
     }
 }

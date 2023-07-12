@@ -6,7 +6,12 @@ public class CribmateStats : ICloneable
     public int poolOdds { get; set; }
     public int cribID { get; set; }
     public int cost { get; set; }
+
     public bool swap = true;
+
+    public int slot { get; set; }
+
+    //public SlotManager slotType { get; set; }
 
     public object Clone()
     {
@@ -16,7 +21,9 @@ public class CribmateStats : ICloneable
             poolOdds = this.poolOdds,
             cost = this.cost,
             cribID = this.cribID,
-            swap = this.swap
+            swap = this.swap,
+            slot = this.slot
+           // slotType = this.slotType
         };
     }
 }

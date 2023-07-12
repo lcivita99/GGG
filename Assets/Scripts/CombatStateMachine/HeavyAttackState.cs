@@ -42,15 +42,15 @@ public class HeavyAttackState : CombatBaseState
         if (attackTimer >= combat.heavyAttackStartup && !turnedHitboxOn)
         {
             turnedHitboxOn = true;
-            combat.heavyAttackHitbox.SetActive(true);
+            combat.heavyAttackHitbox[combat.curHeavyAttackHitbox].SetActive(true);
             // set move direction
             if (combat.leftStick.ReadValue().magnitude >= 0.1f)
             {
-                combat.heavyAttackHitbox.transform.up = combat.leftStick.ReadValue().normalized;
+                combat.heavyAttackHitbox[combat.curHeavyAttackHitbox].transform.up = combat.leftStick.ReadValue().normalized;
             }
             else
             {
-                combat.heavyAttackHitbox.transform.up = combat.playerSpriteTargetTransform.up;
+                combat.heavyAttackHitbox[combat.curHeavyAttackHitbox].transform.up = combat.playerSpriteTargetTransform.up;
             }
         }
 
@@ -59,7 +59,7 @@ public class HeavyAttackState : CombatBaseState
         {
             turnedHitboxOff = true;
             
-            combat.heavyAttackHitbox.SetActive(false);
+            combat.heavyAttackHitbox[combat.curHeavyAttackHitbox].SetActive(false);
         }
 
         // endlag + return to Idle
@@ -92,7 +92,7 @@ public class HeavyAttackState : CombatBaseState
     public override void ForcedOutOfState(CombatStateManager combat)
     {
         combat.canMove = true;
-        combat.heavyAttackHitbox.SetActive(false);
+        combat.heavyAttackHitbox[combat.curHeavyAttackHitbox].SetActive(false);
         combat.playerSpriteAnim.SetHeavySpriteToIdx(combat.playerSpriteAnim.heavyFrameStartup.Count - 1);
     }
 }

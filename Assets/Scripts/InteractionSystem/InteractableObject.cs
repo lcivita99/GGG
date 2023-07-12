@@ -8,6 +8,9 @@ public class InteractableObject : MonoBehaviour
 
     public Material originalMaterial; // Reference to the original material
     private Material instanceMaterial; // Instance material for this specific object
+    public float timeToChannel;
+
+    
 
     //public LayerMask playerTargetLayer;
     //public LayerMask invulnerableTargetLayer;
@@ -17,6 +20,14 @@ public class InteractableObject : MonoBehaviour
     public Vector2 range;
     void Start()
     {
+        //if (int = 0 )
+        //{
+        //finishChannelling = new TemporaryInterface();
+
+        //} else if (int = 1)
+        //{
+
+        //}
         // Create an instance of the original material
         instanceMaterial = Instantiate(originalMaterial);
 
@@ -71,6 +82,7 @@ public class InteractableObject : MonoBehaviour
         bool interactable = false;
         for (int i = 0; i < playerInteractionManagers.Count; i++)
         {
+            
             if (playerInteractionManagers[i].interactableObjs[gameObject].Item2)
             {
                 interactable = true;
@@ -90,6 +102,12 @@ public class InteractableObject : MonoBehaviour
                 DisableOutline();
             }
         }
+    }
+
+    public virtual void FinishChannelling(CombatStateManager combat)
+    {
+
+        Debug.Log("CHANNEL FINISHED");
     }
 
     //private void CheckPlayerDistance()

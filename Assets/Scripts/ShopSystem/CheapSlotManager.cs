@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheapSlotManager : MonoBehaviour
+public class CheapSlotManager : SlotManager
 {
+
+    public static CheapSlotManager instance { get; private set; }
+
     public List<PlayerInteractionManager> playerInteractionManagers = new List<PlayerInteractionManager>();
     
     // add in editor
@@ -42,7 +45,9 @@ public class CheapSlotManager : MonoBehaviour
         name = "cheap0",
         cribID = 0,
         poolOdds = 3,
-        cost = 10
+        cost = 10,
+        slot = 0
+        //slotType = 
     };
 
     CribmateStats cribmate1Stats = new CribmateStats
@@ -50,7 +55,8 @@ public class CheapSlotManager : MonoBehaviour
         name = "cheap1",
         cribID = 1,
         poolOdds = 3,
-        cost = 10
+        cost = 10,
+        slot = 0
     };
 
     CribmateStats cribmate2Stats = new CribmateStats
@@ -58,7 +64,8 @@ public class CheapSlotManager : MonoBehaviour
         name = "cheap2",
         cribID = 2,
         poolOdds = 3,
-        cost = 10
+        cost = 10,
+        slot = 0
     };
 
     CribmateStats cribmate3Stats = new CribmateStats
@@ -66,12 +73,23 @@ public class CheapSlotManager : MonoBehaviour
         name = "cheap3",
         cribID = 3,
         poolOdds = 3,
-        cost = 10
+        cost = 10,
+        slot = 0
     };
 
 
     private void Awake()
     {
+        // Singleton!
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         originalProbabilities = new List<int> { 0, 0, 0, 0, 1, 1, 1, 2, 2, 3 };
         secondWave = new List<int> { 0, 1, 1, 1, 2, 2, 3, 3, 3, 3 };
 
@@ -104,11 +122,17 @@ public class CheapSlotManager : MonoBehaviour
             playerInteractionManagers.Add(GameObject.FindGameObjectWithTag("p4").GetComponent<PlayerInteractionManager>());
         }
 
-        currentCribmate = Instantiate(cheapCribmates[0], slotPosition, Quaternion.identity);
+        int index = Random.Range(0, originalProbabilities.Count);
+        int picked = originalProbabilities[index];
 
+        GameObject instance = Instantiate(cheapCribmates[picked], slotPosition, Quaternion.identity);
+        currentCribmate = instance;
+        currentCribmate.GetComponent<CribmateManager>().SetStats(cribmateDictionary[picked]);
+        cribID = picked;
+        originalProbabilities.Remove(picked);
         AddCurrentCribmateToAllDictionaries();
 
-        cribID = 1;
+        cribID = picked;
     }
 
     private void Update()
@@ -126,11 +150,15 @@ public class CheapSlotManager : MonoBehaviour
         //}
     }
 
-    public void ChangeSlot()
+    public override void ChangeSlot()
     {
         timer = 0f;
         RemoveCurrentCribmateFromAllDictionaries();
+
+        Instantiate(currentCribmate.GetComponent<CribmateManager>().deathAnimPrefab, slotPosition, Quaternion.identity);
+
         Destroy(currentCribmate);
+
         weightedProbabilities = new List<int>(originalProbabilities);
         weightedProbabilities.RemoveAll(item => item == cribID);
 

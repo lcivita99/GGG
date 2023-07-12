@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MediumSlotManager : MonoBehaviour
+public class MediumSlotManager : SlotManager
 {
+
+    public static MediumSlotManager instance { get; private set; }
+
     public List<PlayerInteractionManager> playerInteractionManagers = new List<PlayerInteractionManager>();
     // add in editor
     public List<GameObject> mediumCribmates = new List<GameObject>();
@@ -39,7 +42,8 @@ public class MediumSlotManager : MonoBehaviour
         name = "medium03",
         cribID = 0,
         poolOdds = 3,
-        cost = 10
+        cost = 10,
+        slot = 1
     };
 
     CribmateStats cribmate1Stats = new CribmateStats
@@ -47,7 +51,8 @@ public class MediumSlotManager : MonoBehaviour
         name = "medium01",
         cribID = 1,
         poolOdds = 3,
-        cost = 10
+        cost = 10,
+        slot = 1
     };
 
     CribmateStats cribmate2Stats = new CribmateStats
@@ -55,7 +60,8 @@ public class MediumSlotManager : MonoBehaviour
         name = "medium02",
         cribID = 2,
         poolOdds = 3,
-        cost = 10
+        cost = 10,
+        slot = 1
     };
 
     CribmateStats cribmate3Stats = new CribmateStats
@@ -63,12 +69,23 @@ public class MediumSlotManager : MonoBehaviour
         name = "medium03",
         cribID = 3,
         poolOdds = 3,
-        cost = 10
+        cost = 10,
+        slot = 1
     };
 
 
     private void Awake()
     {
+        // Singleton!
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         originalProbabilities = new List<int> { 0, 0, 0, 0, 1, 1, 1, 2, 2, 3 };
         secondWave = new List<int> { 0, 1, 1, 1, 2, 2, 3, 3, 3, 3 };
 
@@ -102,11 +119,17 @@ public class MediumSlotManager : MonoBehaviour
             playerInteractionManagers.Add(GameObject.FindGameObjectWithTag("p4").GetComponent<PlayerInteractionManager>());
         }
 
-        currentCribmate = Instantiate(mediumCribmates[0], slotPosition, Quaternion.identity);
+        int index = Random.Range(0, originalProbabilities.Count);
+        int picked = originalProbabilities[index];
 
+        GameObject instance = Instantiate(mediumCribmates[picked], slotPosition, Quaternion.identity);
+        currentCribmate = instance;
+        currentCribmate.GetComponent<CribmateManager>().SetStats(cribmateDictionary[picked]);
+        cribID = picked;
+        originalProbabilities.Remove(picked);
         AddCurrentCribmateToAllDictionaries();
 
-        cribID = 2;
+        cribID = picked;
     }
     private void Update()
     {
@@ -116,9 +139,12 @@ public class MediumSlotManager : MonoBehaviour
         }
     }
 
-    public void ChangeSlot()
+    public override void ChangeSlot()
     {
         RemoveCurrentCribmateFromAllDictionaries();
+
+        Instantiate(currentCribmate.GetComponent<CribmateManager>().deathAnimPrefab, slotPosition, Quaternion.identity);
+
         Destroy(currentCribmate);
         weightedProbabilities = new List<int>(originalProbabilities);
         weightedProbabilities.RemoveAll(item => item == cribID);

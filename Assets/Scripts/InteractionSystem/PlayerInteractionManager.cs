@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerInteractionManager : MonoBehaviour
 {
-    public Dictionary<GameObject, (Vector2, bool)> interactableObjs = new Dictionary<GameObject, (Vector2, bool)>();
-
+    [SerializeField] public Dictionary<GameObject, (Vector2, bool)> interactableObjs = new Dictionary<GameObject, (Vector2, bool)>();
+    public bool canInteract;
 
 
     void Start()

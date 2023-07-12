@@ -5,6 +5,7 @@ using UnityEngine;
 public class CribmateManager : MonoBehaviour
 {
     public CribmateStats stats;
+    public GameObject deathAnimPrefab;
     private ShopManager shop = ShopManager.instance;
 
     //public Material originalMaterial; // Reference to the original material
@@ -62,6 +63,19 @@ public class CribmateManager : MonoBehaviour
     {
         stats = (CribmateStats)statsSetter.Clone();
     }
+
+
+    public void SwapOut()
+    {
+        // remove from every players dictionary
+
+        // Instantiate Death Particles at position stats.
+
+        // destroy object
+
+        // call shop manager.cycle
+    }
+
 
     //// outline stuff
     //public void EnableOutline()

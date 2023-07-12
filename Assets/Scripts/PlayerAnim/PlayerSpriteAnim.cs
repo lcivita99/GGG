@@ -386,8 +386,8 @@ public class PlayerSpriteAnim : MonoBehaviour
             attackSpriteRenderer.gameObject.transform.rotation = targetTransform.transform.rotation;
         } else
         {
-            attackSpriteRenderer.gameObject.transform.position = combatStateManager.lightAttackHitbox.transform.position;
-            attackSpriteRenderer.gameObject.transform.rotation = combatStateManager.lightAttackHitbox.transform.rotation;
+            attackSpriteRenderer.gameObject.transform.position = combatStateManager.lightAttackHitbox[combatStateManager.curLightAttackHitbox].transform.position;
+            attackSpriteRenderer.gameObject.transform.rotation = combatStateManager.lightAttackHitbox[combatStateManager.curLightAttackHitbox].transform.rotation;
         }
     }
     private void GrabCycleSprite()
@@ -448,8 +448,8 @@ public class PlayerSpriteAnim : MonoBehaviour
         }
         else
         {
-            attackSpriteRenderer.gameObject.transform.position = combatStateManager.heavyAttackHitbox.transform.position;
-            attackSpriteRenderer.gameObject.transform.rotation = combatStateManager.heavyAttackHitbox.transform.rotation;
+            attackSpriteRenderer.gameObject.transform.position = combatStateManager.heavyAttackHitbox[combatStateManager.curHeavyAttackHitbox].transform.position;
+            attackSpriteRenderer.gameObject.transform.rotation = combatStateManager.heavyAttackHitbox[combatStateManager.curHeavyAttackHitbox].transform.rotation;
         }
     }
 }

@@ -8,6 +8,7 @@ public class ShieldState : CombatBaseState
     public override void EnterState(CombatStateManager combat, float number, string str)
     {
         combat.canMove = false;
+
         combat.shield.SetActive(true);
 
         // number = shield knockback strength
