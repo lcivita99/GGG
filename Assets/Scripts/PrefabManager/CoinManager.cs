@@ -40,6 +40,8 @@ public class CoinManager : MonoBehaviour
         if (timer >= timeToDespawn && !isDespawning)
         {
             isDespawning = true;
+            GridManager.instance.RemoveFromGrid(transform.position);
+            coinCollider.enabled = false;
             coinAnim.SetTrigger("despawn");
         }
     }
@@ -49,12 +51,14 @@ public class CoinManager : MonoBehaviour
         if (collision.gameObject.layer.Equals(3)) // player
         {
             collision.GetComponent<CurrencyManager>().ChangeCurrency(1);
+            GridManager.instance.RemoveFromGrid(transform.position);
             coinCollider.enabled = false;
             coinAnim.SetTrigger("despawn");
         }
         else if (collision.gameObject.layer.Equals(11)) // invulnerable (in case you grab it when invulnerable
         {
             collision.transform.parent.GetComponent<CurrencyManager>().ChangeCurrency(1);
+            GridManager.instance.RemoveFromGrid(transform.position);
             coinCollider.enabled = false;
             coinAnim.SetTrigger("despawn");
         }
