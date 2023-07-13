@@ -178,6 +178,10 @@ public class CombatStateManager : MonoBehaviour
     //public TextMesh healthText;
     public HealthBarVisuals healthBarVisuals;
 
+
+    // prefabs
+    public GameObject coinPrefab;
+
     //public int currency = 0;
     //public float passiveIncomePerMinute = 1;
     //public float passiveIncomeTimer = 0;
@@ -613,6 +617,19 @@ public class CombatStateManager : MonoBehaviour
             curHitbox += 1;
         }
         return curHitbox;
+    }
+
+    public void SpawnDeathCoins()
+    {
+        // Calculate the positions for the three prefabs
+        Vector3 positionA = transform.position + new Vector3(1f, 0f, 0f)/2;
+        Vector3 positionB = transform.position + new Vector3(-0.5f, 0.866f, 0f)/2;
+        Vector3 positionC = transform.position + new Vector3(-0.5f, -0.866f, 0f)/2;
+
+        // Instantiate the prefabs at the calculated positions
+        Instantiate(coinPrefab, positionA, Quaternion.identity);
+        Instantiate(coinPrefab, positionB, Quaternion.identity);
+        Instantiate(coinPrefab, positionC, Quaternion.identity);
     }
 
     //public void PassiveIncome()

@@ -27,6 +27,8 @@ public class DeadState : CombatBaseState
         combat.currencyManager.ChangeCurrency(-coinsLost);
 
         // TODO Instantiate 3 coins at death
+
+        combat.SpawnDeathCoins();
     }
 
     public override void UpdateState(CombatStateManager combat)
