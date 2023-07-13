@@ -61,6 +61,7 @@ public class CombatStateManager : MonoBehaviour
     public DeadState DeadState = new DeadState();
     public RespawnState RespawnState = new RespawnState();
     public PipeState PipeState = new PipeState();
+    public PlacingState PlacingState = new PlacingState();
     //public SpecialState SpecialState = new SpecialState();
 
     public SpriteRenderer circleSprite;
@@ -630,6 +631,13 @@ public class CombatStateManager : MonoBehaviour
         Instantiate(coinPrefab, positionA, Quaternion.identity);
         Instantiate(coinPrefab, positionB, Quaternion.identity);
         Instantiate(coinPrefab, positionC, Quaternion.identity);
+    }
+
+    public GameObject InstantiateHack(GameObject prefab, int x, int y)
+    {
+        Debug.Log("Running");
+        return Instantiate(prefab, Vector2.zero, Quaternion.identity);
+        //Debug.Log("Running");
     }
 
     //public void PassiveIncome()

@@ -49,10 +49,11 @@ public class IdleState : CombatBaseState
 
             if (channelTimer >= timeToChannel)
             {
-                curIOScript.FinishChannelling(combat);
+                
                 channelling = false;
                 combat.isStuck = false;
                 combat.canMove = true;
+                curIOScript.FinishChannelling(combat);
             }
         }
 

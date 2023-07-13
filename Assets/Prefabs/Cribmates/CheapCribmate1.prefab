@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6375763242055659968}
   - component: {fileID: 4484738654490475430}
   - component: {fileID: 3673470122171793854}
-  - component: {fileID: 1280675715234088559}
+  - component: {fileID: 1268439973994525688}
   m_Layer: 16
   m_Name: CheapCribmate1
   m_TagString: interactable
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathAnimPrefab: {fileID: 5391842492924506617, guid: af9e1d0811a3c5542a687acb2e7d5167, type: 3}
---- !u!114 &1280675715234088559
+--- !u!114 &1268439973994525688
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8120017119122156884}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf7c445b18b495d4a9972331817ea3ef, type: 3}
+  m_Script: {fileID: 11500000, guid: b6c17e13a62ad7549b45c95b75382b79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerInteractionManagers: []

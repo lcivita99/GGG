@@ -22,13 +22,13 @@ public class GridManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        grid = new Grid(34, 15, 1);
+        grid = new Grid(35, 15, 1, new Vector2(-17f, -7.5f));
 
         for (int x = 0; x < grid.placeable.GetLength(0); x++)
         {
             for (int y = 0; y < grid.placeable.GetLength(1); y++)
             {
-                //Instantiate(coinPrefab, grid.GetWorldPosition(x, y), Quaternion.identity);
+                Instantiate(coinPrefab, grid.GetWorldPosition(x, y), Quaternion.identity);
                 Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x, y + 1), Color.white, 100f);
                 Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x + 1, y), Color.white, 100f);
             }

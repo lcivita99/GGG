@@ -7,14 +7,16 @@ public class Grid
     public int width;
     public int height;
     public float cellSize;
+    public Vector2 originPosition;
 
     public bool[,] placeable;
 
-    public Grid (int width, int height, float cellSize)
+    public Grid (int width, int height, float cellSize, Vector2 originPosition)
     {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
+        this.originPosition = originPosition;
 
         placeable = new bool[width, height];
 
@@ -27,9 +29,9 @@ public class Grid
         }
     }
 
-    public Vector3 GetWorldPosition (int x, int y)
+    public Vector2 GetWorldPosition (int x, int y)
     {
-        return new Vector3(x, y) * cellSize;
+        return new Vector2(x, y) * cellSize + originPosition;
     }
 
     public void SetPlaceableValue(int x, int y, bool value)
@@ -44,9 +46,9 @@ public class Grid
         }
     }
 
-    public void GetXY(Vector3 worldPosition, out int x, out int y)
+    public void GetXY(Vector2 worldPosition, out int x, out int y)
     {
-        x = Mathf.RoundToInt(worldPosition.x / cellSize);
-        y = Mathf.RoundToInt(worldPosition.y / cellSize);
+        x = Mathf.RoundToInt((worldPosition- originPosition).x / cellSize);
+        y = Mathf.RoundToInt((worldPosition - originPosition).y / cellSize);
     }
 }
