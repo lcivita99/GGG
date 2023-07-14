@@ -28,7 +28,7 @@ public class GridManager : MonoBehaviour
         {
             for (int y = 0; y < grid.placeable.GetLength(1); y++)
             {
-                Instantiate(coinPrefab, grid.GetWorldPosition(x, y), Quaternion.identity);
+                //Instantiate(coinPrefab, grid.GetWorldPosition(x, y), Quaternion.identity);
                 Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x, y + 1), Color.white, 100f);
                 Debug.DrawLine(grid.GetWorldPosition(x, y), grid.GetWorldPosition(x + 1, y), Color.white, 100f);
             }

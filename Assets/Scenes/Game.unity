@@ -584,6 +584,52 @@ Transform:
   m_Father: {fileID: 955425913}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &218609198
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 218609199}
+  - component: {fileID: 218609200}
+  m_Layer: 0
+  m_Name: Players & Teams
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &218609199
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218609198}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1609010622}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &218609200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218609198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a6fde9a1b98f94385dd2caf8846abd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  team1: []
+  team2: []
 --- !u!1001 &232394850
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3098,7 +3144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36327fdfc42196144aca19b0f25ac065, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinPrefab: {fileID: 1691948279394217365, guid: 5d132b1316893624faf1483e6c264a63, type: 3}
+  coinPrefab: {fileID: 3103305698934061642, guid: 635ed4caaead10d4a9d06a2c92dcb214, type: 3}
 --- !u!4 &1545161444
 Transform:
   m_ObjectHideFlags: 0
@@ -3192,6 +3238,7 @@ Transform:
   m_Children:
   - {fileID: 1689731588}
   - {fileID: 1574803295}
+  - {fileID: 218609199}
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

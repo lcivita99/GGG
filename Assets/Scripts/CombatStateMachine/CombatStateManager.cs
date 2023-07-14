@@ -12,10 +12,11 @@ public class CombatStateManager : MonoBehaviour
     //public CombatStateManager p4Manager;
     public string currentStateString;
 
-    public List<CombatStateManager> allPlayers = new List<CombatStateManager>();
-    public CombatStateManager playerAttackingYouManager;
-    public CurrencyManager currencyManager;
+    [HideInInspector] public List<CombatStateManager> allPlayers = new List<CombatStateManager>();
+    [HideInInspector] public CombatStateManager playerAttackingYouManager;
+    [HideInInspector] public CurrencyManager currencyManager;
 
+    [HideInInspector]
     public List<CombatStateManager> PlayersYouAreAttacking()
     {
         List<CombatStateManager> list = new List<CombatStateManager>();
@@ -40,8 +41,8 @@ public class CombatStateManager : MonoBehaviour
     public PlayerMovement playerMovement;
     
     public string bufferString = "";
-    public Dictionary<string, CombatBaseState> bufferDictionary = new Dictionary<string, CombatBaseState>();
-    public float bufferSize;
+    [HideInInspector] public Dictionary<string, CombatBaseState> bufferDictionary = new Dictionary<string, CombatBaseState>();
+    [HideInInspector] public float bufferSize;
     //public Dictionary<UnityEngine.InputSystem.Controls.ButtonControl, string> bufferInputToString;
 
     public CombatBaseState currentState;
@@ -78,83 +79,83 @@ public class CombatStateManager : MonoBehaviour
 
     // light attack
     public GameObject[] lightAttackHitbox;
-    public int curLightAttackHitbox;
+    [HideInInspector] public int curLightAttackHitbox;
 
 
-    public float lightAttackStartup;
-    public float lightAttackActiveHitboxDuration;
-    public float lightAttackEndLag;
-    public float lightAttackDuration;
-    public float lightAttackDamage;
-    public float lightAttackDamageBonus;
+    [HideInInspector] public float lightAttackStartup;
+    [HideInInspector] public float lightAttackActiveHitboxDuration;
+    [HideInInspector] public float lightAttackEndLag;
+    [HideInInspector] public float lightAttackDuration;
+    [HideInInspector] public float lightAttackDamage;
+    [HideInInspector] public float lightAttackDamageBonus;
 
     // heavy attack
     public GameObject[] heavyAttackHitbox;
-    public int curHeavyAttackHitbox;
+    [HideInInspector] public int curHeavyAttackHitbox;
 
 
-    public float heavyAttackStartup;
-    public float heavyAttackActiveHitboxDuration;
-    public float heavyAttackEndLag;
-    public float heavyAttackDuration;
-    public float heavyAttackDamage;
-    public float heavyAttackDamageBonus;
+    [HideInInspector] public float heavyAttackStartup;
+    [HideInInspector] public float heavyAttackActiveHitboxDuration;
+    [HideInInspector] public float heavyAttackEndLag;
+    [HideInInspector] public float heavyAttackDuration;
+    [HideInInspector] public float heavyAttackDamage;
+    [HideInInspector] public float heavyAttackDamageBonus;
 
     // light attack
     [SerializeField] public GameObject grabHitbox;
-    public float grabStartup;
-    public float grabActiveHitboxDuration;
-    public float grabEndLag;
-    public float grabDuration;
-    public float holdLength;
-    public float throwDamageMultiplier;
+    [HideInInspector] public float grabStartup;
+    [HideInInspector] public float grabActiveHitboxDuration;
+    [HideInInspector] public float grabEndLag;
+    [HideInInspector] public float grabDuration;
+    [HideInInspector] public float holdLength;
+    [HideInInspector] public float throwDamageMultiplier;
 
-    public float throwDuration;
+    [HideInInspector] public float throwDuration;
 
-    public float throwDamage;
+    [HideInInspector] public float throwDamage;
 
     // hitstun stuff
-    public float heavyAttackInitialHitstunLength;
-    public float heavyAttackTotalHitstunLength;
-    public float heavyAttackKnockbackStrength;
-    public float heavyAttackShieldStunLength;
+    [HideInInspector] public float heavyAttackInitialHitstunLength;
+    [HideInInspector] public float heavyAttackTotalHitstunLength;
+    [HideInInspector] public float heavyAttackKnockbackStrength;
+    [HideInInspector] public float heavyAttackShieldStunLength;
 
-    public float lightAttackInitialHitstunLength;
-    public float lightAttackTotalHitstunLength;
-    public float lightAttackKnockbackStrength;
-    public float lightAttackShieldStunLength;
+    [HideInInspector] public float lightAttackInitialHitstunLength;
+    [HideInInspector] public float lightAttackTotalHitstunLength;
+    [HideInInspector] public float lightAttackKnockbackStrength;
+    [HideInInspector] public float lightAttackShieldStunLength;
 
-    public float throwTotalHitstunLength;
-    public float throwKnockbackStrength;
+    [HideInInspector] public float throwTotalHitstunLength;
+    [HideInInspector] public float throwKnockbackStrength;
 
-    public float clankHitstunDuration;
-    public float clankKnockbackStrength;
+    [HideInInspector] public float clankHitstunDuration;
+    [HideInInspector] public float clankKnockbackStrength;
 
-    public float takeLightDamageTimer;
-    public float takeHeavyDamageTimer;
-    public float getGrabbedTimer;
+    [HideInInspector] public float takeLightDamageTimer;
+    [HideInInspector] public float takeHeavyDamageTimer;
+    [HideInInspector] public float getGrabbedTimer;
 
     // splatter invulnerability
-    public float splatterInvulnerableTime;
-    public int splatterCounter;
+    [HideInInspector] public float splatterInvulnerableTime;
+    [HideInInspector] public int splatterCounter;
 
     // shield
     public GameObject shield;
 
     // hitstun timers
-    public float attackTriggerTime;
+    [HideInInspector] public float attackTriggerTime;
 
     // movement
-    public bool canMove;
-    public bool isStuck;
+    [HideInInspector] public bool canMove;
+    [HideInInspector] public bool isStuck;
 
     // dash variables
-    public float dashStrength;
-    public float dashLength;
+    [HideInInspector] public float dashStrength;
+    [HideInInspector] public float dashLength;
 
     // Pipes
-    public Vector2 leftPipeExit;
-    public Vector2 rightPipeExit;
+    [HideInInspector] public Vector2 leftPipeExit;
+    [HideInInspector] public Vector2 rightPipeExit;
 
     //Interaction Manager
     public PlayerInteractionManager interaction;
