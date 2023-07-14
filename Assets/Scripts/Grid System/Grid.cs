@@ -48,7 +48,7 @@ public class Grid
 
     public void GetXY(Vector2 worldPosition, out int x, out int y)
     {
-        x = Mathf.RoundToInt((worldPosition- originPosition).x / cellSize);
+        x = Mathf.RoundToInt((worldPosition - originPosition).x / cellSize);
         y = Mathf.RoundToInt((worldPosition - originPosition).y / cellSize);
     }
 }

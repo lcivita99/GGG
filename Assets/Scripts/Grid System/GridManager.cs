@@ -22,6 +22,7 @@ public class GridManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+
         grid = new Grid(35, 15, 1, new Vector2(-17f, -7.5f));
 
         for (int x = 0; x < grid.placeable.GetLength(0); x++)
@@ -48,7 +49,30 @@ public class GridManager : MonoBehaviour
             InstantiatePrefab(coinPrefab, x, y);
             //Instantiate(coinPrefab, grid.GetWorldPosition(x, y), Quaternion.identity);
         }
+
     }
+
+    // To visualize the interaction distance in the Editor
+    void OnDrawGizmos()
+    {
+        if (grid.placeable != null)
+        {
+            for (int x = 0; x < grid.placeable.GetLength(0); x++)
+            {
+                for (int y = 0; y < grid.placeable.GetLength(1); y++)
+                {
+                    if (!grid.placeable[x, y])
+                    {
+                        Gizmos.color = Color.red;
+                        Gizmos.DrawWireSphere(grid.GetWorldPosition(x, y), 1);
+                    }
+                }
+            }
+        }
+
+    }
+
+
 
     public void InstantiatePrefab(GameObject prefab, int gridX, int gridY)
     {

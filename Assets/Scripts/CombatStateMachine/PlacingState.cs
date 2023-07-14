@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlacingState : CombatBaseState
 {
@@ -16,6 +17,13 @@ public class PlacingState : CombatBaseState
 
     public int placingID;
 
+    public float timeToChangeGrid = 0.1F;
+
+    private Vector2 moveDir;
+
+    bool restartTimer;
+
+
     public override void EnterState(CombatStateManager combat, float number, string str)
     {
         timer = 0f;
@@ -30,6 +38,8 @@ public class PlacingState : CombatBaseState
         turretHologram = PlacingVars.instance.holograms[placingID];
         turretHologram = combat.InstantiateHack(turretHologram, curX, curY);
 
+        
+
 
     }
 
@@ -38,7 +48,17 @@ public class PlacingState : CombatBaseState
         timer += Time.deltaTime;
 
         //turretHologram.transform.position = new Vector2(curX, curY);
-
+        if (combat.cross.wasPressedThisFrame && GridManager.instance.grid.placeable[curX, curY])
+        {
+            // place turret
+            turretPlaced = PlacingVars.instance.prefabs[placingID];
+            //turretPlaced = combat.InstantiateHack(turretPlaced, curX, curY);
+            GridManager.instance.InstantiatePrefab(turretPlaced, curX, curY);
+            combat.DestroyHack(turretHologram);
+            combat.SwitchState(combat.IdleState);
+            //Switch state
+        }
+        UpdateXYGrid(combat);
         if (timer >= maxPlacingTime)
         {
             // TODO place item at nearest available spot
@@ -75,15 +95,78 @@ public class PlacingState : CombatBaseState
 
     private void UpdateXYGrid(CombatStateManager combat)
     {
-        //if (combat.leftStick.ReadValue().x > 0.1f && timer > 0.2f)
-        //    {
-        //        curX++;
-        //        timer = 0f;
-        //    }
-        //else if (combat.leftStick.ReadValue().x < 0.1f && timer > 0.2f)
-        //{
-        //    curX--;
-        //    timer = 0f;
-        //}
+        restartTimer = false;
+        moveDir = combat.playerMovement.gamepad.leftStick.ReadValue();
+        if (moveDir.magnitude > 1)
+        {
+            moveDir = moveDir.normalized;
+        }
+
+        if (moveDir.x > 0.3f && timer > timeToChangeGrid)
+        {
+            if (curX < GridManager.instance.grid.width - 1)
+            {
+                restartTimer = true;
+                curX++;
+                Vector2 newPosition = GridManager.instance.grid.GetWorldPosition(curX, curY);
+                turretHologram.transform.position = newPosition;
+                if (!GridManager.instance.grid.placeable[curX, curY])
+                {
+
+                    turretHologram.GetComponent<SpriteRenderer>().color = Color.red;
+                }
+                // turretHologram.transform.position.x += 1;
+            }
+
+        }
+        if (moveDir.x < -0.3f && timer > timeToChangeGrid)
+        {
+            if (curX > 0)
+            {
+                restartTimer = true;
+                curX--;
+                Vector2 newPosition = GridManager.instance.grid.GetWorldPosition(curX, curY);
+                turretHologram.transform.position = newPosition;
+                if (!GridManager.instance.grid.placeable[curX, curY])
+                {
+                    turretHologram.GetComponent<SpriteRenderer>().color = Color.red;
+                }
+                // turretHologram.transform.position.x += 1;
+            }
+
+        }
+        if (moveDir.y > 0.3f && timer > timeToChangeGrid)
+        {
+            if (curY < GridManager.instance.grid.height - 1)
+            {
+                restartTimer = true;
+                curY++;
+                Vector2 newPosition = GridManager.instance.grid.GetWorldPosition(curX, curY);
+                turretHologram.transform.position = newPosition;
+                if (!GridManager.instance.grid.placeable[curX, curY])
+                {
+                    turretHologram.GetComponent<SpriteRenderer>().color = Color.red;
+                }
+                // turretHologram.transform.position.x += 1;
+            }
+
+        }
+        if (moveDir.y < -0.3f && timer > timeToChangeGrid)
+        {
+            if (curY > 0)
+            {
+                restartTimer = true;
+                curY--;
+                Vector2 newPosition = GridManager.instance.grid.GetWorldPosition(curX, curY);
+                turretHologram.transform.position = newPosition;
+                if (!GridManager.instance.grid.placeable[curX, curY])
+                {
+                    turretHologram.GetComponent<SpriteRenderer>().color = Color.red;
+                }
+                // turretHologram.transform.position.x += 1;
+            }
+        }
+        if (GridManager.instance.grid.placeable[curX, curY]) turretHologram.GetComponent<SpriteRenderer>().color = Color.green;
+        if (restartTimer) timer = 0f;
     }
 }

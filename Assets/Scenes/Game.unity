@@ -3205,9 +3205,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   holograms:
-  - {fileID: 1691948279394217365, guid: 5d132b1316893624faf1483e6c264a63, type: 3}
+  - {fileID: 6137067325102179049, guid: 5e92329b6465ff344b5ced35a41331ee, type: 3}
   prefabs:
-  - {fileID: 1691948279394217365, guid: 5d132b1316893624faf1483e6c264a63, type: 3}
+  - {fileID: 3103305698934061642, guid: 635ed4caaead10d4a9d06a2c92dcb214, type: 3}
 --- !u!1 &1609010621
 GameObject:
   m_ObjectHideFlags: 0

@@ -3734,8 +3734,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92145a44dee13a944bd50fe4eab18ca5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currency: 0
-  passiveIncomePerMinute: 1
+  currency: 20
+  passiveIncomePerMinute: 100
   passiveIncomeTimer: 0
   currencyUI: {fileID: 3044314428751049226}
 --- !u!1 &8257823726599313349

@@ -636,8 +636,17 @@ public class CombatStateManager : MonoBehaviour
 
     public GameObject InstantiateHack(GameObject prefab, int x, int y)
     {
-        Debug.Log("Running");
-        return Instantiate(prefab, Vector2.zero, Quaternion.identity);
+
+        Vector2 objectPosition = GridManager.instance.grid.GetWorldPosition(x, y);
+
+        return Instantiate(prefab, objectPosition, Quaternion.identity);
+        //Debug.Log("Running");
+    }
+
+    public void DestroyHack(GameObject prefab)
+    {
+
+        Destroy(prefab);
         //Debug.Log("Running");
     }
 
