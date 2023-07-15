@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 8835723433847268337}
   - component: {fileID: 7292730981972812145}
   - component: {fileID: 7300619027661547043}
-  - component: {fileID: -8820517511257209756}
+  - component: {fileID: -1378363295469097540}
+  - component: {fileID: 6688494992255184579}
   m_Layer: 16
   m_Name: CheapCribmate2
   m_TagString: interactable
@@ -27,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1941156880207220074}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.81308, y: -3.5557597, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2102380381, guid: d8a8472d0ecea9240913d24e79df5bdc, type: 3}
+  m_Sprite: {fileID: -271339316, guid: 24e587367b50fa145bc7cebfaa2db938, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathAnimPrefab: {fileID: 5391842492924506617, guid: af9e1d0811a3c5542a687acb2e7d5167, type: 3}
---- !u!114 &-8820517511257209756
+--- !u!114 &-1378363295469097540
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +109,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1941156880207220074}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6c17e13a62ad7549b45c95b75382b79, type: 3}
+  m_Script: {fileID: 11500000, guid: bf7c445b18b495d4a9972331817ea3ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerInteractionManagers: []
@@ -116,3 +117,23 @@ MonoBehaviour:
   timeToChannel: 1
   range: {x: 1, y: 2}
   cribmate: {fileID: 0}
+--- !u!95 &6688494992255184579
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941156880207220074}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 890a8b20e1d49e543a67d0667ff9484e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
