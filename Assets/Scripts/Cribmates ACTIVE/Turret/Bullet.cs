@@ -37,9 +37,9 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer.Equals(3)) 
+        if (collision.gameObject.layer.Equals(3)) // player
         {
-            if (IsEnemyPlayer(collision))
+            if (IsEnemyPlayer(collision)) // what kind of player? 
             {
                 bulletTimer = 0;
                 gameObject.SetActive(false);
