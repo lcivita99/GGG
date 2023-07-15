@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
 
     private GridManager gridManager;
 
+    public int team;
+
     void Start()
     {
         gridManager = GridManager.instance;

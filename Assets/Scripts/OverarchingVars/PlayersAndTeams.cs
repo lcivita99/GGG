@@ -27,18 +27,22 @@ public class PlayersAndTeams : MonoBehaviour
         if (GameObject.FindGameObjectWithTag("p1") != null)
         {
             team1.Add(GameObject.FindGameObjectWithTag("p1"));
+            team1[0].GetComponent<PlayerMovement>().team = 1;
         }
         if (GameObject.FindGameObjectWithTag("p2") != null)
         {
             team2.Add(GameObject.FindGameObjectWithTag("p2"));
+            team2[0].GetComponent<PlayerMovement>().team = 2;
         }
         if (GameObject.FindGameObjectWithTag("p3") != null)
         {
             team1.Add(GameObject.FindGameObjectWithTag("p3"));
+            team1[1].GetComponent<PlayerMovement>().team = 1;
         }
         if (GameObject.FindGameObjectWithTag("p4") != null)
         {
             team2.Add(GameObject.FindGameObjectWithTag("p4"));
+            team2[2].GetComponent<PlayerMovement>().team = 2;
         }
     }
 }

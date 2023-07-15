@@ -7,10 +7,10 @@ public class IdleState : CombatBaseState
 {
 
     private float invulnerableTime;
-    private bool channelling;
+    public bool channelling;
 
-    private float channelTimer;
-    private float timeToChannel;
+    public float channelTimer;
+    public float timeToChannel;
     public GameObject channellingObj;
     private InteractableObject curIOScript;
 
@@ -118,6 +118,14 @@ public class IdleState : CombatBaseState
                 }
             }
         }
+
+        if (combat.cross.wasReleasedThisFrame)
+        {
+            channelTimer = 0;
+            combat.isStuck = false;
+            combat.canMove = true;
+            channelling = false;
+        }
     }
 
     public override void LateUpdateState(CombatStateManager combat)
@@ -139,6 +147,7 @@ public class IdleState : CombatBaseState
     {
         combat.isStuck = false;
         combat.canMove = true;
+        channelling = false;
         combat.StopCoroutine(combat.InvulnerableDelay(invulnerableTime));
         combat.BecomeVulnerable();
     }

@@ -634,7 +634,7 @@ public class CombatStateManager : MonoBehaviour
         Instantiate(coinPrefab, positionC, Quaternion.identity);
     }
 
-    public GameObject InstantiateHack(GameObject prefab, int x, int y)
+    public GameObject InstantiatePlaceableHack(GameObject prefab, int x, int y)
     {
 
         Vector2 objectPosition = GridManager.instance.grid.GetWorldPosition(x, y);

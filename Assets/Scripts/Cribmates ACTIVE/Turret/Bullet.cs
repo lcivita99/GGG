@@ -37,7 +37,15 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer.Equals(3) || collision.gameObject.layer.Equals(10)) // player or wall
+        if (collision.gameObject.layer.Equals(3)) 
+        {
+            if (IsEnemyPlayer(collision))
+            {
+                bulletTimer = 0;
+                gameObject.SetActive(false);
+            }
+        }
+        else if (collision.gameObject.layer.Equals(10)) // wall
         {
             bulletTimer = 0;
             gameObject.SetActive(false);
@@ -48,5 +56,18 @@ public class Bullet : MonoBehaviour
     {
         rb.velocity = Vector2.zero;
         // TODO instantiate bullet death
+    }
+
+    private bool IsEnemyPlayer (Collider2D collision)
+    {
+        int bulletTeam = turret.gameObject.GetComponent<PlaceableObj>().myTeam;
+        int colliderTeam = collision.gameObject.GetComponent<PlayerMovement>().team;
+        if (bulletTeam == colliderTeam)
+        {
+            return false;
+        } else
+        {
+            return true;
+        }
     }
 }

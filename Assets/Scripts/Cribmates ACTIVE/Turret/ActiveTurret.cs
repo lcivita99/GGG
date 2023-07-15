@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActiveTurret : MonoBehaviour
+public class ActiveTurret : PlaceableObj
 {
     [SerializeField] private GameObject bullet;
 
@@ -11,12 +11,6 @@ public class ActiveTurret : MonoBehaviour
     [HideInInspector] public float turretAttackRadius;
 
     [HideInInspector] public int bulletsInPool;
-
-    [HideInInspector] public int myTeam;
-
-    [HideInInspector] public List<Transform> enemyTransforms = new List<Transform>();
-
-    [HideInInspector] public PlayersAndTeams playersAndTeams;
 
     [HideInInspector] public Vector2 closestEnemyPosition;
 
@@ -44,11 +38,6 @@ public class ActiveTurret : MonoBehaviour
 
     void Start()
     {
-        playersAndTeams = PlayersAndTeams.instance;
-
-        // TODO THIS IS FOR TESTING
-        SetTeam(1);
-
         fireRate = 1f;
         turretAttackRadius = 4f;
         //idleRotateSpeed = 50f;
@@ -73,35 +62,15 @@ public class ActiveTurret : MonoBehaviour
         }
     }
 
-    public void SetTeam(int team)
-    {
-        myTeam = team;
-
-        if (myTeam == 1)
-        {
-            for (int i = 0; i < playersAndTeams.team2.Count; i++)
-            {
-                enemyTransforms.Add(playersAndTeams.team2[i].transform);
-            }
-        }
-        else if (myTeam == 2)
-        {
-            for (int i = 0; i < playersAndTeams.team1.Count; i++)
-            {
-                enemyTransforms.Add(playersAndTeams.team1[i].transform);
-            }
-        }
-    }
-
     private void SetClosestEnemyPosition()
     {
-        closestEnemyPosition = enemyTransforms[0].position;
+        closestEnemyPosition = enemyObjs[0].transform.position;
 
-        for (int i = 0; i < enemyTransforms.Count; i++)
+        for (int i = 0; i < enemyObjs.Count; i++)
         {
-            if (Vector2.Distance(transform.position, enemyTransforms[i].position) < Vector2.Distance(transform.position, closestEnemyPosition))
+            if (Vector2.Distance(transform.position, enemyObjs[i].transform.position) < Vector2.Distance(transform.position, closestEnemyPosition))
             {
-                closestEnemyPosition = enemyTransforms[i].position;
+                closestEnemyPosition = enemyObjs[i].transform.position;
             }
         }
     }

@@ -6,18 +6,22 @@ using UnityEngine.InputSystem;
 public class PlacingState : CombatBaseState
 {
     public float timer;
+    public float xTimer;
+    public float yTimer;
 
     public float maxPlacingTime = 50f;
 
     public int curX;
     public int curY;
 
-    public GameObject turretPlaced;
-    public GameObject turretHologram;
+    public GameObject activePrefab;
+    public GameObject hologramPrefab;
+    public SpriteRenderer hologramSpriteRenderer;
 
     public int placingID;
 
-    public float timeToChangeGrid = 0.1F;
+    public float timeToChangeGrid = 0.1f;
+    public float stickMagnitudeReq = 0.2f;
 
     private Vector2 moveDir;
 
@@ -26,7 +30,7 @@ public class PlacingState : CombatBaseState
 
     public override void EnterState(CombatStateManager combat, float number, string str)
     {
-        timer = 0f;
+        //timer = 0f;
 
         placingID = Mathf.FloorToInt(number);
 
@@ -35,12 +39,10 @@ public class PlacingState : CombatBaseState
 
         GridManager.instance.grid.GetXY(Vector2.zero, out curX, out curY);
 
-        turretHologram = PlacingVars.instance.holograms[placingID];
-        turretHologram = combat.InstantiateHack(turretHologram, curX, curY);
+        hologramPrefab = PlacingVars.instance.holograms[placingID];
+        hologramPrefab = combat.InstantiatePlaceableHack(hologramPrefab, curX, curY);
 
-        
-
-
+        hologramSpriteRenderer = hologramPrefab.GetComponent<SpriteRenderer>();
     }
 
     public override void UpdateState(CombatStateManager combat)
@@ -51,12 +53,14 @@ public class PlacingState : CombatBaseState
         if (combat.cross.wasPressedThisFrame && GridManager.instance.grid.placeable[curX, curY])
         {
             // place turret
-            turretPlaced = PlacingVars.instance.prefabs[placingID];
-            //turretPlaced = combat.InstantiateHack(turretPlaced, curX, curY);
-            GridManager.instance.InstantiatePrefab(turretPlaced, curX, curY);
-            combat.DestroyHack(turretHologram);
+            activePrefab = PlacingVars.instance.prefabs[placingID];
+            
+            // ! Instantiate and set team. These two must show up in this order, always together
+            activePrefab = combat.InstantiatePlaceableHack(activePrefab, curX, curY);
+            activePrefab.GetComponentInChildren<PlaceableObj>().SetTeam(combat.playerMovement.team);
+
+            combat.DestroyHack(hologramPrefab);
             combat.SwitchState(combat.IdleState);
-            //Switch state
         }
         UpdateXYGrid(combat);
         if (timer >= maxPlacingTime)
@@ -95,78 +99,108 @@ public class PlacingState : CombatBaseState
 
     private void UpdateXYGrid(CombatStateManager combat)
     {
-        restartTimer = false;
+        //restartTimer = false;
         moveDir = combat.playerMovement.gamepad.leftStick.ReadValue();
         if (moveDir.magnitude > 1)
         {
             moveDir = moveDir.normalized;
         }
 
-        if (moveDir.x > 0.3f && timer > timeToChangeGrid)
+        UpdateXTimer();
+        UpdateYTimer();
+
+        if (xTimer > timeToChangeGrid)
         {
             if (curX < GridManager.instance.grid.width - 1)
             {
-                restartTimer = true;
                 curX++;
                 Vector2 newPosition = GridManager.instance.grid.GetWorldPosition(curX, curY);
-                turretHologram.transform.position = newPosition;
-                if (!GridManager.instance.grid.placeable[curX, curY])
-                {
-
-                    turretHologram.GetComponent<SpriteRenderer>().color = Color.red;
-                }
-                // turretHologram.transform.position.x += 1;
+                hologramPrefab.transform.position = newPosition;
+                xTimer = 0;
+                yTimer = 0;
             }
 
         }
-        if (moveDir.x < -0.3f && timer > timeToChangeGrid)
+        if (xTimer < -timeToChangeGrid)
         {
             if (curX > 0)
             {
-                restartTimer = true;
                 curX--;
                 Vector2 newPosition = GridManager.instance.grid.GetWorldPosition(curX, curY);
-                turretHologram.transform.position = newPosition;
-                if (!GridManager.instance.grid.placeable[curX, curY])
-                {
-                    turretHologram.GetComponent<SpriteRenderer>().color = Color.red;
-                }
-                // turretHologram.transform.position.x += 1;
+                hologramPrefab.transform.position = newPosition;
+                xTimer = 0;
+                yTimer = 0;
             }
 
         }
-        if (moveDir.y > 0.3f && timer > timeToChangeGrid)
+        if (yTimer > timeToChangeGrid)
         {
             if (curY < GridManager.instance.grid.height - 1)
             {
-                restartTimer = true;
                 curY++;
                 Vector2 newPosition = GridManager.instance.grid.GetWorldPosition(curX, curY);
-                turretHologram.transform.position = newPosition;
-                if (!GridManager.instance.grid.placeable[curX, curY])
-                {
-                    turretHologram.GetComponent<SpriteRenderer>().color = Color.red;
-                }
-                // turretHologram.transform.position.x += 1;
+                hologramPrefab.transform.position = newPosition;
+                xTimer = 0;
+                yTimer = 0;
             }
 
         }
-        if (moveDir.y < -0.3f && timer > timeToChangeGrid)
+        if (yTimer < -timeToChangeGrid)
         {
             if (curY > 0)
             {
-                restartTimer = true;
                 curY--;
                 Vector2 newPosition = GridManager.instance.grid.GetWorldPosition(curX, curY);
-                turretHologram.transform.position = newPosition;
-                if (!GridManager.instance.grid.placeable[curX, curY])
-                {
-                    turretHologram.GetComponent<SpriteRenderer>().color = Color.red;
-                }
-                // turretHologram.transform.position.x += 1;
+                hologramPrefab.transform.position = newPosition;
+                xTimer = 0;
+                yTimer = 0;
             }
         }
-        if (GridManager.instance.grid.placeable[curX, curY]) turretHologram.GetComponent<SpriteRenderer>().color = Color.green;
-        if (restartTimer) timer = 0f;
+
+        UpdateHologramColor();
+    }
+
+    private void UpdateXTimer()
+    {
+        if (moveDir.x > stickMagnitudeReq)
+        {
+            xTimer += Time.deltaTime * Mathf.Abs(moveDir.x) * 1.2f;
+        }
+        else if (moveDir.x < -stickMagnitudeReq)
+        {
+            xTimer -= Time.deltaTime * Mathf.Abs(moveDir.x) * 1.2f;
+        }
+        else if (xTimer != 0)
+        {
+            xTimer = 0;
+        }
+    }
+
+    private void UpdateYTimer()
+    {
+        if (moveDir.y > stickMagnitudeReq)
+        {
+            yTimer += Time.deltaTime * Mathf.Abs(moveDir.y) * 1.2f;
+        }
+        else if (moveDir.y < -stickMagnitudeReq)
+        {
+            yTimer -= Time.deltaTime * Mathf.Abs(moveDir.y) * 1.2f;
+        }
+        else if (yTimer != 0)
+        {
+            yTimer = 0;
+        }
+    }
+
+    private void UpdateHologramColor()
+    {
+        if (GridManager.instance.grid.placeable[curX, curY] && hologramSpriteRenderer.color != Color.white)
+        {
+            hologramSpriteRenderer.color = Color.white;
+        }
+        else if (!GridManager.instance.grid.placeable[curX, curY] && hologramSpriteRenderer.color != Color.red)
+        {
+            hologramSpriteRenderer.color = Color.red;
+        }
     }
 }
