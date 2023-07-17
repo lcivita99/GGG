@@ -56,11 +56,14 @@ public class PlacingState : CombatBaseState
             activePrefab = PlacingVars.instance.prefabs[placingID];
             
             // ! Instantiate and set team. These two must show up in this order, always together
-            activePrefab = combat.InstantiatePlaceableHack(activePrefab, curX, curY);
-            activePrefab.GetComponentInChildren<PlaceableObj>().SetTeam(combat.playerMovement.team);
-
-            combat.DestroyHack(hologramPrefab);
-            combat.SwitchState(combat.IdleState);
+            //activePrefab = combat.InstantiatePlaceableHack(activePrefab, curX, curY);
+            activePrefab = GridManager.instance.InstantiatePrefab(activePrefab, curX, curY);
+            if (activePrefab != null)
+            {
+                activePrefab.GetComponentInChildren<PlaceableObj>().SetTeam(combat.playerMovement.team);
+                combat.DestroyHack(hologramPrefab);
+                combat.SwitchState(combat.IdleState);
+            }
         }
         UpdateXYGrid(combat);
         if (timer >= maxPlacingTime)

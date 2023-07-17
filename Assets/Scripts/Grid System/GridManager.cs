@@ -74,12 +74,16 @@ public class GridManager : MonoBehaviour
 
 
 
-    public void InstantiatePrefab(GameObject prefab, int gridX, int gridY)
+    public GameObject InstantiatePrefab(GameObject prefab, int gridX, int gridY)
     {
         if (grid.placeable[gridX, gridY])
         {
-            Instantiate(prefab, grid.GetWorldPosition(gridX, gridY), Quaternion.identity);
             grid.SetPlaceableValue(gridX, gridY, false);
+            return Instantiate(prefab, grid.GetWorldPosition(gridX, gridY), Quaternion.identity);
+        }
+        else
+        {
+            return null;
         }
         // TODO bigger objects
     }
