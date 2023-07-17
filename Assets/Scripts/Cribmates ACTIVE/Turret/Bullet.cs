@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviour
 
     private float bulletTimer;
     private float timeToDespawn = 1.5f;
+    private float bulletShieldStunLength = 0.1f;
 
     private Rigidbody2D rb;
 
@@ -41,6 +42,22 @@ public class Bullet : MonoBehaviour
         {
             if (IsEnemyPlayer(collision)) // what kind of player? 
             {
+                // get combat state manager:
+                CombatStateManager combat = collision.GetComponent<CombatStateManager>();
+                // calculate direction: 
+
+                //
+                
+                // calculate vector 2: 
+                Vector2 dir = (collision.transform.position -transform.position).normalized;
+                if (combat.currentState == combat.ShieldState || combat.currentState == combat.ShieldStunState)
+                {
+                    combat.SwitchState(combat.ShieldStunState, bulletShieldStunLength, "", dir);
+                } else
+                {
+                    combat.currentState.ForcedOutOfState(combat);
+                    combat.SwitchState(combat.HitstunState, 0, "bullet", dir);
+                }
                 bulletTimer = 0;
                 gameObject.SetActive(false);
             }

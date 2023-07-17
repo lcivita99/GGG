@@ -16,7 +16,7 @@ public class IdleState : CombatBaseState
 
     private int curCost;
 
-    public override void EnterState(CombatStateManager combat, float number, string str)
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         invulnerableTime = number;
         channelling = false;

@@ -7,7 +7,7 @@ public class DashState : CombatBaseState
     public float dashTimer;
 
     public Vector2 dashDirection;
-    public override void EnterState(CombatStateManager combat, float number, string str)
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         dashTimer = 0;
         combat.canMove = false;

@@ -18,7 +18,7 @@ public class SplatterState : CombatBaseState
 
     public string bounceType;
 
-    public override void EnterState(CombatStateManager combat, float number, string str)
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         bounceStrength = number;
         splatterTimer = 0;
@@ -29,11 +29,11 @@ public class SplatterState : CombatBaseState
         if (bounceType == "hitstun")
         {
             combat.BecomeInvulnerable(splatterLength + combat.splatterInvulnerableTime);
-            if (combat.HitstunState.moveID == combat.lightAttackDamage)
+            if (combat.HitstunState.moveID == "lightAttack")
             {
                 bounceMultiplier = weakBounceMultiplier;
             }
-            else if (combat.HitstunState.moveID == combat.throwDamage || combat.HitstunState.moveID == combat.heavyAttackDamage)
+            else if (combat.HitstunState.moveID == "throw" || combat.HitstunState.moveID == "heavyAttack")
             {
                 bounceMultiplier = strongBounceMultiplier;
             }

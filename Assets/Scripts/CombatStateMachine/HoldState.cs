@@ -12,7 +12,7 @@ public class HoldState : CombatBaseState
     private Vector2 startPos;
     
     //public float holdTimer;
-    public override void EnterState(CombatStateManager combat, float number, string str)
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         combat.playerSpriteAnim.SetGrabSpriteToIdx(combat.playerSpriteAnim.grabFrameStartup.Count - 1);
 

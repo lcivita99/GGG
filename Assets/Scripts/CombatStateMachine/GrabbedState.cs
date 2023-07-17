@@ -11,7 +11,7 @@ public class GrabbedState : CombatBaseState
     private bool throwAsap;
 
     private CombatStateManager playerWhoGrabbedYou;
-    public override void EnterState(CombatStateManager combat, float number, string str)
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         combat.canMove = false;
         combat.playerAttackingYouManager.SwitchState(combat.playerAttackingYouManager.HoldState);
@@ -63,7 +63,7 @@ public class GrabbedState : CombatBaseState
                 playerWhoGrabbedYou.SwitchState(playerWhoGrabbedYou.ThrowState);
                 combat.playerSpriteAnim.grabbedIndicator.SetActive(false);
                 //Debug.Log("ran twice");
-                combat.SwitchState(combat.HitstunState, combat.throwDamage);
+                combat.SwitchState(combat.HitstunState, 0, "throw");
             }
             
         }

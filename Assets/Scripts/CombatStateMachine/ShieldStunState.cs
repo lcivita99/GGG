@@ -10,20 +10,29 @@ public class ShieldStunState : CombatBaseState
 
     public float shieldKnockbackStrength = 100f;
 
+    public Vector2 dir;
+
     public CombatStateManager playerWhoPutYouInShieldStun;
-    public override void EnterState(CombatStateManager combat, float number, string str)
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         shieldStunTimer = 0;
         combat.isStuck = true;
         // make shield less transparent
-        combat.shield.GetComponentInChildren<SpriteRenderer>().color += new Color(0, 0, 0, 0.2f);
+        combat.shield.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 0.75f);
 
-        playerWhoPutYouInShieldStun = combat.playerAttackingYouManager;
-        playerWhoPutYouInShieldStun.attackTimerStuck = true;
+        playerWhoPutYouInShieldStun = null;
+
+        if (combat.playerAttackingYouManager != null)
+        {
+            playerWhoPutYouInShieldStun = combat.playerAttackingYouManager;
+            playerWhoPutYouInShieldStun.attackTimerStuck = true;
+        }
+        
 
 
         //Debug.Log("Entered Shieldstun");
         shieldStunLength = number;
+        dir = vector;
     }
 
     public override void UpdateState(CombatStateManager combat)
@@ -32,10 +41,14 @@ public class ShieldStunState : CombatBaseState
 
         if (shieldStunTimer >= shieldStunLength)
         {
-            combat.shield.GetComponentInChildren<SpriteRenderer>().color -= new Color(0, 0, 0, 0.2f);
+            combat.shield.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
             combat.isStuck = false;
-            playerWhoPutYouInShieldStun.attackTimerStuck = false;
-            combat.SwitchState(combat.ShieldState, shieldKnockbackStrength);
+            if (playerWhoPutYouInShieldStun != null)
+            {
+                playerWhoPutYouInShieldStun.attackTimerStuck = false;
+            }
+            
+            combat.SwitchState(combat.ShieldState, shieldKnockbackStrength, "", dir);
         }
     }
 
@@ -54,9 +67,13 @@ public class ShieldStunState : CombatBaseState
     }
     public override void ForcedOutOfState(CombatStateManager combat)
     {
-        combat.shield.GetComponentInChildren<SpriteRenderer>().color -= new Color(0, 0, 0, 0.2f);
+        combat.shield.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
         combat.isStuck = false;
-        playerWhoPutYouInShieldStun.attackTimerStuck = false;
+        if (playerWhoPutYouInShieldStun != null)
+        {
+            playerWhoPutYouInShieldStun.attackTimerStuck = false;
+        }
+        
         //combat.playerAttackingYouManager
     }
 }

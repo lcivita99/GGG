@@ -12,18 +12,31 @@ public class HitstunState : CombatBaseState
     public float currentHitstunDuration;
     public float currentInitialHitstunDuration;
 
-    public float moveID;
+    public string moveID;
     public string attackMod;
 
     private bool wasKnockedBack;
 
     private Color startColor = new Color(1, 0.7f, 0.7f, 1);
-    public override void EnterState(CombatStateManager combat, float number, string str)
+
+    public float bulletHitstunLength = 0.3f;
+    public float bulletDamage = 5;
+    public float bulletPushStrength = 150;
+
+    public float sniperHitstunLength = 0.4f;
+    public float sniperDamage = 15;
+    public float sniperPushStrength = 400;
+
+    public bool IsPlayerAttack()
+    {
+        return moveID != "bullet" && moveID != "sniper";
+    }
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         //Debug.Log("entered hitstun");
         combat.bufferString = "";
         //Debug.Log("entered hitstun" + Time.deltaTime);
-        moveID = number;
+        moveID = str;
         
         
         hitstunTimer = 0;
@@ -31,32 +44,32 @@ public class HitstunState : CombatBaseState
         //Debug.Log(moveID);
 
         // Light attack case
-        if (moveID == combat.lightAttackDamage)
+        if (moveID == "lightAttack")
         {
             currentHitstunDuration = combat.lightAttackTotalHitstunLength;
             currentInitialHitstunDuration = combat.lightAttackInitialHitstunLength;
-            combat.health -= moveID + combat.playerAttackingYouManager.lightAttackDamageBonus;
+            combat.health -= combat.playerAttackingYouManager.lightAttackDamage + combat.playerAttackingYouManager.lightAttackDamageBonus;
             combat.healthBarVisuals.UpdateUI();
             hitDirection = (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
         }
 
         // heavy attack case
-        else if (moveID == combat.heavyAttackDamage)
+        else if (moveID == "heavyAttack")
         {
             currentHitstunDuration = combat.heavyAttackTotalHitstunLength;
             currentInitialHitstunDuration = combat.heavyAttackInitialHitstunLength;
-            combat.health -= moveID + combat.heavyAttackDamageBonus;
+            combat.health -= combat.playerAttackingYouManager.heavyAttackDamage + combat.playerAttackingYouManager.heavyAttackDamageBonus;
             combat.healthBarVisuals.UpdateUI();
             hitDirection = (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
         }
 
         // throw case
-        else if (moveID == combat.throwDamage)
+        else if (moveID == "throw")
         {
             currentHitstunDuration = combat.throwTotalHitstunLength;
             currentInitialHitstunDuration = 0;
             Physics2D.IgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider, true);
-            combat.health -= moveID * combat.throwDamageMultiplier;
+            combat.health -= combat.playerAttackingYouManager.throwDamage * combat.throwDamageMultiplier;
             combat.healthBarVisuals.UpdateUI();
 
 
@@ -71,8 +84,30 @@ public class HitstunState : CombatBaseState
             }
         }
 
+        else if (moveID == "bullet")
+        {
+            currentHitstunDuration = bulletHitstunLength;
+            currentInitialHitstunDuration = 0;
+            hitDirection = vector;
+            combat.health -= bulletDamage;
+            combat.healthBarVisuals.UpdateUI();
+        }
+
+        else if (moveID == "sniper")
+        {
+            currentHitstunDuration = sniperHitstunLength;
+            currentInitialHitstunDuration = 0;
+            hitDirection = vector;
+            combat.health -= sniperDamage;
+            combat.healthBarVisuals.UpdateUI();
+        }
+
         //combat.takeHeavyDamageTimer = 0;
-        combat.playerAttackingYouManager.attackTimerStuck = true;
+        if (IsPlayerAttack())
+        {
+            combat.playerAttackingYouManager.attackTimerStuck = true;
+        }
+        
         combat.canMove = false;
         combat.isStuck = true;
 
@@ -87,21 +122,25 @@ public class HitstunState : CombatBaseState
     {
         hitstunTimer += Time.deltaTime;
 
-        if (hitstunTimer >= combat.throwDuration &&
-            Physics2D.GetIgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider))
+        if (combat.playerAttackingYouManager != null)
         {
-            Physics2D.IgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider, false);
+            if (hitstunTimer >= combat.throwDuration &&
+                Physics2D.GetIgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider))
+            {
+                Physics2D.IgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider, false);
+            }
         }
 
+
         // light
-        if (moveID == combat.lightAttackDamage)
+        if (moveID == "lightAttack")
         {
             if (hitstunTimer >= combat.lightAttackInitialHitstunLength && !wasKnockedBack)
             {
                 wasKnockedBack = true;
                 combat.isStuck = false;
                 combat.playerAttackingYouManager.attackTimerStuck = false;
-                if (combat.health <= 0) combat.SwitchState(combat.DyingState);
+                if (combat.health <= 0) combat.SwitchState(combat.DyingState, 0, "", hitDirection);
                 else 
                 {
                     //combat.healthBarVisuals.UpdateUI();
@@ -122,7 +161,7 @@ public class HitstunState : CombatBaseState
             }
         }
         // heavy
-        else if (moveID == combat.heavyAttackDamage)
+        else if (moveID == "heavyAttack")
         {
             if (hitstunTimer >= combat.heavyAttackInitialHitstunLength && !wasKnockedBack)
             {
@@ -130,7 +169,7 @@ public class HitstunState : CombatBaseState
                 wasKnockedBack = true;
                 combat.isStuck = false;
                 combat.playerAttackingYouManager.attackTimerStuck = false;
-                if (combat.health <= 0) combat.SwitchState(combat.DyingState);
+                if (combat.health <= 0) combat.SwitchState(combat.DyingState, 0, "", hitDirection);
                 else
                 {
                     //combat.healthBarVisuals.UpdateUI();
@@ -153,14 +192,14 @@ public class HitstunState : CombatBaseState
             }
         }
         // throw
-        else if (moveID == combat.throwDamage)
+        else if (moveID == "throw")
         {
             if (!wasKnockedBack)
             {
                 wasKnockedBack = true;
                 combat.isStuck = false;
                 combat.playerAttackingYouManager.attackTimerStuck = false;
-                if (combat.health <= 0) combat.SwitchState(combat.DyingState);
+                if (combat.health <= 0) combat.SwitchState(combat.DyingState, 0, "", hitDirection);
                 else
                 {
                     //combat.healthBarVisuals.UpdateUI();
@@ -183,8 +222,78 @@ public class HitstunState : CombatBaseState
                 combat.SwitchState(combat.IdleState);
             }
         }
+
+        else if (moveID == "bullet")
+        {
+            if (!wasKnockedBack)
+            {
+                wasKnockedBack = true;
+                combat.isStuck = false;
+                if (combat.health <= 0) combat.SwitchState(combat.DyingState, 0, "", hitDirection);
+                else
+                {
+                    //combat.healthBarVisuals.UpdateUI();
+
+                    // TODO ODODODODOSADHNAJKSHNDOJ AILSOJKPDSNAOPIUNPOIASNDOIPJ{NASDOIJPNSDAPOKNDIOJPASNHOJDNASPIDO
+                    // ? JAOSIKDn{OAIKSJD{OKIASD{OPJDS{OKI"SJD{OPLKSA{OPKDJAS{OPKAOS{PIJDOPL"{KJD
+                    // ? JANDSOKijASOLP{JAS{OPLjASPO{IJDp[IASJD[]pIASJ{PAIKSJASDPIJ
+                    AddKnockback(combat, bulletPushStrength);
+                }
+
+
+            }
+
+            if (wasKnockedBack)
+            {
+                LerpFromRed(combat, 0, bulletHitstunLength);
+            }
+
+
+            if (hitstunTimer >= bulletHitstunLength)
+            {
+                combat.canMove = true;
+                combat.playerSpriteRenderer.color = Color.white;
+                combat.SwitchState(combat.IdleState);
+            }
+        }
+
+        else if (moveID == "sniper")
+        {
+            if (!wasKnockedBack)
+            {
+                wasKnockedBack = true;
+                combat.isStuck = false;
+                if (combat.health <= 0) combat.SwitchState(combat.DyingState, 0, "", hitDirection);
+                else
+                {
+                    //combat.healthBarVisuals.UpdateUI();
+
+                    // TODO ODODODODOSADHNAJKSHNDOJ AILSOJKPDSNAOPIUNPOIASNDOIPJ{NASDOIJPNSDAPOKNDIOJPASNHOJDNASPIDO
+                    // ? JAOSIKDn{OAIKSJD{OKIASD{OPJDS{OKI"SJD{OPLKSA{OPKDJAS{OPKAOS{PIJDOPL"{KJD
+                    // ? JANDSOKijASOLP{JAS{OPLjASPO{IJDp[IASJD[]pIASJ{PAIKSJASDPIJ
+                    AddKnockback(combat, sniperPushStrength);
+                }
+
+
+            }
+
+            if (wasKnockedBack)
+            {
+                LerpFromRed(combat, 0, sniperHitstunLength);
+            }
+
+
+            if (hitstunTimer >= sniperHitstunLength)
+            {
+                combat.canMove = true;
+                combat.playerSpriteRenderer.color = Color.white;
+                combat.SwitchState(combat.IdleState);
+            }
+        }
+
+
         // clank
-        else if (moveID == 0)
+        else if (moveID == "")
         {
             if (hitstunTimer >= combat.clankHitstunDuration && !wasKnockedBack)
             {
@@ -225,8 +334,12 @@ public class HitstunState : CombatBaseState
     public override void ForcedOutOfState(CombatStateManager combat)
     {
         combat.isStuck = false;
-        combat.playerAttackingYouManager.attackTimerStuck = false;
-        Physics2D.IgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider, false);
+        if (combat.playerAttackingYouManager != null)
+        {
+            combat.playerAttackingYouManager.attackTimerStuck = false;
+            Physics2D.IgnoreCollision(combat.mainCollider, combat.playerAttackingYouManager.mainCollider, false);
+        }
+       
         combat.playerSpriteRenderer.color = Color.white;
     }
 

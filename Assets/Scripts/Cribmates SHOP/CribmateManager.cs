@@ -64,6 +64,8 @@ public class CribmateManager : MonoBehaviour
     public void SetStats(CribmateStats statsSetter)
     {
         stats = (CribmateStats)statsSetter.Clone();
+        //CostDisplay costDisplay = GetComponentInChildren<CostDisplay>();
+        //costDisplay.DisplayCost();
     }
 
 

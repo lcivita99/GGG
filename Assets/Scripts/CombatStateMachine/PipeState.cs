@@ -13,7 +13,7 @@ public class PipeState : CombatBaseState
     float timer;
 
     Vector2 dashDirection = new Vector2(0, -1f);
-    public override void EnterState(CombatStateManager combat, float number, string str)
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         //Debug.Log("IM IN A PIPE!");
         pushedOut = false;

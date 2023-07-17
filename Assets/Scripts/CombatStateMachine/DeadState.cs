@@ -8,7 +8,7 @@ public class DeadState : CombatBaseState
     public float deadLength;
 
     public int coinsLost = 3;
-    public override void EnterState(CombatStateManager combat, float number, string str)
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         timer = 0f;
         combat.health = 0f;
@@ -18,7 +18,7 @@ public class DeadState : CombatBaseState
 
         // set up death anim
         combat.playerSpriteAnim.deathAnim.transform.up =
-            (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
+            vector;
         combat.playerSpriteAnim.deathAnim.transform.position = combat.transform.position;
         combat.playerSpriteRenderer.color = Color.clear;
         combat.playerSpriteRenderer.enabled = false;

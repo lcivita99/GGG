@@ -19,8 +19,8 @@ TagManager:
   - player
   - Water
   - UI
-  - lightAttack1
-  - heavyAttack1
+  - lightAttack
+  - heavyAttack
   - shield
   - grab
   - wall
@@ -31,7 +31,7 @@ TagManager:
   - heavyAttack3
   - cribmate
   - bullet
-  - 
+  - sniperShot
   - 
   - 
   - 

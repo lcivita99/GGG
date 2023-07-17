@@ -370,6 +370,17 @@ public class CombatStateManager : MonoBehaviour
         
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer.Equals(17)) // bullet
+        {
+            //currentState.ForcedOutOfState(this);
+            //// calculate vector 2: 
+            //Vector2 dir = (transform.position - collision.transform.position).normalized;
+            //SwitchState(HitstunState, 0, "bullet", dir);
+        }
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         currentState.OnTriggerStay(this, collision);
@@ -446,6 +457,11 @@ public class CombatStateManager : MonoBehaviour
         currentState = state;
         currentState.EnterState(this, number, str);
     }
+    public void SwitchState(CombatBaseState state, float number, string str, Vector2 vector)
+    {
+        currentState = state;
+        currentState.EnterState(this, number, str, vector);
+    }
 
     public void UpdateBufferInput()
     {
@@ -492,11 +508,18 @@ public class CombatStateManager : MonoBehaviour
             getGrabbedTimer += Time.deltaTime;
         }
 
-        GetHit(collision);
+
+        if (!(collision.gameObject.layer.Equals(17) || collision.gameObject.layer.Equals(16)))
+        {
+            GetHit(collision);
+        }
     }
+
+
 
     private void GetHit(Collider2D collision)
     {
+        
         if (!(/*currentState == SplatterState ||*/ currentState == ShieldState || currentState == ShieldStunState))
         {
             if (takeLightDamageTimer >= attackTriggerTime)
@@ -508,7 +531,7 @@ public class CombatStateManager : MonoBehaviour
                     takeLightDamageTimer = 0;
                     currentState.ForcedOutOfState(this);
                     playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1] = false;
-                    SwitchState(HitstunState, lightAttackDamage, collision.tag);
+                    SwitchState(HitstunState, 0, "lightAttack");
                 }
             }
             if (takeHeavyDamageTimer >= attackTriggerTime)
@@ -520,21 +543,21 @@ public class CombatStateManager : MonoBehaviour
                     takeHeavyDamageTimer = 0;
                     currentState.ForcedOutOfState(this);
                     playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1] = false;
-                    SwitchState(HitstunState, heavyAttackDamage, collision.tag);
+                    SwitchState(HitstunState, heavyAttackDamage, "heavyAttack");
                     
                 }
             }
         } else if (currentState == ShieldState)
         {
             UpdatePlayerAttackingYou(collision);
-
+            Vector2 dir = (transform.position - playerAttackingYouManager.transform.position).normalized;
             // get shield light attacked
             if (takeLightDamageTimer >= attackTriggerTime && playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1])
             {
 
                 takeLightDamageTimer = 0;
                 playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1] = false;
-                SwitchState(ShieldStunState, lightAttackShieldStunLength);
+                SwitchState(ShieldStunState, lightAttackShieldStunLength, "", dir);
             }
 
             // get shield heavy attacked
@@ -543,7 +566,7 @@ public class CombatStateManager : MonoBehaviour
                 //Debug.Log("Heavy Switch");
                 takeHeavyDamageTimer = 0;
                 playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1] = false;
-                SwitchState(ShieldStunState, heavyAttackShieldStunLength);
+                SwitchState(ShieldStunState, heavyAttackShieldStunLength, "", dir);
             }
         }
         // get grabbed
@@ -564,7 +587,7 @@ public class CombatStateManager : MonoBehaviour
     private void UpdatePlayerAttackingYou(Collider2D collision)
     {
         // ! update player attacking
-        if (collision.transform.parent.parent)
+        if (collision.transform.parent.parent != null)
         {
             if (collision.transform.parent.parent.GetComponent<CombatStateManager>() != null)
             {

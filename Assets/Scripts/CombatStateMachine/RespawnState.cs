@@ -7,7 +7,7 @@ public class RespawnState : CombatBaseState
     public float timer;
     public float respawnLength;
     public Vector2 respawnPos = new Vector2(0, 9.81f);
-    public override void EnterState(CombatStateManager combat, float number, string str)
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         timer = 0f;
         combat.canMove = false;

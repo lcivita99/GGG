@@ -28,7 +28,7 @@ public class PlacingState : CombatBaseState
     bool restartTimer;
 
 
-    public override void EnterState(CombatStateManager combat, float number, string str)
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         //timer = 0f;
 

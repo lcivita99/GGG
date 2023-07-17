@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5041851083739517549}
   - component: {fileID: 8550295303565167333}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: ActiveTurretPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,6 +184,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d767340c355659a4fb2d1a28917c802e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myTeam: 0
+  enemyObjs: []
+  allyObjs: []
+  playersAndTeams: {fileID: 0}
   bullet: {fileID: 1691948279394217365, guid: 5d132b1316893624faf1483e6c264a63, type: 3}
   bullets:
   - {fileID: 440235521104600993}
@@ -193,9 +197,6 @@ MonoBehaviour:
   - {fileID: 6138199993979062005}
   turretAttackRadius: 4
   bulletsInPool: 0
-  myTeam: 0
-  enemyTransforms: []
-  playersAndTeams: {fileID: 0}
   closestEnemyPosition: {x: 0, y: 0}
   fireRate: 0
 --- !u!212 &7451560450810187228

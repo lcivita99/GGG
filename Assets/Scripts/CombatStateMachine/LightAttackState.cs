@@ -8,7 +8,7 @@ public class LightAttackState : CombatBaseState
     public bool turnedHitboxOn;
     public bool turnedHitboxOff;
     public List<bool> canHit;
-    public override void EnterState(CombatStateManager combat, float number, string str)
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
        
         for (int i = 0; i < canHit.Count; i++)

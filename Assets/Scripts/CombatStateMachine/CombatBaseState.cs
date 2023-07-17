@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class CombatBaseState
 {
-    public abstract void EnterState(CombatStateManager combat, float number = 0.0f, string str = "");
+    public abstract void EnterState(CombatStateManager combat, float number = 0.0f, string str = "", Vector2 vector = default(Vector2));
 
     public abstract void UpdateState(CombatStateManager combat);
 

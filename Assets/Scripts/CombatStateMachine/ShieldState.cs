@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShieldState : CombatBaseState
 {
     private Vector2 shieldKnockbackDir;
-    public override void EnterState(CombatStateManager combat, float number, string str)
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         combat.canMove = false;
 
@@ -13,12 +13,14 @@ public class ShieldState : CombatBaseState
 
         // number = shield knockback strength
 
-        if (number > 0)
-        {
-            shieldKnockbackDir = (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
-        }
+        //if (number > 0)
+        //{
+        //    shieldKnockbackDir = (combat.transform.position - combat.playerAttackingYouManager.transform.position).normalized;
+        //}
 
-        combat.rb.AddForce(shieldKnockbackDir * number, ForceMode2D.Impulse);
+        combat.rb.AddForce(vector * number, ForceMode2D.Impulse);
+
+        combat.shield.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
     }
 
     public override void UpdateState(CombatStateManager combat)

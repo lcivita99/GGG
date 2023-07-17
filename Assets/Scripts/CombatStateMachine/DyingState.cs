@@ -6,7 +6,8 @@ public class DyingState : CombatBaseState
 {
     public float timer;
     public float dyingLength;
-    public override void EnterState(CombatStateManager combat, float number, string str)
+    public Vector2 dir;
+    public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         combat.canMove = false;
         combat.isStuck = true;
@@ -15,6 +16,7 @@ public class DyingState : CombatBaseState
         combat.healthBarVisuals.UpdateUI();
         combat.mainCollider.enabled = false;
         combat.invulnerableCollider.SetActive(false);
+        dir = vector;
     }
 
     public override void UpdateState(CombatStateManager combat)
@@ -23,7 +25,7 @@ public class DyingState : CombatBaseState
         if (timer >= dyingLength)
         {
             
-            combat.SwitchState(combat.DeadState);
+            combat.SwitchState(combat.DeadState, 0, "", dir);
         }
     }
 

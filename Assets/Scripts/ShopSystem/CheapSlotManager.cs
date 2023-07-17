@@ -42,20 +42,20 @@ public class CheapSlotManager : SlotManager
 
     CribmateStats cribmate0Stats = new CribmateStats
     {
-        name = "cheap0",
+        name = "turret",
         cribID = 0,
         poolOdds = 3,
-        cost = 10,
+        cost = 8,
         slot = 0
         //slotType = 
     };
 
     CribmateStats cribmate1Stats = new CribmateStats
     {
-        name = "cheap1",
+        name = "lightAttack",
         cribID = 1,
         poolOdds = 3,
-        cost = 10,
+        cost = 11,
         slot = 0
     };
 
