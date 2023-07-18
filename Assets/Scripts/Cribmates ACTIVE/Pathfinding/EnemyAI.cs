@@ -17,17 +17,24 @@ public class EnemyAI : MonoBehaviour
     Seeker seeker;
     Rigidbody2D rb;
 
+    [SerializeField] private GameObject spriteObject;
+    private Vector2 spriteUpTarget;
 
     void Start()
     {
         nextWaypointDistance = 1f;
-        speed = 400f;
+        speed = 1000f;
         seeker = GetComponent<Seeker>();
         rb = GetComponent<Rigidbody2D>();
 
         InvokeRepeating("UpdatePath", 0f, 0.5f);
-        
+        InvokeRepeating("SetSpriteTransform", 0.2f, 0.07f);
+    }
 
+    private void SetSpriteTransform()
+    {
+        spriteObject.transform.position = transform.position;
+        spriteObject.transform.up = spriteUpTarget;
     }
 
     void UpdatePath()
@@ -69,6 +76,15 @@ public class EnemyAI : MonoBehaviour
         Debug.Log(dir);
 
         rb.AddForce(force);
+        if (dir != Vector2.zero)
+        {
+            //spriteObject.transform.up = Vector3.MoveTowards(spriteObject.transform.up, force.normalized, Time.deltaTime * 4);
+            //spriteObject.transform.up = force.normalized;
+            spriteUpTarget = rb.velocity.normalized;
+
+        }
+        
+        
 
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
 
