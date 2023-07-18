@@ -72,7 +72,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6615551204946071603}
   - component: {fileID: 6615551204946071602}
-  - component: {fileID: 6615551204946071601}
   m_Layer: 16
   m_Name: Sniper
   m_TagString: Untagged
@@ -148,22 +147,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &6615551204946071601
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6615551204946071600}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.21133333}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!1 &6615551205220261420
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,6 +157,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6615551205220261422}
   - component: {fileID: 6615551205220261421}
+  - component: {fileID: -5647642640170432631}
   m_Layer: 0
   m_Name: Sniper
   m_TagString: Untagged
@@ -379,6 +363,22 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!58 &-5647642640170432631
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6615551205220261420}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &6615551205625925005
 GameObject:
   m_ObjectHideFlags: 0
