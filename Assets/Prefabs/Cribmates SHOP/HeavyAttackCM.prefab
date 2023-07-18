@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5234378994549380784}
   - component: {fileID: 4927510155466140840}
   - component: {fileID: 8511614598076833980}
+  - component: {fileID: 5227889496832429808}
   m_Layer: 16
   m_Name: HeavyAttackCM
   m_TagString: interactable
@@ -76,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 880560236, guid: d8a8472d0ecea9240913d24e79df5bdc, type: 3}
+  m_Sprite: {fileID: 175109114, guid: ea51ea0767dfee84e86cbfe9d309a907, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -117,6 +118,26 @@ MonoBehaviour:
   timeToChannel: 1
   range: {x: 1, y: 2}
   cribmate: {fileID: 0}
+--- !u!95 &5227889496832429808
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443843645702012994}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ce9fff257f2c7ac49b83f5dd6de7d875, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &8348237698028562724
 GameObject:
   m_ObjectHideFlags: 0

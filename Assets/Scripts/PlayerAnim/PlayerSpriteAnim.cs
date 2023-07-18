@@ -21,6 +21,14 @@ public class PlayerSpriteAnim : MonoBehaviour
     [SerializeField] private Sprite[] lightAttackSprites;
     [SerializeField] private Sprite[] heavyAttackSprites;
     [SerializeField] private Sprite[] grabSprites;
+
+    private int lightAttackLevel = 1;
+    [SerializeField] private Sprite[] lightAttackSprites2;
+    [SerializeField] private Sprite[] lightAttackSprites3;
+
+    private int heavyAttackLevel = 1;
+    [SerializeField] private Sprite[] heavyAttackSprites2;
+    [SerializeField] private Sprite[] heavyAttackSprites3;
     //[SerializeField] private Sprite[] grabbedSprites;
     public GameObject grabbedIndicator;
 
@@ -105,9 +113,10 @@ public class PlayerSpriteAnim : MonoBehaviour
         lightFrameStartup.Add(5 * combatStateManager.lightAttackStartup / 6);
         lightFrameStartup.Add(combatStateManager.lightAttackStartup);
         lightFrameStartup.Add(combatStateManager.lightAttackStartup +
-            combatStateManager.lightAttackActiveHitboxDuration / 1.5f);
-        lightFrameStartup.Add(combatStateManager.lightAttackStartup +
             combatStateManager.lightAttackActiveHitboxDuration);
+        lightFrameStartup.Add(combatStateManager.lightAttackStartup +
+            combatStateManager.lightAttackActiveHitboxDuration +
+            combatStateManager.lightAttackEndLag / 3);
         lightFrameStartup.Add(combatStateManager.lightAttackDuration);
 
         // grab frame startup
@@ -450,6 +459,40 @@ public class PlayerSpriteAnim : MonoBehaviour
         {
             attackSpriteRenderer.gameObject.transform.position = combatStateManager.heavyAttackHitbox[combatStateManager.curHeavyAttackHitbox].transform.position;
             attackSpriteRenderer.gameObject.transform.rotation = combatStateManager.heavyAttackHitbox[combatStateManager.curHeavyAttackHitbox].transform.rotation;
+        }
+    }
+
+    public void UpgradeLightAttackSprites()
+    {
+        if (lightAttackLevel == 1)
+        {
+            lightAttackLevel++;
+            lightAttackSprites = lightAttackSprites2;
+        } else if (lightAttackLevel == 2)
+        {
+            lightAttackLevel++;
+            lightAttackSprites = lightAttackSprites3;
+        } else
+        {
+            // nothing
+        }
+    }
+
+    public void UpgradeHeavyAttackSprites()
+    {
+        if (heavyAttackLevel == 1)
+        {
+            heavyAttackLevel++;
+            heavyAttackSprites = heavyAttackSprites2;
+        }
+        else if (heavyAttackLevel == 2)
+        {
+            heavyAttackLevel++;
+            heavyAttackSprites = heavyAttackSprites3;
+        }
+        else
+        {
+            // nothing
         }
     }
 }

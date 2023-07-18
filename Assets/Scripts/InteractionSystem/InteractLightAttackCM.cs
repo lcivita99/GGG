@@ -16,6 +16,7 @@ public class InteractLightAttackCM : InteractableObject
         }
         // switch to bigger hitbox & add damage
         combat.curLightAttackHitbox = combat.UpgradeAttack(combat.curLightAttackHitbox, combat.lightAttackHitbox);
+        combat.playerSpriteAnim.UpgradeLightAttackSprites();
 
         combat.lightAttackDamageBonus += 5;
 
