@@ -61,6 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 244df7f4a3a326042acce8f9e32dfbab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sniper: {fileID: 0}
 --- !u!1 &6615551204946071600
 GameObject:
   m_ObjectHideFlags: 0
@@ -135,13 +136,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 869603777, guid: 8450fb8ab4945164192180ad0c7b03de, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.125, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -216,6 +217,7 @@ MonoBehaviour:
   sniper: {fileID: 6615551204946071600}
   sniperShot: {fileID: 4406763145049425103}
   closestEnemyPosition: {x: 0, y: 0}
+  shotTarget: {x: 0, y: 0}
   fireRate: 0
   line: {fileID: 6615551205625925006}
   lineWidthCurve1:
@@ -502,7 +504,7 @@ LineRenderer:
       m_NumAlphaKeys: 2
     numCornerVertices: 0
     numCapVertices: 0
-    alignment: 0
+    alignment: 1
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0

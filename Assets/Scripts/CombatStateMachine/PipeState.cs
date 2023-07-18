@@ -8,8 +8,8 @@ public class PipeState : CombatBaseState
     private bool pushedOut;
     private bool becameVuln;
     float pipeSide;
-    Vector2 leftPipeExit = new Vector2(-10f, 7.69f);
-    Vector2 rightPipeExit = new Vector2(10f, 7.69f);
+    Vector2 leftPipeExit = new Vector2(-10f, 7f);
+    Vector2 rightPipeExit = new Vector2(10f, 7f);
     float timer;
 
     Vector2 dashDirection = new Vector2(0, -1f);

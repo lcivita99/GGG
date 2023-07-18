@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 759205102864747373}
   - component: {fileID: 1244282213272423435}
   - component: {fileID: -6732828894643236646}
+  - component: {fileID: 68111658823923161}
   m_Layer: 16
   m_Name: SniperCM
   m_TagString: interactable
@@ -76,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1714317907, guid: d8a8472d0ecea9240913d24e79df5bdc, type: 3}
+  m_Sprite: {fileID: 192380219, guid: 0b69565b0e67e1446aa7070d9d2389f6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -117,6 +118,26 @@ MonoBehaviour:
   timeToChannel: 1
   range: {x: 1, y: 2}
   cribmate: {fileID: 0}
+--- !u!95 &68111658823923161
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4520968436301022171}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1a913d5c2b2670d4c9d21750853cfb5c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &6998241687892605750
 GameObject:
   m_ObjectHideFlags: 0
