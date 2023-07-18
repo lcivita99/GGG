@@ -45,8 +45,8 @@ public class GridManager : MonoBehaviour
         {
             int x;
             int y;
-            grid.GetXY(Camera.main.ScreenToWorldPoint(Input.mousePosition), out x, out y);
-            InstantiatePrefab(coinPrefab, x, y);
+           // grid.GetXY(Camera.main.ScreenToWorldPoint(Input.mousePosition), out x, out y);
+           // InstantiatePrefab(coinPrefab, x, y);
             //Instantiate(coinPrefab, grid.GetWorldPosition(x, y), Quaternion.identity);
         }
 
