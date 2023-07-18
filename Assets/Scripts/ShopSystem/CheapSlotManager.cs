@@ -98,7 +98,7 @@ public class CheapSlotManager : SlotManager
         cribmateDictionary[2] = cribmate2Stats;
         cribmateDictionary[3] = cribmate3Stats;
 
-        slotPosition = new Vector2(-2.3f, 6.69f);
+        slotPosition = new Vector2(-2.3f, 5.9f);
         
 
     }

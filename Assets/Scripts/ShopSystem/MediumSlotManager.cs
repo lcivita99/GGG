@@ -94,7 +94,7 @@ public class MediumSlotManager : SlotManager
         cribmateDictionary[2] = cribmate2Stats;
         cribmateDictionary[3] = cribmate3Stats;
 
-        slotPosition = new Vector2(0f, 6.69f);
+        slotPosition = new Vector2(0f, 5.9f);
         //currentCribmate = Instantiate(mediumCribmates[0], slotPosition, Quaternion.identity);
         //cribID = 1;
 
