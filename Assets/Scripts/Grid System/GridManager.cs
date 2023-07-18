@@ -55,20 +55,20 @@ public class GridManager : MonoBehaviour
     // To visualize the interaction distance in the Editor
     void OnDrawGizmos()
     {
-        if (grid.placeable != null)
-        {
-            for (int x = 0; x < grid.placeable.GetLength(0); x++)
-            {
-                for (int y = 0; y < grid.placeable.GetLength(1); y++)
-                {
-                    if (!grid.placeable[x, y])
-                    {
-                        Gizmos.color = Color.red;
-                        Gizmos.DrawWireSphere(grid.GetWorldPosition(x, y), 1);
-                    }
-                }
-            }
-        }
+        //if (grid.placeable != null)
+        //{
+        //    for (int x = 0; x < grid.placeable.GetLength(0); x++)
+        //    {
+        //        for (int y = 0; y < grid.placeable.GetLength(1); y++)
+        //        {
+        //            if (!grid.placeable[x, y])
+        //            {
+        //                Gizmos.color = Color.red;
+        //                Gizmos.DrawWireSphere(grid.GetWorldPosition(x, y), 1);
+        //            }
+        //        }
+        //    }
+        //}
 
     }
 

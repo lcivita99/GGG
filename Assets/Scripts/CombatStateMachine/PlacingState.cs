@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Pathfinding;
 
 public class PlacingState : CombatBaseState
 {
@@ -60,6 +61,18 @@ public class PlacingState : CombatBaseState
             // ! Instantiate and set team. These two must show up in this order, always together
             //activePrefab = combat.InstantiatePlaceableHack(activePrefab, curX, curY);
             activePrefab = GridManager.instance.InstantiatePrefab(activePrefab, curX, curY);
+            
+            
+            Bounds bounds = activePrefab.GetComponent<Collider2D>().bounds;
+            var guo = new GraphUpdateObject(bounds);
+
+
+            // Set some settings
+            guo.updatePhysics = true;
+            //guo.updatePhysics = false;
+            AstarPath.active.UpdateGraphs(guo);
+
+
             if (activePrefab != null)
             {
                 activePrefab.GetComponentInChildren<PlaceableObj>().SetTeam(combat.playerMovement.team);
