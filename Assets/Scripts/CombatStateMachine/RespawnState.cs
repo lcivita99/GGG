@@ -7,9 +7,20 @@ public class RespawnState : CombatBaseState
     public float timer;
     public float respawnLength;
     public Vector2 respawnPos = new Vector2(0, 9.81f);
+
+    
+    public bool gotFreeCribmate;
+    public float channelTimer;
+    public bool channelling;
+    public float timeToChannel;
+    public GameObject channellingObj;
+    private InteractableObject curIOScript;
+
     public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         timer = 0f;
+        gotFreeCribmate = false;
+        channelling = false;
         combat.canMove = false;
         combat.isStuck = true;
         combat.health = 0f;
@@ -58,7 +69,56 @@ public class RespawnState : CombatBaseState
                 combat.isStuck = false;
             }
         }
-        
+
+
+
+
+        if (combat.cross.wasPressedThisFrame && !gotFreeCribmate)
+        {
+            Debug.Log(gotFreeCribmate);
+            channelTimer = 0;
+            var keys = new List<GameObject>(combat.interaction.interactableObjs.Keys);
+
+            foreach (GameObject key in keys)
+            {
+                var tuple = combat.interaction.interactableObjs[key];
+                if (tuple.Item2)
+                {
+                    channelling = true;
+                    channellingObj = key;
+                    curIOScript = channellingObj.GetComponent<InteractableObject>();
+                    timeToChannel = curIOScript.timeToChannel;
+                    break;
+    
+                }
+            }
+        }
+
+        if (combat.cross.wasReleasedThisFrame)
+        {
+            channelTimer = 0;
+            combat.isStuck = false;
+            combat.canMove = true;
+            channelling = false;
+        }
+
+        if (channelling)
+        {
+            combat.isStuck = true;
+            combat.canMove = false;
+            channelTimer += Time.deltaTime;
+
+            if (channelTimer >= timeToChannel)
+            {
+
+                channelling = false;
+                combat.isStuck = false;
+                combat.canMove = true;
+                gotFreeCribmate = true;
+                curIOScript.FinishChannelling(combat, false);
+            }
+        }
+
 
         // when condition is met
         //for (int i = 0; i < combat.allPlayers.Count; i++)

@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3378688312612461782}
   - component: {fileID: 5234378994549380784}
   - component: {fileID: 4927510155466140840}
-  - component: {fileID: 3962048538638338330}
+  - component: {fileID: 8511614598076833980}
   m_Layer: 16
-  m_Name: ExpensiveCribmate1
+  m_Name: HeavyAttackCM
   m_TagString: interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathAnimPrefab: {fileID: 5391842492924506617, guid: af9e1d0811a3c5542a687acb2e7d5167, type: 3}
---- !u!114 &3962048538638338330
+--- !u!114 &8511614598076833980
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 443843645702012994}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee85dba907b6ce6448a5dc900d860e06, type: 3}
+  m_Script: {fileID: 11500000, guid: e90ce397f47df3d4eab8238dd45b6556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerInteractionManagers: []

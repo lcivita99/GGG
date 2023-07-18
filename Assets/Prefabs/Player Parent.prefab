@@ -3805,7 +3805,7 @@ MonoBehaviour:
   leftPipeExit: {x: 0, y: 0}
   rightPipeExit: {x: 0, y: 0}
   interaction: {fileID: 0}
-  health: 100
+  health: 1
   healthBarVisuals: {fileID: 6817412702070487138}
   coinPrefab: {fileID: 1691948279394217365, guid: 5d132b1316893624faf1483e6c264a63, type: 3}
 --- !u!114 &387432575258635554

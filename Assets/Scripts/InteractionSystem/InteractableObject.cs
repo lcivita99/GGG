@@ -104,7 +104,7 @@ public class InteractableObject : MonoBehaviour
         }
     }
 
-    public virtual void FinishChannelling(CombatStateManager combat)
+    public virtual void FinishChannelling(CombatStateManager combat, bool idleState)
     {
 
         Debug.Log("CHANNEL FINISHED");

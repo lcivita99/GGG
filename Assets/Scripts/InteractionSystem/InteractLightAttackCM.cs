@@ -5,11 +5,15 @@ using UnityEngine;
 public class InteractLightAttackCM : InteractableObject
 {
     public CribmateManager cribmate;   
-    public override void FinishChannelling(CombatStateManager combat)
+    public override void FinishChannelling(CombatStateManager combat, bool idleState)
     {
+
         cribmate = GetComponent<CribmateManager>();
 
-        combat.currencyManager.ChangeCurrency(-cribmate.stats.cost);
+        if (idleState)
+        {
+            combat.currencyManager.ChangeCurrency(-cribmate.stats.cost);
+        }
         // switch to bigger hitbox & add damage
         combat.curLightAttackHitbox = combat.UpgradeAttack(combat.curLightAttackHitbox, combat.lightAttackHitbox);
 

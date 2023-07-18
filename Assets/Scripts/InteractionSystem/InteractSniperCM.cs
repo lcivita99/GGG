@@ -5,15 +5,24 @@ using UnityEngine;
 public class InteractSniperCM : InteractableObject
 {
     public CribmateManager cribmate;
-    public override void FinishChannelling(CombatStateManager combat)
+    public override void FinishChannelling(CombatStateManager combat, bool idleState)
     {
         cribmate = GetComponent<CribmateManager>();
 
-        combat.currencyManager.ChangeCurrency(-cribmate.stats.cost);
-        // switch to bigger hitbox & add damage
+        if (idleState)
+        {
+            combat.currencyManager.ChangeCurrency(-cribmate.stats.cost);
+            // switch to bigger hitbox & add damage
 
-        // ! float IS THE PLACEABLE ID
-        combat.SwitchState(combat.PlacingState, 1);
+            // ! float IS THE PLACEABLE ID
+            combat.SwitchState(combat.PlacingState, 1, "idle");
+        }
+        else
+        {
+            combat.SwitchState(combat.PlacingState, 1, "respawn");
+        }
+
+        
 
         // replace cribmate
         ReplaceCribmate();

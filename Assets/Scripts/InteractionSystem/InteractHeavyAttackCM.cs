@@ -2,25 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractTurretCM : InteractableObject
+public class InteractHeavyAttackCM : InteractableObject
 {
     public CribmateManager cribmate;
     public override void FinishChannelling(CombatStateManager combat, bool idleState)
     {
+
         cribmate = GetComponent<CribmateManager>();
 
         if (idleState)
         {
             combat.currencyManager.ChangeCurrency(-cribmate.stats.cost);
-            // switch to bigger hitbox & add damage
-            // ! 0 IS THE TURRET ID
-            combat.SwitchState(combat.PlacingState, 0, "idle");
         }
-       else
-        {
-            combat.SwitchState(combat.PlacingState, 0, "respawn");
-        }
-        
+        // switch to bigger hitbox & add damage
+        combat.curHeavyAttackHitbox = combat.UpgradeAttack(combat.curHeavyAttackHitbox, combat.heavyAttackHitbox);
+
+        combat.lightAttackDamageBonus += 10;
 
         // replace cribmate
         ReplaceCribmate();

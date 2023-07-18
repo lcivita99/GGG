@@ -24,6 +24,7 @@ public class PlacingState : CombatBaseState
     public float stickMagnitudeReq = 0.2f;
 
     private Vector2 moveDir;
+    private string stateToSwitch;
 
     bool restartTimer;
 
@@ -36,6 +37,7 @@ public class PlacingState : CombatBaseState
 
         combat.canMove = false;
         combat.isStuck = true;
+        stateToSwitch = str;
 
         GridManager.instance.grid.GetXY(Vector2.zero, out curX, out curY);
 
@@ -62,7 +64,15 @@ public class PlacingState : CombatBaseState
             {
                 activePrefab.GetComponentInChildren<PlaceableObj>().SetTeam(combat.playerMovement.team);
                 combat.DestroyHack(hologramPrefab);
-                combat.SwitchState(combat.IdleState);
+                if (stateToSwitch == "idle")
+                {
+                    combat.SwitchState(combat.IdleState);
+                }
+                else if (stateToSwitch == "respawn")
+                {
+                    combat.SwitchState(combat.RespawnState);
+                }
+                
             }
         }
         UpdateXYGrid(combat);
@@ -75,7 +85,14 @@ public class PlacingState : CombatBaseState
             // switch back to idle
             // become invulnerable for 1 second
             Debug.Log("Switched");
-            combat.SwitchState(combat.IdleState, 1);
+            if (stateToSwitch == "idle")
+            {
+                combat.SwitchState(combat.IdleState, 1);
+            }
+            else if (stateToSwitch == "respawn")
+            {
+                combat.SwitchState(combat.RespawnState);
+            }
         }
     }
 

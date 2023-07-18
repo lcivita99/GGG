@@ -53,7 +53,7 @@ public class IdleState : CombatBaseState
                 channelling = false;
                 combat.isStuck = false;
                 combat.canMove = true;
-                curIOScript.FinishChannelling(combat);
+                curIOScript.FinishChannelling(combat, true);
             }
         }
 
@@ -99,7 +99,6 @@ public class IdleState : CombatBaseState
                     if (key.layer.Equals(16)) //cribmate
                     {
                         curCost = key.GetComponent<CribmateManager>().stats.cost;
-                        Debug.Log(curCost);
                     }
                     else
                     {
