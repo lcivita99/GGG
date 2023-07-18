@@ -9,6 +9,7 @@ public class ActiveSniper : PlaceableObj
     [SerializeField] private GameObject sniperShot;
 
     [HideInInspector] public Vector2 closestEnemyPosition;
+    [HideInInspector] public Vector2 shotTarget;
 
     [HideInInspector] private float shotTimer;
     private float timeBetweenShots = 4;
@@ -109,27 +110,39 @@ public class ActiveSniper : PlaceableObj
 
     private void UpdateShotTarget(bool preShot)
     {
-        // This creates a LayerMask with all bits set to 1, meaning all layers are included.
-        int layerMask = ~0;
+        //// This creates a LayerMask with all bits set to 1, meaning all layers are included.
+        //int layerMask = ~0;
 
-        // Then we turn off bit 16 (for layer 16) by using bitwise negation (~).
-        // This sets the bit for layer 16 to 0, excluding it from the LayerMask.
-        layerMask = layerMask & ~(1 << 16);
+        //// Then we turn off bit 16 (for layer 16) by using bitwise negation (~).
+        //// This sets the bit for layer 16 to 0, excluding it from the LayerMask.
+        //layerMask = layerMask & ~(1 << 16);
 
-        RaycastHit2D hit = Physics2D.Raycast(sniper.transform.position, sniper.transform.up, Mathf.Infinity, layerMask);
-        if (hit.collider != null)
+        //RaycastHit2D hit = Physics2D.Raycast(sniper.transform.position, sniper.transform.up, Mathf.Infinity, layerMask);
+        //if (hit.collider != null)
+        //{
+        //    Vector2 linePos2;
+        //    if (preShot)
+        //    {
+        //        linePos2 = closestEnemyPosition - new Vector2(transform.position.x, transform.position.y);
+        //    } else
+        //    {
+        //        linePos2 = (hit.point - new Vector2(transform.position.x, transform.position.y)).normalized * 50;
+        //    }
+        //    line.SetPosition(1, linePos2);
+        //    //Debug.Log(hit.transform.position);
+        //}
+
+
+        Vector2 linePos2;
+        if (preShot)
         {
-            Vector2 linePos2;
-            if (preShot)
-            {
-                linePos2 = closestEnemyPosition - new Vector2(transform.position.x, transform.position.y);
-            } else
-            {
-                linePos2 = (hit.point - new Vector2(transform.position.x, transform.position.y)).normalized * 50;
-            }
-            line.SetPosition(1, linePos2);
-            //Debug.Log(hit.transform.position);
+            shotTarget = closestEnemyPosition;
+            linePos2 = shotTarget - new Vector2(transform.position.x, transform.position.y);
+        } else
+        {
+            linePos2 = (shotTarget - new Vector2(transform.position.x, transform.position.y)).normalized * 50;
         }
+        line.SetPosition(1, linePos2);
 
     }
 
