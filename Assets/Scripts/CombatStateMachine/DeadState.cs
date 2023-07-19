@@ -11,6 +11,7 @@ public class DeadState : CombatBaseState
     public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         timer = 0f;
+        combat.untargettable = true;
         combat.health = 0f;
         combat.healthBarVisuals.UpdateUI();
         combat.mainCollider.enabled = false;

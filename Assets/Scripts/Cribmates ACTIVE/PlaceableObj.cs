@@ -9,6 +9,9 @@ public class PlaceableObj : MonoBehaviour
     [HideInInspector] public List<GameObject> enemyObjs = new List<GameObject>();
     [HideInInspector] public List<GameObject> allyObjs = new List<GameObject>();
 
+    [HideInInspector] public List<CombatStateManager> enemyCSMs = new List<CombatStateManager>();
+    //[HideInInspector] public List<GameObject> allyObjs = new List<GameObject>();
+
     [HideInInspector] public PlayersAndTeams playersAndTeams;
 
     private void Start()
@@ -26,6 +29,7 @@ public class PlaceableObj : MonoBehaviour
             for (int i = 0; i < playersAndTeams.team2.Count; i++)
             {
                 enemyObjs.Add(playersAndTeams.team2[i]);
+                enemyCSMs.Add(playersAndTeams.team2[i].GetComponent<CombatStateManager>());
                 allyObjs.Add(playersAndTeams.team1[i]);
             }
         }
@@ -34,6 +38,7 @@ public class PlaceableObj : MonoBehaviour
             for (int i = 0; i < playersAndTeams.team1.Count; i++)
             {
                 enemyObjs.Add(playersAndTeams.team1[i]);
+                enemyCSMs.Add(playersAndTeams.team1[i].GetComponent<CombatStateManager>());
                 allyObjs.Add(playersAndTeams.team2[i]);
             }
         }

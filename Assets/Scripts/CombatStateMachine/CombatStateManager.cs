@@ -153,6 +153,9 @@ public class CombatStateManager : MonoBehaviour
     [HideInInspector] public float dashStrength;
     [HideInInspector] public float dashLength;
 
+    // respawnArea
+    public bool untargettable;
+
     // Pipes
     [HideInInspector] public Vector2 leftPipeExit;
     [HideInInspector] public Vector2 rightPipeExit;
@@ -211,7 +214,7 @@ public class CombatStateManager : MonoBehaviour
 
         // Setting Numbers
         attackTriggerTime = 0.05f;
-        health = 1f
+        health = 100f
             ;
         // TODO TEMP FUCNTION
         healthBarVisuals.UpdateUI();
@@ -303,6 +306,9 @@ public class CombatStateManager : MonoBehaviour
         DeadState.deadLength = 1f;
 
         RespawnState.respawnLength = 2f;
+
+        //RespawnArea
+        untargettable = false;
 
         // Pipe Positions:
         leftPipeExit = new Vector2(-10f, 8f);
@@ -551,24 +557,28 @@ public class CombatStateManager : MonoBehaviour
         } else if (currentState == ShieldState)
         {
             UpdatePlayerAttackingYou(collision);
-            Vector2 dir = (transform.position - playerAttackingYouManager.transform.position).normalized;
-            // get shield light attacked
-            if (takeLightDamageTimer >= attackTriggerTime && playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1])
+            if (playerAttackingYouManager != null)
             {
+                Vector2 dir = (transform.position - playerAttackingYouManager.transform.position).normalized;
+                // get shield light attacked
+                if (takeLightDamageTimer >= attackTriggerTime && playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1])
+                {
 
-                takeLightDamageTimer = 0;
-                playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1] = false;
-                SwitchState(ShieldStunState, lightAttackShieldStunLength, "", dir);
-            }
+                    takeLightDamageTimer = 0;
+                    playerAttackingYouManager.LightAttackState.canHit[playerMovement.playerNumber - 1] = false;
+                    SwitchState(ShieldStunState, lightAttackShieldStunLength, "", dir);
+                }
 
-            // get shield heavy attacked
-            else if (takeHeavyDamageTimer >= attackTriggerTime && playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1])
-            {
-                //Debug.Log("Heavy Switch");
-                takeHeavyDamageTimer = 0;
-                playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1] = false;
-                SwitchState(ShieldStunState, heavyAttackShieldStunLength, "", dir);
+                // get shield heavy attacked
+                else if (takeHeavyDamageTimer >= attackTriggerTime && playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1])
+                {
+                    //Debug.Log("Heavy Switch");
+                    takeHeavyDamageTimer = 0;
+                    playerAttackingYouManager.HeavyAttackState.canHit[playerMovement.playerNumber - 1] = false;
+                    SwitchState(ShieldStunState, heavyAttackShieldStunLength, "", dir);
+                }
             }
+            
         }
         // get grabbed
         if (getGrabbedTimer >= attackTriggerTime)

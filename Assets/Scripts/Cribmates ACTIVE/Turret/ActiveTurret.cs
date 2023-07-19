@@ -13,6 +13,7 @@ public class ActiveTurret : PlaceableObj
     [HideInInspector] public int bulletsInPool;
 
     [HideInInspector] public Vector2 closestEnemyPosition;
+    [HideInInspector] public CombatStateManager closestEnemyCSM;
 
     [HideInInspector] private float shotTimer;
     [HideInInspector] private float idleTimer;
@@ -36,6 +37,7 @@ public class ActiveTurret : PlaceableObj
         }
     }
 
+
     void Start()
     {
         fireRate = 1f;
@@ -52,7 +54,7 @@ public class ActiveTurret : PlaceableObj
     {
         SetClosestEnemyPosition();
 
-        if (isCloseEnough())
+        if (isCloseEnough() && !closestEnemyCSM.untargettable)
         {
             Shooting();
         }
@@ -65,12 +67,14 @@ public class ActiveTurret : PlaceableObj
     private void SetClosestEnemyPosition()
     {
         closestEnemyPosition = enemyObjs[0].transform.position;
+        closestEnemyCSM = enemyCSMs[0];
 
         for (int i = 0; i < enemyObjs.Count; i++)
         {
             if (Vector2.Distance(transform.position, enemyObjs[i].transform.position) < Vector2.Distance(transform.position, closestEnemyPosition))
             {
                 closestEnemyPosition = enemyObjs[i].transform.position;
+                closestEnemyCSM = enemyCSMs[i];
             }
         }
     }

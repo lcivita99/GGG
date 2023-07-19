@@ -2617,7 +2617,7 @@ MonoBehaviour:
   manualDebugFloorRoof: 0
   showSearchTree: 0
   unwalkableNodeDebugSize: 0.3
-  logPathResults: 1
+  logPathResults: 0
   maxNearestNodeDistance: 100
   scanOnStartup: 1
   fullGetNearestSearch: 0
@@ -2644,7 +2644,7 @@ MonoBehaviour:
     seed: 0
     pivotPointRoot: {fileID: 0}
     spreadOutCount: 1
-  showGraphs: 1
+  showGraphs: 0
 --- !u!1 &1173061487
 GameObject:
   m_ObjectHideFlags: 0
@@ -3329,9 +3329,11 @@ MonoBehaviour:
   holograms:
   - {fileID: 6137067325102179049, guid: 5e92329b6465ff344b5ced35a41331ee, type: 3}
   - {fileID: 8008238529363267837, guid: 85aa00d96ae812341b959109646a7eaf, type: 3}
+  - {fileID: 6425872680224841431, guid: 7b5d56e7f90a61b4a9fde68d97d25553, type: 3}
   prefabs:
   - {fileID: 3103305698934061642, guid: 635ed4caaead10d4a9d06a2c92dcb214, type: 3}
   - {fileID: 6615551205220261420, guid: 17e22adc9e150ab4eb77ccd654b0f4f2, type: 3}
+  - {fileID: 5002733597262725233, guid: d1ce19b2c6abf834a9a4a7f9938bb6b4, type: 3}
 --- !u!1 &1609010621
 GameObject:
   m_ObjectHideFlags: 0
@@ -4683,15 +4685,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8257823726614474712, guid: cd90d1e7fe35499488668b29ccc19ba0, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8257823726614474712, guid: cd90d1e7fe35499488668b29ccc19ba0, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8257823726614474712, guid: cd90d1e7fe35499488668b29ccc19ba0, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8257823726614474712, guid: cd90d1e7fe35499488668b29ccc19ba0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

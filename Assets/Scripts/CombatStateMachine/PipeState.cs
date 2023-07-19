@@ -56,6 +56,7 @@ public class PipeState : CombatBaseState
         else if (timer >= timeToExitPipe + 0.3f)
         {
             //combat.BecomeVulnerable();
+            combat.untargettable = false;
             combat.SwitchState(combat.IdleState);
         }
     }
