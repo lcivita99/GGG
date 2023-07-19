@@ -25,6 +25,8 @@ public class ActiveSpawner : PlaceableObj
 
     void Start()
     {
+        maxHealth = 10;
+        curHealth = maxHealth;
         spawnRate = 2f;
         enemyDisabled = true;
 

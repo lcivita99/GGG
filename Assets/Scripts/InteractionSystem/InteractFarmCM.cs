@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractDestroyerCM : InteractableObject
+public class InteractFarmCM : InteractableObject
 {
     public CribmateManager cribmate;
     public override void FinishChannelling(CombatStateManager combat, bool idleState)

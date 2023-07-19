@@ -40,6 +40,8 @@ public class ActiveTurret : PlaceableObj
 
     void Start()
     {
+        maxHealth = 10;
+        curHealth = maxHealth;
         fireRate = 1f;
         turretAttackRadius = 4f;
         //idleRotateSpeed = 50f;
@@ -71,10 +73,12 @@ public class ActiveTurret : PlaceableObj
 
         for (int i = 0; i < enemyObjs.Count; i++)
         {
-            if (Vector2.Distance(transform.position, enemyObjs[i].transform.position) < Vector2.Distance(transform.position, closestEnemyPosition))
+            if (Vector2.Distance(transform.position, enemyObjs[i].transform.position) < Vector2.Distance(transform.position, closestEnemyPosition) 
+                && !enemyCSMs[i].untargettable)
             {
                 closestEnemyPosition = enemyObjs[i].transform.position;
                 closestEnemyCSM = enemyCSMs[i];
+
             }
         }
     }

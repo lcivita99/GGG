@@ -75,7 +75,8 @@ public class PlacingState : CombatBaseState
 
             if (activePrefab != null)
             {
-                activePrefab.GetComponentInChildren<PlaceableObj>().SetTeam(combat.playerMovement.team);
+                activePrefab.GetComponentInChildren<PlaceableObj>().SetTeam(combat.playerMovement.team, combat);
+
                 combat.DestroyHack(hologramPrefab);
                 if (stateToSwitch == "idle")
                 {

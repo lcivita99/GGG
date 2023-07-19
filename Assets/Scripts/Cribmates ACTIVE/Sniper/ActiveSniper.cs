@@ -14,6 +14,8 @@ public class ActiveSniper : PlaceableObj
     [HideInInspector] public CombatStateManager closestEnemyCSM;
 
     [HideInInspector] private float shotTimer;
+    private float prevShotTimer;
+    private bool noPlayersTargettable;
     private float timeBetweenShots = 4;
     private float timeAiming = 2;
     private float timeChanelling = 0.5f;
@@ -35,6 +37,9 @@ public class ActiveSniper : PlaceableObj
     {
         //myTeam = 1;
         //fireRate = 8f;
+        SetClosestEnemyPosition();
+        maxHealth = 10;
+        curHealth = maxHealth;
         line = GetComponentInChildren<LineRenderer>();
         line.SetPosition(0, sniper.transform.localPosition);
         activatedShot = false;
@@ -44,20 +49,35 @@ public class ActiveSniper : PlaceableObj
     void Update()
     {
         
-
-        shotTimer += Time.deltaTime;
+        if (!noPlayersTargettable)
+        {
+            shotTimer += Time.deltaTime;
+        }
+       
 
         sniper.transform.up = (closestEnemyPosition - new Vector2(sniper.transform.position.x, sniper.transform.position.y)).normalized;
 
         if (shotTimer <= timeBetweenShots)
         {
+            if (closestEnemyCSM.untargettable)
+            {
+                noPlayersTargettable = true;
+            }
             LineClear();
+            //Debug.Log("Running");
             SetClosestEnemyPosition();
             UpdateLineWidth(lineWidthCurve1, 0, timeBetweenShots);
         }
         
         else if (shotTimer <= timeBetweenShots + timeAiming)
         {
+            if (closestEnemyCSM.untargettable)
+            {
+                //Debug.Log("untargettable");
+
+                noPlayersTargettable = true;
+                shotTimer = timeBetweenShots;
+            }
             LineRed();
             SetClosestEnemyPosition();
             UpdateShotTarget(true);
@@ -91,6 +111,7 @@ public class ActiveSniper : PlaceableObj
         else
         {
             LineClear();
+            
             shotTimer = 0;
             sniperShot.SetActive(false);
             activatedShot = false;
@@ -100,12 +121,19 @@ public class ActiveSniper : PlaceableObj
     private void SetClosestEnemyPosition()
     {
         closestEnemyPosition = enemyObjs[0].transform.position;
+        closestEnemyCSM = enemyCSMs[0];
+        if (!enemyCSMs[0].untargettable)
+            noPlayersTargettable = false;
 
         for (int i = 0; i < enemyObjs.Count; i++)
         {
-            if (Vector2.Distance(transform.position, enemyObjs[i].transform.position) < Vector2.Distance(transform.position, closestEnemyPosition))
+            if (Vector2.Distance(transform.position, enemyObjs[i].transform.position) < Vector2.Distance(transform.position, closestEnemyPosition)
+                && !enemyCSMs[i].untargettable)
             {
                 closestEnemyPosition = enemyObjs[i].transform.position;
+                noPlayersTargettable = false;
+                closestEnemyCSM = enemyCSMs[i];
+
             }
         }
     }

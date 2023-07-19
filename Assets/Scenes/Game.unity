@@ -3415,10 +3415,12 @@ MonoBehaviour:
   - {fileID: 6137067325102179049, guid: 5e92329b6465ff344b5ced35a41331ee, type: 3}
   - {fileID: 8008238529363267837, guid: 85aa00d96ae812341b959109646a7eaf, type: 3}
   - {fileID: 6425872680224841431, guid: 7b5d56e7f90a61b4a9fde68d97d25553, type: 3}
+  - {fileID: 4507488289838998248, guid: edf35f7652db4d54bb571aa09568c141, type: 3}
   prefabs:
   - {fileID: 3103305698934061642, guid: 635ed4caaead10d4a9d06a2c92dcb214, type: 3}
   - {fileID: 6615551205220261420, guid: 17e22adc9e150ab4eb77ccd654b0f4f2, type: 3}
   - {fileID: 5002733597262725233, guid: d1ce19b2c6abf834a9a4a7f9938bb6b4, type: 3}
+  - {fileID: 5244172618643293933, guid: 4756cfea120e7c540a92b236de9107e1, type: 3}
 --- !u!1 &1609010621
 GameObject:
   m_ObjectHideFlags: 0

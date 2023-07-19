@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class PlaceableObj : MonoBehaviour
 {
     public int myTeam;
+
+    public int curHealth;
+    public int maxHealth;
+
+    public CombatStateManager placer;
 
     [HideInInspector] public List<GameObject> enemyObjs = new List<GameObject>();
     [HideInInspector] public List<GameObject> allyObjs = new List<GameObject>();
@@ -19,8 +25,9 @@ public class PlaceableObj : MonoBehaviour
     }
 
     // must call whenever instantiating
-    public void SetTeam(int team)
+    public void SetTeam(int team, CombatStateManager combat)
     {
+        placer = combat;
         playersAndTeams = PlayersAndTeams.instance;
         myTeam = team;
 
@@ -41,6 +48,36 @@ public class PlaceableObj : MonoBehaviour
                 enemyCSMs.Add(playersAndTeams.team1[i].GetComponent<CombatStateManager>());
                 allyObjs.Add(playersAndTeams.team2[i]);
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer.Equals(6))
+        {
+            curHealth -= 1;
+        } else if (collision.gameObject.layer.Equals(7))
+        {
+            curHealth -= 2;
+            Debug.Log(curHealth);
+        }
+
+        if (curHealth <= 0)
+        {
+            Bounds bounds = GetComponent<Collider2D>().bounds;
+            var guo = new GraphUpdateObject(bounds);
+            GridManager.instance.RemoveFromGrid(transform.position);
+
+            Destroy(gameObject);
+            // update pathfinding
+
+            // Set some settings
+            guo.updatePhysics = true;
+            //guo.updatePhysics = false;
+            AstarPath.active.UpdateGraphs(guo);
+            //free from grid
+
+           
         }
     }
 }

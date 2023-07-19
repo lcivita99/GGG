@@ -42,7 +42,7 @@ public class Grid
         }
         else
         {
-            Debug.Log("RED ALERT - you passed in illegal values");
+            //Debug.Log("RED ALERT - you passed in illegal values");
         }
     }
 
