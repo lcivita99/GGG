@@ -11,6 +11,8 @@ public class ActiveSniper : PlaceableObj
     [HideInInspector] public Vector2 closestEnemyPosition;
     [HideInInspector] public Vector2 shotTarget;
 
+    [HideInInspector] public CombatStateManager closestEnemyCSM;
+
     [HideInInspector] private float shotTimer;
     private float timeBetweenShots = 4;
     private float timeAiming = 2;

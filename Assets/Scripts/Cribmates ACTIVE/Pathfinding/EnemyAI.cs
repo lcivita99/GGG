@@ -28,6 +28,8 @@ public class EnemyAI : MonoBehaviour
 
     private float enemyShieldStunLength = 0.2f;
 
+    CombatStateManager enemyCSM;
+
 
 
     private void OnEnable()
@@ -35,6 +37,7 @@ public class EnemyAI : MonoBehaviour
        if (spawner != null)
         {
             target = spawner.target;
+            enemyCSM = spawner.closestEnemyCSM;
         }
        
        timer = 0f;
@@ -49,11 +52,13 @@ public class EnemyAI : MonoBehaviour
         // TODO instantiate bullet death
     }
 
-    void Start()
+    void Awake()
     {
         timer = 0f;
         spawner = GetComponentInParent<ActiveSpawner>();
         target = spawner.target;
+        Debug.Log(spawner.closestEnemyCSM);
+        enemyCSM = spawner.closestEnemyCSM;
         nextWaypointDistance = 1f;
         speed = 1000f;
         seeker = GetComponent<Seeker>();
@@ -164,8 +169,11 @@ public class EnemyAI : MonoBehaviour
         Vector2 force = speed * Time.deltaTime * dir;
 
         
-
-        rb.AddForce(force);
+        if (!enemyCSM.untargettable)
+        {
+            rb.AddForce(force);
+        }
+       
         if (dir != Vector2.zero)
         {
             //spriteObject.transform.up = Vector3.MoveTowards(spriteObject.transform.up, force.normalized, Time.deltaTime * 4);

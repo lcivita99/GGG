@@ -9,6 +9,7 @@ public class ActiveSpawner : PlaceableObj
     [HideInInspector] public int enemiesInPool;
 
     [HideInInspector] public Vector2 closestEnemyPosition;
+    [HideInInspector] public CombatStateManager closestEnemyCSM;
 
     [HideInInspector] private float spawnTimer;
 
@@ -41,12 +42,14 @@ public class ActiveSpawner : PlaceableObj
     {
         closestEnemyPosition = enemyObjs[0].transform.position;
         target = enemyObjs[0].transform;
+        closestEnemyCSM = enemyCSMs[0];
 
         for (int i = 0; i < enemyObjs.Count; i++)
         {
             if (Vector2.Distance(transform.position, enemyObjs[i].transform.position) < Vector2.Distance(transform.position, closestEnemyPosition))
             {
                 closestEnemyPosition = enemyObjs[i].transform.position;
+                closestEnemyCSM = enemyCSMs[i];
                 target = enemyObjs[i].transform;
             }
         }
@@ -54,7 +57,7 @@ public class ActiveSpawner : PlaceableObj
 
     private void Spawning()
     {
-        if (enemyDisabled)
+        if (enemyDisabled && !closestEnemyCSM.untargettable)
         spawnTimer += Time.deltaTime;
 
 

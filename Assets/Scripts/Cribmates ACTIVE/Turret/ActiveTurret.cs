@@ -25,7 +25,7 @@ public class ActiveTurret : PlaceableObj
 
     public float fireRate;
 
-    public bool isCloseEnough()
+    public bool IsCloseEnough()
     {
         if (Vector2.Distance(closestEnemyPosition, transform.position) <= turretAttackRadius)
         {
@@ -54,7 +54,7 @@ public class ActiveTurret : PlaceableObj
     {
         SetClosestEnemyPosition();
 
-        if (isCloseEnough() && !closestEnemyCSM.untargettable)
+        if (IsCloseEnough() && !closestEnemyCSM.untargettable)
         {
             Shooting();
         }
