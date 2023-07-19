@@ -6,7 +6,7 @@ public class CrawlingState : CrawlerBaseState
 {
     public override void EnterState(CrawlerStateManager crawler, float number = 0.0f, string str = "")
     {
-
+        crawler.spriteAnim.SetTrigger("crawl");
     }
 
     public override void UpdateState(CrawlerStateManager crawler)

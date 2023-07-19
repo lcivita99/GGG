@@ -14,6 +14,7 @@ public class CrawlerStateManager : MonoBehaviour
 
     public string currentStateString;
 
+    public Animator spriteAnim;
 
     private bool started;
 
@@ -47,6 +48,8 @@ public class CrawlerStateManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         started = true;
+
+        spriteAnim = GetComponent<Animator>();
         currentState = CrawlingState;
         currentState.EnterState(this);
         timer = 0f;
@@ -72,7 +75,7 @@ public class CrawlerStateManager : MonoBehaviour
 
         speedBuff = 1f;
 
-
+        
 
 
     }
