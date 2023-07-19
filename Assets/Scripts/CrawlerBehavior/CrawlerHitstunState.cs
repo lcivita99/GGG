@@ -10,6 +10,7 @@ public class CrawlerHitstunState : CrawlerBaseState
     public override void EnterState(CrawlerStateManager crawler, float number = 0.0f, string str = "")
     {
         hitstunTimer = 0f;
+        crawler.spriteAnim.SetTrigger("hitstun");
     }
 
     public override void UpdateState(CrawlerStateManager crawler)
