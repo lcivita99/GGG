@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Grid
 {
+    public List<Vector2> availableSpots = new List<Vector2>();
+    
     public int width;
     public int height;
     public float cellSize;
@@ -25,6 +27,7 @@ public class Grid
             for (int y = 0; y < placeable.GetLength(1); y++)
             {
                 placeable[x, y] = true;
+                availableSpots.Add(new Vector2(x, y));
             }
         }
     }

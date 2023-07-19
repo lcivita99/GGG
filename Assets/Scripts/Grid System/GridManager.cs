@@ -79,6 +79,7 @@ public class GridManager : MonoBehaviour
         if (grid.placeable[gridX, gridY])
         {
             grid.SetPlaceableValue(gridX, gridY, false);
+            grid.availableSpots.Remove(new Vector2(gridX, gridY));
             return Instantiate(prefab, grid.GetWorldPosition(gridX, gridY), Quaternion.identity);
         }
         else
@@ -94,6 +95,7 @@ public class GridManager : MonoBehaviour
         int y;
         grid.GetXY(position, out x, out y);
         grid.SetPlaceableValue(x, y, true);
+        grid.availableSpots.Add(new Vector2(x, y));
     }
 
     
