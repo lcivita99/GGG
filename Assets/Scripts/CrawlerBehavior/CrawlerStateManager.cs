@@ -40,7 +40,7 @@ public class CrawlerStateManager : MonoBehaviour
 
     public float speedBuff;
 
-    
+    public int phase;
 
 
     IEnumerator Start()
@@ -92,17 +92,29 @@ public class CrawlerStateManager : MonoBehaviour
         if (timer <= timeToFirstCorner)
         {
             Crawl(initialPosition, firstCorner, 0f, timeToFirstCorner);
+            if (phase != 0 )
+            {
+                phase = 0;
+            }
             //transform.position = Vector2.Lerp(initialPosition.position, firstCorner.position, timer / timeToFirstCorner);
         }
 
         else if (timer <= timeToFirstCorner + timeToSecondCorner)
         {
             Crawl(firstCorner, secondCorner, timeToFirstCorner, timeToSecondCorner);
+            if (phase != 1)
+            {
+                phase = 1;
+            }
             //transform.position = Vector2.Lerp(firstCorner.position, secondCorner.position, (timer - timeToFirstCorner) / timeToSecondCorner);
         }
         else if (timer <= timeToFirstCorner + timeToSecondCorner + timeToFinishLine)
         {
             Crawl(secondCorner, finishLine, timeToFirstCorner + timeToSecondCorner, timeToFinishLine);
+            if (phase != 2)
+            {
+                phase = 2;
+            }
         }
 
     }
