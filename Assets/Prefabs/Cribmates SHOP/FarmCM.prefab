@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7048792670831032932}
   - component: {fileID: 2245301734825429679}
   m_Layer: 16
-  m_Name: MediumCribmate2
+  m_Name: FarmCM
   m_TagString: interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
