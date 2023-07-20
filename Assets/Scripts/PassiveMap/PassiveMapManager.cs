@@ -46,7 +46,7 @@ public class PassiveMapManager : MonoBehaviour
     private void Spawn(GameObject prefab, float min, float max, out float timeToNext)
     {
         Vector2 pos = gridManager.grid.availableSpots[Random.Range(0, gridManager.grid.availableSpots.Count - 1)];
-
+       // Debug.Log(pos);
         gridManager.InstantiatePrefab(prefab, Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y));
 
         timeToNext = Random.Range(min, max);

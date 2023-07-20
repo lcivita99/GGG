@@ -17,13 +17,14 @@ public class ControlPoint : MonoBehaviour
     public float team2Timer = 0f;
 
 
-    public float timeToCapture = 10f;
+    public float timeToCapture;
 
     public SpriteRenderer cpSprite;
 
 
     private void Start()
     {
+        timeToCapture = 10f;
         cpSprite = GetComponent<SpriteRenderer>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -86,10 +87,16 @@ public class ControlPoint : MonoBehaviour
         if (team1Timer >= timeToCapture)
         {
             Debug.Log("team1 wins!");
+            EventMapManager.instance.objectiveInProgress = false;
+            gameObject.SetActive(false);
         }
         else if (team2Timer >= timeToCapture)
         {
             Debug.Log("team2 wins!");
+            EventMapManager.instance.objectiveInProgress = false;
+            gameObject.SetActive(false);
         }
+
+       
     }
 }

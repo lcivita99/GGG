@@ -3721,6 +3721,7 @@ MonoBehaviour:
   isStuck: 0
   dashStrength: 200
   dashLength: 0.5
+  untargettable: 0
   leftPipeExit: {x: 0, y: 0}
   rightPipeExit: {x: 0, y: 0}
   interaction: {fileID: 0}
@@ -3752,8 +3753,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92145a44dee13a944bd50fe4eab18ca5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currency: 20
-  passiveIncomePerMinute: 100
+  currency: 10
+  passiveIncomePerMinute: 10
   passiveIncomeTimer: 0
   currencyUI: {fileID: 3044314428751049226}
 --- !u!1 &8257823726599313349

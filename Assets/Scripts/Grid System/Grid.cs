@@ -27,6 +27,7 @@ public class Grid
             for (int y = 0; y < placeable.GetLength(1); y++)
             {
                 placeable[x, y] = true;
+                if ((x > 5 && x < 30) && (y > 3 && y < 12))
                 availableSpots.Add(new Vector2(x, y));
             }
         }

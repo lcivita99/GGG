@@ -5,8 +5,8 @@ using UnityEngine;
 public class CurrencyManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    public int currency = 0;
-    public float passiveIncomePerMinute = 1;
+    public int currency = 10;
+    public float passiveIncomePerMinute = 10;
     public float passiveIncomeTimer = 0;
 
     public SpriteRenderer currencyUI;
@@ -14,7 +14,7 @@ public class CurrencyManager : MonoBehaviour
 
     void Start()
     {
-        
+        currencyUI.sprite = SpriteNumbers.instance.numbers[currency];
     }
 
     // Update is called once per frame

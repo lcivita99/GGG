@@ -162,7 +162,14 @@ public class CombatStateManager : MonoBehaviour
 
     //Interaction Manager
     public PlayerInteractionManager interaction;
-    
+
+    //TODO: TEST:
+    // Declare the delegate (if using non-generic pattern).
+    public delegate void HitEventHandler(Collider2D collision);
+
+    // Declare the event using the delegate.
+    public event HitEventHandler OnHit;
+
 
     // TODO: Temporary gamepad assignment
     public Gamepad gamepad;
@@ -525,7 +532,9 @@ public class CombatStateManager : MonoBehaviour
 
     private void GetHit(Collider2D collision)
     {
-        
+        OnHit?.Invoke(collision);
+
+        Debug.Log("gothit");
         if (!(/*currentState == SplatterState ||*/ currentState == ShieldState || currentState == ShieldStunState))
         {
             if (takeLightDamageTimer >= attackTriggerTime)

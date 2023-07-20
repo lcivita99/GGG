@@ -4,15 +4,44 @@ using UnityEngine;
 
 public class EventMapManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private List<GameObject> objectives;
+
+    public static EventMapManager instance;
+    public float timer;
+    public float objectiveStartTime;
+    public bool objectiveInProgress;
+
+    private GameObject curObjective;
+
+
+    private void Start()
     {
-        
+        // Singleton!
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        objectiveStartTime = 5f;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (!objectiveInProgress)
+        {
+            timer += Time.deltaTime;
+        }
+
+        if (timer >= objectiveStartTime)
+        {
+            timer = 0;
+            objectiveInProgress = true;
+            curObjective = objectives[Random.Range(0, objectives.Count)];
+            Instantiate(curObjective, Vector2.zero, Quaternion.identity);
+        }
     }
 }
