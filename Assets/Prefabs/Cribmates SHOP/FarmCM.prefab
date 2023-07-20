@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7041283413332098358}
   - component: {fileID: 7048792670831032932}
   - component: {fileID: 2245301734825429679}
+  - component: {fileID: 5551896374632991938}
   m_Layer: 16
   m_Name: FarmCM
   m_TagString: interactable
@@ -76,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1807911162, guid: d8a8472d0ecea9240913d24e79df5bdc, type: 3}
+  m_Sprite: {fileID: 1343512779, guid: 103e7088e721058489deb0455bb106e4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -117,6 +118,26 @@ MonoBehaviour:
   timeToChannel: 1
   range: {x: 1, y: 2}
   cribmate: {fileID: 0}
+--- !u!95 &5551896374632991938
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2194108576458690861}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5343a2d79f9d0b649960cc28d969d411, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &6717952507028867750
 GameObject:
   m_ObjectHideFlags: 0
