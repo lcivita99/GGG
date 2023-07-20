@@ -9,6 +9,13 @@ public class PassiveMapManager : MonoBehaviour
 
     private float coinTimer;
     private float timeToNextCoin = 5f;
+    private float maxCoinTime = 7f;
+    private float minCoinTime = 3f;
+
+    private float heartTimer;
+    private float timeToNextHeart = 15f;
+    private float maxHeartTime = 20f;
+    private float minHeartTime = 10f;
 
     private GridManager gridManager;
     void Start()
@@ -19,11 +26,20 @@ public class PassiveMapManager : MonoBehaviour
     void Update()
     {
         coinTimer += Time.deltaTime;
+        heartTimer += Time.deltaTime;
 
         if (coinTimer >= timeToNextCoin)
         {
-            Spawn(coin, 3f, 7f, out timeToNextCoin);
+            Spawn(coin, minCoinTime, maxCoinTime, out timeToNextCoin);
+            Spawn(coin, minCoinTime, maxCoinTime, out timeToNextCoin);
             coinTimer = 0;
+        }
+        
+        // else if so that we avoid running them on same frame? Idk if necessary, just safety
+        else if (heartTimer >= timeToNextHeart)
+        {
+            Spawn(heart, minHeartTime, maxHeartTime, out timeToNextHeart);
+            heartTimer = 0;
         }
     }
 
@@ -34,10 +50,5 @@ public class PassiveMapManager : MonoBehaviour
         gridManager.InstantiatePrefab(prefab, Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y));
 
         timeToNext = Random.Range(min, max);
-    }
-
-    private void UpdateGrid()
-    {
-
     }
 }

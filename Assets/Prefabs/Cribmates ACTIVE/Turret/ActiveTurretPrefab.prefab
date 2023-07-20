@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5041851083739517549}
-  - component: {fileID: 8550295303565167333}
+  - component: {fileID: 414560039222532279}
+  - component: {fileID: 1518717468272101069}
   m_Layer: 16
   m_Name: ActiveTurretPrefab
   m_TagString: Untagged
@@ -39,7 +40,43 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &8550295303565167333
+--- !u!114 &414560039222532279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3103305698934061642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d767340c355659a4fb2d1a28917c802e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTeam: 0
+  curHealth: 0
+  maxHealth: 0
+  placer: {fileID: 0}
+  enemyObjs: []
+  allyObjs: []
+  enemyCSMs: []
+  playersAndTeams: {fileID: 0}
+  healthbar: {fileID: 0}
+  shakeDuration: 0.2
+  shakeIntensity: 0.1
+  bullet: {fileID: 1691948279394217365, guid: 5d132b1316893624faf1483e6c264a63, type: 3}
+  bullets:
+  - {fileID: 440235521104600993}
+  - {fileID: 8312553038303664612}
+  - {fileID: 7514882161831950513}
+  - {fileID: 4148115548750407474}
+  - {fileID: 6138199993979062005}
+  turretAttackRadius: 4
+  turret: {fileID: 7316131043898895103}
+  bulletsInPool: 0
+  closestEnemyPosition: {x: 0, y: 0}
+  closestEnemyCSM: {fileID: 0}
+  fireRate: 0
+--- !u!58 &1518717468272101069
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,7 +185,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4113693019002681677}
-  - component: {fileID: 4488150281632619013}
   - component: {fileID: 7451560450810187228}
   m_Layer: 0
   m_Name: Active Turret
@@ -172,33 +208,6 @@ Transform:
   m_Father: {fileID: 5041851083739517549}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4488150281632619013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7316131043898895103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d767340c355659a4fb2d1a28917c802e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myTeam: 0
-  enemyObjs: []
-  allyObjs: []
-  playersAndTeams: {fileID: 0}
-  bullet: {fileID: 1691948279394217365, guid: 5d132b1316893624faf1483e6c264a63, type: 3}
-  bullets:
-  - {fileID: 440235521104600993}
-  - {fileID: 8312553038303664612}
-  - {fileID: 7514882161831950513}
-  - {fileID: 4148115548750407474}
-  - {fileID: 6138199993979062005}
-  turretAttackRadius: 4
-  bulletsInPool: 0
-  closestEnemyPosition: {x: 0, y: 0}
-  fireRate: 0
 --- !u!212 &7451560450810187228
 SpriteRenderer:
   m_ObjectHideFlags: 0

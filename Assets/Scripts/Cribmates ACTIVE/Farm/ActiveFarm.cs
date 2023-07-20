@@ -9,13 +9,17 @@ public class ActiveFarm : PlaceableObj
 
 
 
-
-    void Start()
+    // has this format so we can call the "base.Start()" function
+    // which is the Start of the parent class
+    protected override void Start()
     {
-
+        
+        base.Start();
         maxHealth = 15;
         curHealth = maxHealth;
         farmRate = 5f;
+
+        //healthbar = Instantiate(PlaceableHealthbar.instance.healthbarPrefab, transform.position + Vector3.up + Vector3.left * 0.625f, Quaternion.identity);
 
     }
 

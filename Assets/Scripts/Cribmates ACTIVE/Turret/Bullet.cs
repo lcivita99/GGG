@@ -77,7 +77,7 @@ public class Bullet : MonoBehaviour
 
     private bool IsEnemyPlayer (Collider2D collision)
     {
-        int bulletTeam = turret.gameObject.GetComponent<PlaceableObj>().myTeam;
+        int bulletTeam = turret.parent.GetComponent<PlaceableObj>().myTeam;
         int colliderTeam = collision.gameObject.GetComponent<PlayerMovement>().team;
         if (bulletTeam == colliderTeam)
         {

@@ -21,16 +21,16 @@ public class ActiveSpawner : PlaceableObj
 
     public bool enemyDisabled;
 
-    
 
-    void Start()
+    // has this format so we can call the "base.Start()" function
+    // which is the Start of the parent class
+    protected override void Start()
     {
+        base.Start();
         maxHealth = 10;
         curHealth = maxHealth;
         spawnRate = 2f;
         enemyDisabled = true;
-
-
     }
 
     void Update()

@@ -10,6 +10,8 @@ public class ActiveTurret : PlaceableObj
 
     [HideInInspector] public float turretAttackRadius;
 
+    [SerializeField] public GameObject turret;
+
     [HideInInspector] public int bulletsInPool;
 
     [HideInInspector] public Vector2 closestEnemyPosition;
@@ -27,7 +29,7 @@ public class ActiveTurret : PlaceableObj
 
     public bool IsCloseEnough()
     {
-        if (Vector2.Distance(closestEnemyPosition, transform.position) <= turretAttackRadius)
+        if (Vector2.Distance(closestEnemyPosition, turret.transform.position) <= turretAttackRadius)
         {
             return true;
         }
@@ -37,9 +39,11 @@ public class ActiveTurret : PlaceableObj
         }
     }
 
-
-    void Start()
+    // has this format so we can call the "base.Start()" function
+    // which is the Start of the parent class
+    protected override void Start()
     {
+        base.Start();
         maxHealth = 10;
         curHealth = maxHealth;
         fireRate = 1f;
@@ -50,6 +54,8 @@ public class ActiveTurret : PlaceableObj
         directions.Add(Vector2.right);
         directions.Add(Vector2.down);
         directions.Add(Vector2.left);
+
+        //healthbar = Instantiate(PlaceableHealthbar.instance.healthbarPrefab, transform.position + Vector3.up + Vector3.left * 0.625f, Quaternion.identity);
     }
 
     void Update()
@@ -73,7 +79,7 @@ public class ActiveTurret : PlaceableObj
 
         for (int i = 0; i < enemyObjs.Count; i++)
         {
-            if (Vector2.Distance(transform.position, enemyObjs[i].transform.position) < Vector2.Distance(transform.position, closestEnemyPosition) 
+            if (Vector2.Distance(transform.position, enemyObjs[i].transform.position) < Vector2.Distance(turret.transform.position, closestEnemyPosition) 
                 && !enemyCSMs[i].untargettable)
             {
                 closestEnemyPosition = enemyObjs[i].transform.position;
@@ -87,7 +93,7 @@ public class ActiveTurret : PlaceableObj
     {
         shotTimer += Time.deltaTime;
 
-        transform.up = (closestEnemyPosition - new Vector2(transform.position.x, transform.position.y)).normalized;
+        turret.transform.up = (closestEnemyPosition - new Vector2(turret.transform.position.x, turret.transform.position.y)).normalized;
 
         if (shotTimer >= fireRate)
         {
@@ -110,8 +116,8 @@ public class ActiveTurret : PlaceableObj
             {
                 idleIdx = 0;
             }
-            
-            transform.up = directions[idleIdx];
+
+            turret.transform.up = directions[idleIdx];
             idleTimer = 0;
         }
     }

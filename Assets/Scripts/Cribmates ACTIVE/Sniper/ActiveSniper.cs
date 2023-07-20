@@ -32,9 +32,11 @@ public class ActiveSniper : PlaceableObj
 
     private bool activatedShot;
 
-
-    void Start()
+    // has this format so we can call the "base.Start()" function
+    // which is the Start of the parent class
+    protected override void Start()
     {
+        base.Start();
         //myTeam = 1;
         //fireRate = 8f;
         SetClosestEnemyPosition();
@@ -43,6 +45,8 @@ public class ActiveSniper : PlaceableObj
         line = GetComponentInChildren<LineRenderer>();
         line.SetPosition(0, sniper.transform.localPosition);
         activatedShot = false;
+        //healthbar = Instantiate(PlaceableHealthbar.instance.healthbarPrefab, transform.position + Vector3.up + Vector3.left * 0.625f, Quaternion.identity);
+        
     }
 
     // Update is called once per frame
