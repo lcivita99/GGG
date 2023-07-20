@@ -108,7 +108,7 @@ public class PlaceableObj : MonoBehaviour
 
     }
 
-    public float shakeDuration = 0.2f;
+    public float shakeDuration = 0.15f;
     public float shakeIntensity = 0.1f;
 
     private Vector3 originalPosition;
