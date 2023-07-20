@@ -25,7 +25,7 @@ TagManager:
   - grab
   - wall
   - invulnerable
-  - lightAttack2
+  - objectives
   - heavyAttack2
   - lightAttack3
   - heavyAttack3

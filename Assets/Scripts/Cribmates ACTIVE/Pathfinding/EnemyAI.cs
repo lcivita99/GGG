@@ -57,7 +57,7 @@ public class EnemyAI : MonoBehaviour
         timer = 0f;
         spawner = GetComponentInParent<ActiveSpawner>();
         target = spawner.target;
-        Debug.Log(spawner.closestEnemyCSM);
+        //Debug.Log(spawner.closestEnemyCSM);
         enemyCSM = spawner.closestEnemyCSM;
         nextWaypointDistance = 1f;
         speed = 1000f;

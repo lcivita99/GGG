@@ -515,7 +515,7 @@ public class CombatStateManager : MonoBehaviour
         }
 
 
-        if (!(collision.gameObject.layer.Equals(17) || collision.gameObject.layer.Equals(16)))
+        if (!(collision.gameObject.layer.Equals(17) || collision.gameObject.layer.Equals(16) || collision.gameObject.layer.Equals(12)))
         {
             GetHit(collision);
         }
