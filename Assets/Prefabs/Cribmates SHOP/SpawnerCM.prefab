@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 6961607128356849936}
   - component: {fileID: 7807745713568756488}
   - component: {fileID: 2694100948608138310}
+  - component: {fileID: 1875919455194569961}
   m_Layer: 16
   m_Name: SpawnerCM
   m_TagString: interactable
@@ -214,3 +215,23 @@ MonoBehaviour:
   timeToChannel: 1
   range: {x: 1, y: 2}
   cribmate: {fileID: 0}
+--- !u!95 &1875919455194569961
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3319291787428388834}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6e736817ecda452498a37eb43a6e4b28, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 776067098206257032}
   - component: {fileID: 319692931230426309}
   - component: {fileID: 5773509396349488766}
+  - component: {fileID: 7497902591734146361}
   m_Layer: 16
   m_Name: Spawner
   m_TagString: Untagged
@@ -75,8 +76,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_SortingOrder: 10
+  m_Sprite: {fileID: -252522073, guid: f309854742d4ae741bb618d96b4c2452, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -116,15 +117,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myTeam: 0
+  curHealth: 0
+  maxHealth: 0
+  placer: {fileID: 0}
   enemyObjs: []
   allyObjs: []
+  enemyCSMs: []
   playersAndTeams: {fileID: 0}
+  healthbar: {fileID: 0}
+  shakeDuration: 0.15
+  shakeIntensity: 0.1
   enemy: {fileID: 7755144219096736207}
   enemiesInPool: 0
   closestEnemyPosition: {x: 0, y: 0}
+  closestEnemyCSM: {fileID: 0}
   target: {fileID: 0}
   spawnRate: 0
   enemyDisabled: 0
+--- !u!95 &7497902591734146361
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5002733597262725233}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d2f8523ee9b4b854a8f179457e38e57e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1001 &1120435276014419829
 PrefabInstance:
   m_ObjectHideFlags: 0
