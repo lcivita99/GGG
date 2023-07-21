@@ -7,7 +7,7 @@ public class InteractableObject : MonoBehaviour
     public List<PlayerInteractionManager> playerInteractionManagers = new List<PlayerInteractionManager>();
 
     public Material originalMaterial; // Reference to the original material
-    private Material instanceMaterial; // Instance material for this specific object
+    public Material instanceMaterial; // Instance material for this specific object
     public float timeToChannel;
 
     
@@ -29,10 +29,13 @@ public class InteractableObject : MonoBehaviour
 
         //}
         // Create an instance of the original material
-        instanceMaterial = Instantiate(originalMaterial);
 
-        // Assign the instance material to the object
-        GetComponent<Renderer>().material = instanceMaterial;
+            instanceMaterial = Instantiate(originalMaterial);
+
+            // Assign the instance material to the object
+            GetComponent<Renderer>().material = instanceMaterial;
+
+        
 
         if (GameObject.FindGameObjectWithTag("p1") != null)
         {

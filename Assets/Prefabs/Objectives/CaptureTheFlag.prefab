@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8431773076484009134}
   - component: {fileID: 8431773076484009133}
-  m_Layer: 0
+  - component: {fileID: 4746481956808636553}
+  - component: {fileID: 1350393911661111752}
+  m_Layer: 12
   m_Name: Flag1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,6 +86,35 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4746481956808636553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8431773076484009135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a035499e68033d849a353c62580422c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamID: 1
+--- !u!58 &1350393911661111752
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8431773076484009135}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &8431773076646422955
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8431773076646422954}
   - component: {fileID: 8431773076646422953}
+  - component: {fileID: 2300709626511449594}
   m_Layer: 0
   m_Name: BringFlag1
   m_TagString: Untagged
@@ -157,7 +189,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 914906478, guid: 0b69565b0e67e1446aa7070d9d2389f6, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -168,6 +200,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2300709626511449594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8431773076646422955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de21aa540fe21146a25b698873255d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInteractionManagers: []
+  originalMaterial: {fileID: 2100000, guid: 4c0227cf674cd8c4ca28c85f0364f0cc, type: 2}
+  instanceMaterial: {fileID: 0}
+  timeToChannel: 1
+  range: {x: 1, y: 2}
+  flag: {fileID: 8431773076484009135}
 --- !u!1 &8431773077451045809
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,7 +228,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8431773077451045808}
   - component: {fileID: 8431773077451045815}
-  m_Layer: 0
+  - component: {fileID: 5338749068278372409}
+  - component: {fileID: 412621089105022538}
+  m_Layer: 12
   m_Name: Flag2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -252,6 +304,35 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5338749068278372409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8431773077451045809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a035499e68033d849a353c62580422c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teamID: 2
+--- !u!58 &412621089105022538
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8431773077451045809}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &8431773077666389482
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,6 +378,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8431773078220316015}
   - component: {fileID: 8431773078220316014}
+  - component: {fileID: 1019615341249014833}
   m_Layer: 0
   m_Name: BringFlag2
   m_TagString: Untagged
@@ -360,8 +442,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0.35686275, b: 0.9843138, a: 1}
+  m_Sprite: {fileID: 914906478, guid: 0b69565b0e67e1446aa7070d9d2389f6, type: 3}
+  m_Color: {r: 0, g: 0.35686275, b: 0.9921569, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -371,3 +453,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1019615341249014833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8431773078220316008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de21aa540fe21146a25b698873255d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInteractionManagers: []
+  originalMaterial: {fileID: 2100000, guid: 4c0227cf674cd8c4ca28c85f0364f0cc, type: 2}
+  instanceMaterial: {fileID: 0}
+  timeToChannel: 1
+  range: {x: 1, y: 2}
+  flag: {fileID: 8431773077451045809}

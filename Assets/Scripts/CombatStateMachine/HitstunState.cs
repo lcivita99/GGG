@@ -27,6 +27,16 @@ public class HitstunState : CombatBaseState
     public float sniperDamage = 15;
     public float sniperPushStrength = 400;
 
+
+    //TODO: TEST:
+    // Declare the delegate (if using non-generic pattern).
+    public delegate void HitEventHandler(CombatStateManager combat);
+
+    // Declare the event using the delegate.
+    public event HitEventHandler OnHit;
+
+
+
     public bool IsPlayerAttack()
     {
         return moveID != "bullet" && moveID != "sniper";
@@ -40,6 +50,8 @@ public class HitstunState : CombatBaseState
         
         
         hitstunTimer = 0;
+
+        OnHit?.Invoke(combat);
 
         //Debug.Log(moveID);
 

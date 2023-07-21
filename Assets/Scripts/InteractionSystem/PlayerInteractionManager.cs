@@ -6,11 +6,11 @@ public class PlayerInteractionManager : MonoBehaviour
 {
     [SerializeField] public Dictionary<GameObject, (Vector2, bool)> interactableObjs = new Dictionary<GameObject, (Vector2, bool)>();
     public bool canInteract;
-
+    public List<PlayerInteractionManager> playerInteractionManagers = new List<PlayerInteractionManager>();
 
     void Start()
     {
-
+        
     }
 
     // to be called when creating an interactable obj (should be called in each player's scripts
@@ -28,6 +28,7 @@ public class PlayerInteractionManager : MonoBehaviour
         }
         else
         {
+            Debug.Log(true);
             interactable = false;
         }
 

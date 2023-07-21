@@ -26,7 +26,9 @@ public class EventMapManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        objectiveStartTime = 5f;
+        objectiveInProgress = false;
+
+        objectiveStartTime = 1f;
     }
 
     private void Update()
