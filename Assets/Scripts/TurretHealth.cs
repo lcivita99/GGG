@@ -5,6 +5,7 @@ using UnityEngine;
 public class TurretHealth : MonoBehaviour
 {
     // Start is called before the first frame update
+    public int health;
     void Start()
     {
         

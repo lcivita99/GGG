@@ -8,6 +8,9 @@ public class BringFlag : InteractableObject
     //public List<PlayerInteractionManager> playerInteractionManagers = new List<PlayerInteractionManager>();
 
     public GameObject flag;
+    public int teamID;
+
+
 
 
     private void OnEnable()
@@ -20,6 +23,8 @@ public class BringFlag : InteractableObject
     {
         // Unsubscribe from EndEvent (prevent memory leak)
         EventMapManager.instance.EndEvent -= ObjectiveEnded;
+
+        
 
         gameObject.SetActive(false);
 
@@ -86,6 +91,7 @@ public class BringFlag : InteractableObject
     public override void FinishChannelling(CombatStateManager combat, bool idleState)
     {
         transform.parent.gameObject.SetActive(false);
+        // who won
 
         EventMapManager.instance.EndCurEvent();
     }

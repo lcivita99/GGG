@@ -189,7 +189,7 @@ public class CombatStateManager : MonoBehaviour
     // prefabs
     public GameObject coinPrefab;
 
-    //public int currency = 0;
+    public int teamID;
     //public float passiveIncomePerMinute = 1;
     //public float passiveIncomeTimer = 0;
 
@@ -328,18 +328,22 @@ public class CombatStateManager : MonoBehaviour
         if (GameObject.FindGameObjectWithTag("p1") != null)
         {
             allPlayers.Add(GameObject.FindGameObjectWithTag("p1").GetComponent<CombatStateManager>());
+            teamID = 1;
         }
         if (GameObject.FindGameObjectWithTag("p2") != null)
         {
             allPlayers.Add(GameObject.FindGameObjectWithTag("p2").GetComponent<CombatStateManager>());
+            teamID = 2;
         }
         if (GameObject.FindGameObjectWithTag("p3") != null)
         {
             allPlayers.Add(GameObject.FindGameObjectWithTag("p3").GetComponent<CombatStateManager>());
+            teamID = 1;
         }
         if (GameObject.FindGameObjectWithTag("p4") != null)
         {
             allPlayers.Add(GameObject.FindGameObjectWithTag("p4").GetComponent<CombatStateManager>());
+            teamID = 2;
         }
 
         LightAttackState.canHit = new List<bool>();
