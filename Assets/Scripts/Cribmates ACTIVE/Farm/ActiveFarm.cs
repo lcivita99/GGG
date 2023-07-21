@@ -64,7 +64,8 @@ public class ActiveFarm : PlaceableObj
 
     private void FarmCoin()
     {
-        placer.currencyManager.currency++;
+       
+        placer.currencyManager.ChangeCurrency(1);
         anim.SetTrigger("collect");
     }
 }

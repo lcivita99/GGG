@@ -16,13 +16,17 @@ public class IdleState : CombatBaseState
 
     private int curCost;
 
-    public bool hasChannelKey;
+    public bool hasChannelKey = true;
+
+
 
     public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         invulnerableTime = number;
         channelling = false;
         channelTimer = 0;
+
+
 
         if (invulnerableTime > 0)
         {
@@ -45,13 +49,15 @@ public class IdleState : CombatBaseState
     {
         if (channelling)
         {
+  
+
             combat.isStuck = true;
             combat.canMove = false;
             channelTimer += Time.deltaTime;
 
             if (channelTimer >= timeToChannel)
             {
-                
+           
                 channelling = false;
                 combat.isStuck = false;
                 combat.canMove = true;
@@ -102,14 +108,20 @@ public class IdleState : CombatBaseState
                     {
                         curCost = key.GetComponent<CribmateManager>().stats.cost;
                     }
-                    else
+                    else // its an objective
                     {
-                        curCost = 0;
+                        if (hasChannelKey && key.GetComponent<InteractableObject>().CanChannel(combat))
+                        {
+                            curCost = 0;
+                        }
+                        else
+                        {
+                            curCost = 200; //can't channel! JANK
+                        }
                     }
 
                     if (combat.currencyManager.currency >= curCost)
                     {
-                        // TODO: THIS SHOULD BE REPLACED WITH A CHANNELING EVENT THAT IS CALLED:
                         channelling = true;
                         channellingObj = key;
                         curIOScript = channellingObj.GetComponent<InteractableObject>();
@@ -123,6 +135,7 @@ public class IdleState : CombatBaseState
 
         if (combat.cross.wasReleasedThisFrame)
         {
+ 
             channelTimer = 0;
             combat.isStuck = false;
             combat.canMove = true;
@@ -149,6 +162,10 @@ public class IdleState : CombatBaseState
     {
         combat.isStuck = false;
         combat.canMove = true;
+        if (channelling)
+        {
+       
+        }
         channelling = false;
         combat.StopCoroutine(combat.InvulnerableDelay(invulnerableTime));
         combat.BecomeVulnerable();

@@ -28,7 +28,7 @@ public class PlayerInteractionManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(true);
+           // Debug.Log(true);
             interactable = false;
         }
 

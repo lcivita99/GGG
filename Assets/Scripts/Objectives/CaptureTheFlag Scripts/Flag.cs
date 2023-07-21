@@ -8,10 +8,12 @@ public class Flag : MonoBehaviour
 
     private HashSet<CombatStateManager> subscribedObjects = new();
 
-    CombatStateManager CSM;
+    CombatStateManager curCSM;
 
     private SpriteRenderer sr;
     private Collider2D flagCollider;
+
+    private Vector2 originalPosition;
 
     private bool flagWithPlayer = false;
 
@@ -19,6 +21,7 @@ public class Flag : MonoBehaviour
     {
         // Subscribe to the event when this script becomes active/enabled.
         EventMapManager.instance.EndEvent += ObjectiveEnded;
+        originalPosition = gameObject.transform.position;
     }
 
     private void ObjectiveEnded()
@@ -55,16 +58,30 @@ public class Flag : MonoBehaviour
     {
 
 
+        if (collision.gameObject.layer.Equals(6))
+        {
+           // Debug.Log("destroyed");
+            gameObject.transform.position = originalPosition;
+        }
+        else if (collision.gameObject.layer.Equals(7))
+        {
+           // Debug.Log("destroyed");
+            gameObject.transform.position = originalPosition;
+        }
 
-        if (collision.gameObject.layer.Equals(3))
+        
+
+
+
+            if (collision.gameObject.layer.Equals(3))
         {
             // Check if the collided object has the YourScriptWithGetHit component.
-            CSM = collision.GetComponent<CombatStateManager>();
-            if (CSM != null && !subscribedObjects.Contains(CSM))
+            curCSM = collision.GetComponent<CombatStateManager>();
+            if (curCSM != null && !subscribedObjects.Contains(curCSM))
             {
                 // Subscribe to the OnHit event when the trigger collision occurs.
-                CSM.HitstunState.OnHit += OnGetHit;
-                subscribedObjects.Add(CSM);
+                curCSM.HitstunState.OnHit += OnGetHit;
+                subscribedObjects.Add(curCSM);
             }
 
 
@@ -91,10 +108,11 @@ public class Flag : MonoBehaviour
 
 
 
-        if (flagWithPlayer && combat.Equals(CSM))
+        if (flagWithPlayer && combat.Equals(curCSM))
         {
+            curCSM.IdleState.hasChannelKey = false;
             sr.enabled = true;
-            gameObject.transform.position = CSM.transform.position;
+            gameObject.transform.position = curCSM.transform.position;
             flagWithPlayer = false;
             StartCoroutine(FlagIsInvulnerable());
         }
@@ -109,6 +127,7 @@ public class Flag : MonoBehaviour
     private void GetFlag(GameObject gm)
     {
         Debug.Log(gm.tag + " captured the flag");
+        curCSM.IdleState.hasChannelKey = true;
         sr.enabled = false;
         flagCollider.enabled = false;
         flagWithPlayer = true;

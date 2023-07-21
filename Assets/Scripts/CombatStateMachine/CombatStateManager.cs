@@ -207,6 +207,16 @@ public class CombatStateManager : MonoBehaviour
         // assign tags
         gameObject.tag = "p" + playerMovement.playerNumber.ToString();
 
+
+        if (playerMovement.playerNumber == 1 || playerMovement.playerNumber == 3)
+        {
+            teamID = 1;
+        } else
+        {
+            teamID = 2;
+        }
+
+
         // TODO setting it to null rn to check when stuff breaks
         playerAttackingYouManager = null;
         
@@ -328,22 +338,22 @@ public class CombatStateManager : MonoBehaviour
         if (GameObject.FindGameObjectWithTag("p1") != null)
         {
             allPlayers.Add(GameObject.FindGameObjectWithTag("p1").GetComponent<CombatStateManager>());
-            teamID = 1;
+
         }
         if (GameObject.FindGameObjectWithTag("p2") != null)
         {
             allPlayers.Add(GameObject.FindGameObjectWithTag("p2").GetComponent<CombatStateManager>());
-            teamID = 2;
+
         }
         if (GameObject.FindGameObjectWithTag("p3") != null)
         {
             allPlayers.Add(GameObject.FindGameObjectWithTag("p3").GetComponent<CombatStateManager>());
-            teamID = 1;
+
         }
         if (GameObject.FindGameObjectWithTag("p4") != null)
         {
             allPlayers.Add(GameObject.FindGameObjectWithTag("p4").GetComponent<CombatStateManager>());
-            teamID = 2;
+
         }
 
         LightAttackState.canHit = new List<bool>();
@@ -531,7 +541,6 @@ public class CombatStateManager : MonoBehaviour
 
     private void GetHit(Collider2D collision)
     {
-        Debug.Log(gameObject.tag);
         
 
   
