@@ -15,6 +15,37 @@ public class Flag : MonoBehaviour
 
     private bool flagWithPlayer = false;
 
+    private void OnEnable()
+    {
+        // Subscribe to the event when this script becomes active/enabled.
+        EventMapManager.instance.EndEvent += ObjectiveEnded;
+    }
+
+    private void ObjectiveEnded()
+    {
+        // Create a list to store items to remove after iterating.
+        List<CombatStateManager> itemsToRemove = new List<CombatStateManager>();
+
+        // Unsubscribe from gethit event (prevent memory leak)
+        foreach (CombatStateManager combat in subscribedObjects)
+        {
+            combat.HitstunState.OnHit -= OnGetHit;
+            itemsToRemove.Add(combat);
+        }
+
+        // Remove the items from the subscribedObjects list.
+        foreach (CombatStateManager combat in itemsToRemove)
+        {
+            subscribedObjects.Remove(combat);
+        }
+
+        // Unsubscribe from EndEvent (prevent memory leak)
+        EventMapManager.instance.EndEvent -= ObjectiveEnded;
+
+        gameObject.SetActive(false);
+
+    }
+
     private void Start()
     {
         sr = GetComponent<SpriteRenderer>();

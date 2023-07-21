@@ -10,6 +10,21 @@ public class BringFlag : InteractableObject
     public GameObject flag;
 
 
+    private void OnEnable()
+    {
+        // Subscribe to the event when this script becomes active/enabled.
+        EventMapManager.instance.EndEvent += ObjectiveEnded;
+    }
+
+    private void ObjectiveEnded()
+    {
+        // Unsubscribe from EndEvent (prevent memory leak)
+        EventMapManager.instance.EndEvent -= ObjectiveEnded;
+
+        gameObject.SetActive(false);
+
+    }
+
 
     private void Start()
     {
@@ -66,9 +81,13 @@ public class BringFlag : InteractableObject
         }
     }
 
+
+
     public override void FinishChannelling(CombatStateManager combat, bool idleState)
     {
-        Debug.Log("Capture the flag has ended");
+        transform.parent.gameObject.SetActive(false);
+
+        EventMapManager.instance.EndCurEvent();
     }
 
 

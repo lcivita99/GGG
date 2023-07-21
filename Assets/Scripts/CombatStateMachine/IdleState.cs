@@ -16,6 +16,8 @@ public class IdleState : CombatBaseState
 
     private int curCost;
 
+    public bool hasChannelKey;
+
     public override void EnterState(CombatStateManager combat, float number, string str, Vector2 vector)
     {
         invulnerableTime = number;
@@ -107,6 +109,7 @@ public class IdleState : CombatBaseState
 
                     if (combat.currencyManager.currency >= curCost)
                     {
+                        // TODO: THIS SHOULD BE REPLACED WITH A CHANNELING EVENT THAT IS CALLED:
                         channelling = true;
                         channellingObj = key;
                         curIOScript = channellingObj.GetComponent<InteractableObject>();

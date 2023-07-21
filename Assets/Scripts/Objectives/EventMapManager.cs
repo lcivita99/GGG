@@ -13,6 +13,14 @@ public class EventMapManager : MonoBehaviour
 
     private GameObject curObjective;
 
+    // Declare the delegate (if using non-generic pattern).
+    public delegate void MyEventHandler();
+
+    // Declare the event using the delegate.
+    public event MyEventHandler EndEvent;
+
+
+
 
     private void Start()
     {
@@ -38,7 +46,7 @@ public class EventMapManager : MonoBehaviour
             timer += Time.deltaTime;
         }
 
-        if (timer >= objectiveStartTime)
+        if (timer >= objectiveStartTime && objectives.Count != 0)
         {
             timer = 0;
             objectiveInProgress = true;
@@ -46,4 +54,17 @@ public class EventMapManager : MonoBehaviour
             Instantiate(curObjective, Vector2.zero, Quaternion.identity);
         }
     }
+
+    public void EndCurEvent()
+    {
+        // Trigger the event when called.
+        EndEvent?.Invoke();
+
+
+        objectiveInProgress = false;
+        objectives.Remove(curObjective);
+        //Destroy(curObjective);
+        Debug.Log("obj ended");
+    }
+
 }

@@ -87,16 +87,18 @@ public class ControlPoint : MonoBehaviour
         if (team1Timer >= timeToCapture)
         {
             Debug.Log("team1 wins!");
-            EventMapManager.instance.objectiveInProgress = false;
+            //EventMapManager.instance.objectiveInProgress = false;
             gameObject.SetActive(false);
+            EventMapManager.instance.EndCurEvent();
         }
         else if (team2Timer >= timeToCapture)
         {
             Debug.Log("team2 wins!");
-            EventMapManager.instance.objectiveInProgress = false;
+
             gameObject.SetActive(false);
+            EventMapManager.instance.EndCurEvent();
         }
 
-       
+
     }
 }

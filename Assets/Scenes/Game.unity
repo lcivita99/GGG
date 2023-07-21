@@ -1411,6 +1411,8 @@ GameObject:
   m_Component:
   - component: {fileID: 499941305}
   - component: {fileID: 499941304}
+  - component: {fileID: 499941306}
+  - component: {fileID: 499941307}
   m_Layer: 0
   m_Name: Team2BottomTurret
   m_TagString: Untagged
@@ -1485,6 +1487,34 @@ Transform:
   m_Father: {fileID: 1088397747}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &499941306
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499941303}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!114 &499941307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 499941303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74edaefed9770d41acd7af9c39e97ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2187,6 +2217,8 @@ GameObject:
   m_Component:
   - component: {fileID: 766588965}
   - component: {fileID: 766588964}
+  - component: {fileID: 766588966}
+  - component: {fileID: 766588967}
   m_Layer: 0
   m_Name: Team1BottomTurret
   m_TagString: Untagged
@@ -2261,6 +2293,34 @@ Transform:
   m_Father: {fileID: 2060508163}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &766588966
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766588963}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!114 &766588967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766588963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74edaefed9770d41acd7af9c39e97ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &813289463
 GameObject:
   m_ObjectHideFlags: 0
@@ -3362,6 +3422,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1381926507}
   - component: {fileID: 1381926506}
+  - component: {fileID: 1381926508}
+  - component: {fileID: 1381926509}
   m_Layer: 0
   m_Name: Team2TopTurret
   m_TagString: Untagged
@@ -3436,6 +3498,34 @@ Transform:
   m_Father: {fileID: 1088397747}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1381926508
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381926505}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!114 &1381926509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381926505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74edaefed9770d41acd7af9c39e97ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1385754376
 GameObject:
   m_ObjectHideFlags: 0
@@ -3544,6 +3634,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1454291533}
   - component: {fileID: 1454291532}
+  - component: {fileID: 1454291534}
   m_Layer: 0
   m_Name: Team1Core
   m_TagString: Untagged
@@ -3618,6 +3709,22 @@ Transform:
   m_Father: {fileID: 2060508163}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1454291534
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454291531}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &1536179905
 GameObject:
   m_ObjectHideFlags: 0
@@ -3933,6 +4040,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectives:
   - {fileID: 8431773077666389482, guid: 61691567b7be55343941a08db5d87979, type: 3}
+  - {fileID: 5902971938473723401, guid: cba582ffab2d9224caf65b23b9ee5b0c, type: 3}
   timer: 0
   objectiveStartTime: 0
   objectiveInProgress: 0
@@ -3946,6 +4054,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1599877373}
   - component: {fileID: 1599877372}
+  - component: {fileID: 1599877374}
   m_Layer: 0
   m_Name: Team2Core
   m_TagString: Untagged
@@ -4020,6 +4129,22 @@ Transform:
   m_Father: {fileID: 1088397747}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1599877374
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599877371}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!1 &1609010621
 GameObject:
   m_ObjectHideFlags: 0
@@ -4530,6 +4655,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1736164858}
   - component: {fileID: 1736164857}
+  - component: {fileID: 1736164859}
+  - component: {fileID: 1736164860}
   m_Layer: 0
   m_Name: Team1TopTurret
   m_TagString: Untagged
@@ -4604,6 +4731,34 @@ Transform:
   m_Father: {fileID: 2060508163}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1736164859
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736164856}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!114 &1736164860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736164856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74edaefed9770d41acd7af9c39e97ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1739084883
 GameObject:
   m_ObjectHideFlags: 0
@@ -4698,6 +4853,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1865512974}
   - component: {fileID: 1865512973}
+  - component: {fileID: 1865512975}
+  - component: {fileID: 1865512976}
   m_Layer: 0
   m_Name: Team2FrontTurret
   m_TagString: Untagged
@@ -4772,6 +4929,34 @@ Transform:
   m_Father: {fileID: 1088397747}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &1865512975
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865512972}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!114 &1865512976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1865512972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74edaefed9770d41acd7af9c39e97ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1867399610
 GameObject:
   m_ObjectHideFlags: 0
@@ -5281,7 +5466,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2060508163
 Transform:
   m_ObjectHideFlags: 0
@@ -5311,6 +5496,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2099915924}
   - component: {fileID: 2099915923}
+  - component: {fileID: 2099915925}
+  - component: {fileID: 2099915926}
   m_Layer: 0
   m_Name: Team1FrontTurret
   m_TagString: Untagged
@@ -5385,6 +5572,34 @@ Transform:
   m_Father: {fileID: 2060508163}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &2099915925
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099915922}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
+--- !u!114 &2099915926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099915922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74edaefed9770d41acd7af9c39e97ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2112647601
 GameObject:
   m_ObjectHideFlags: 0
