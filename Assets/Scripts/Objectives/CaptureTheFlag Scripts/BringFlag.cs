@@ -47,6 +47,7 @@ public class BringFlag : InteractableObject
         if (GameObject.FindGameObjectWithTag("p1") != null)
         {
             playerInteractionManagers.Add(GameObject.FindGameObjectWithTag("p1").GetComponent<PlayerInteractionManager>());
+
         }
         if (GameObject.FindGameObjectWithTag("p2") != null)
         {
@@ -65,18 +66,12 @@ public class BringFlag : InteractableObject
         {
             playerInteractionManagers[i].AddInteractableObj(gameObject);
         }
-        // Create an instance of the original material
 
 
-        //// add to dictionary
-        //for (int i = 0; i < playerInteractionManagers.Count; i++)
-        //{
-        //    Debug.Log("I've been added");
-        //    playerInteractionManagers[i].AddInteractableObj(gameObject);
-        //}
+       
     }
 
-
+   
     //when the objective ends:
     public void RemoveFromInteraction()
     {
@@ -92,10 +87,15 @@ public class BringFlag : InteractableObject
     {
         transform.parent.gameObject.SetActive(false);
         // who won
-
         EventMapManager.instance.EndCurEvent();
     }
 
+
+    public override bool CanChannel(CombatStateManager combat)
+    {
+        Debug.Log("Can Channel: " + combat.teamID + "  " + teamID);
+        return combat.teamID == teamID;
+    }
 
 
 }

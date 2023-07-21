@@ -113,6 +113,13 @@ public class InteractableObject : MonoBehaviour
         Debug.Log("CHANNEL FINISHED");
     }
 
+    public virtual bool CanChannel(CombatStateManager combat)
+    {
+
+        Debug.Log("CHANNEL FINISHED");
+        return true;
+    }
+
     //private void CheckPlayerDistance()
     //{
     //    bool playerFound = false;

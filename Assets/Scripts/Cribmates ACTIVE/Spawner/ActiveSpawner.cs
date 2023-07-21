@@ -63,7 +63,7 @@ public class ActiveSpawner : PlaceableObj
         spawnTimer += Time.deltaTime;
 
 
-        //TODO: not sure if this is needed, it might always just spawn in same direction
+  
         //TODO: !!!!!!!!!!!!!!!(what if you block all directions????)!!!!!!!
         //transform.up = (closestEnemyPosition - new Vector2(transform.position.x, transform.position.y)).normalized;
 

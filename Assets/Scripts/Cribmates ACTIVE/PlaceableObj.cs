@@ -88,7 +88,6 @@ public class PlaceableObj : MonoBehaviour
             //guo.updatePhysics = false;
             AstarPath.active.UpdateGraphs(guo);
             //free from grid
-
            
         }
     }

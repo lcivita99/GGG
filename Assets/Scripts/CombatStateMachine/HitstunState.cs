@@ -246,9 +246,7 @@ public class HitstunState : CombatBaseState
                 {
                     //combat.healthBarVisuals.UpdateUI();
 
-                    // TODO ODODODODOSADHNAJKSHNDOJ AILSOJKPDSNAOPIUNPOIASNDOIPJ{NASDOIJPNSDAPOKNDIOJPASNHOJDNASPIDO
-                    // ? JAOSIKDn{OAIKSJD{OKIASD{OPJDS{OKI"SJD{OPLKSA{OPKDJAS{OPKAOS{PIJDOPL"{KJD
-                    // ? JANDSOKijASOLP{JAS{OPLjASPO{IJDp[IASJD[]pIASJ{PAIKSJASDPIJ
+
                     AddKnockback(combat, bulletPushStrength);
                 }
 
@@ -280,9 +278,6 @@ public class HitstunState : CombatBaseState
                 {
                     //combat.healthBarVisuals.UpdateUI();
 
-                    // TODO ODODODODOSADHNAJKSHNDOJ AILSOJKPDSNAOPIUNPOIASNDOIPJ{NASDOIJPNSDAPOKNDIOJPASNHOJDNASPIDO
-                    // ? JAOSIKDn{OAIKSJD{OKIASD{OPJDS{OKI"SJD{OPLKSA{OPKDJAS{OPKAOS{PIJDOPL"{KJD
-                    // ? JANDSOKijASOLP{JAS{OPLjASPO{IJDp[IASJD[]pIASJ{PAIKSJASDPIJ
                     AddKnockback(combat, sniperPushStrength);
                 }
 
